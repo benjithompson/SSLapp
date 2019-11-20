@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DexSSL
 {
-    public class ToscaConfig : IDataErrorInfo
+    public class ToscaConfigFiles : IDataErrorInfo
     {
 
 
