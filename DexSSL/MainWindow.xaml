@@ -1,4 +1,6 @@
-﻿<Window x:Class="DexSSL.MainWindow"
+﻿
+    
+<Window x:Class="DexSSL.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,58 +8,41 @@
         mc:Ignorable="d"
         xmlns:src="clr-namespace:DexSSL"
         Title="MainWindow" Height="410" Width="380">
+
     <Window.Resources>
-        <src:ToscaConfigFiles x:Key="data"/>
-        <!--The tool tip for the TextBox to display the validation error message.-->
-        <Style x:Key="textBoxInError" TargetType="TextBox">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
-                        Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <AdornedElementPlaceholder/>
+                <TextBlock Foreground="Red" FontWeight="Bold" FontSize="20">!</TextBlock>
+            </DockPanel>
+        </ControlTemplate>
+
     </Window.Resources>
+
     <Grid>
         <StackPanel>
-
-
-
-            <Label Content="DEX Server Web.config Path" VerticalAlignment="Top" Margin="5,5,5,0" Height="25"/>
+            <Label Content="DEX Config Files Output Path" VerticalAlignment="Top" Margin="5,5,5,0" Height="25"/>
             <StackPanel Orientation="Horizontal">
-                <TextBox Style="{StaticResource textBoxInError}" Margin="10,0,5,5" Width="325"  Height="25">
-                    <TextBox.Text>
-                        <!--By setting ValidatesOnExceptions to True, it checks for exceptions
-                that are thrown during the update of the source property.
-                An alternative syntax is to add <ExceptionValidationRule/> within
-                the <Binding.ValidationRules> section.-->
-                        <Binding Path="ServerConfig" Source="{StaticResource data}"
-                                 ValidatesOnExceptions="True"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <!--DataErrorValidationRule checks for validation 
-                            errors raised by the IDataErrorInfo object.-->
-                                <!--Alternatively, you can set ValidationOnDataErrors="True" on the Binding.-->
-                                <DataErrorValidationRule/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <Button Name="buttonOpenServerConfig" Click="ButtonOpenServerConfig_OnClick" Width="30" Height="25" Margin="0,0,5,5"></Button>
-            </StackPanel>
-            <Label Content="DEX Agent Web.config Path" VerticalAlignment="Top" Margin="5,5,5,0" Height="25"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBox Name="tbAgentConfig" Margin="10,0,5,5" Width="325"  Height="25"></TextBox>
-                <Button Name="buttonOpenAgentConfig" Click="ButtonOpenAgentConfig_OnClick" Width="30" Height="25" Margin="0,0,5,5"></Button>
+                <TextBox Text="{Binding ToscaConfigFiles.OutputConfigPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Margin="10,0,5,5" 
+                         Width="325"  
+                         Height="25"/>
+                <Button Name="buttonOpenServerConfig" Command="{Binding UpdateCommand}" Width="30" Height="25" Margin="0,0,5,5"></Button>
             </StackPanel>
             <DockPanel>
                 <Label Content="Hostname/IP" Width="320" Margin="5,0"></Label>
                 <Label Content="Port" Width="180" Margin="5,0"></Label>
             </DockPanel>
             <DockPanel>
-                <TextBox Name="tbHostnameIP" Height="25" Width="320" Margin="10,0,5,0"></TextBox>
-                <TextBox Name="tbPort" Height="25" Width="35" Margin="0,0,10,0"></TextBox>
+                <TextBox Text="{Binding ToscaConfigFiles.DexServerHostName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Height="25" 
+                         Width="320" 
+                         Margin="10,0,5,0"/>
+                <TextBox Text="{Binding ToscaConfigFiles.DexServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Height="25" 
+                         Width="35" 
+                         Margin="0,0,10,0"/>
             </DockPanel>
             <Label Content="SSL" Margin="5,5,5,0"/>
             <RadioButton Name="rbSSLTrue" GroupName="rbSSLEnabled" IsChecked="True" Content="True" Margin="20,0,0,0"/>
@@ -66,7 +51,7 @@
                 LastChildFill="False"
                 VerticalAlignment="Bottom" 
                 Height="35">
-                <Button DockPanel.Dock="Right" IsDefault="True" Click="ButtonBase_OnClick" Content="Apply" Margin="5" Width="80" Foreground="White" Background="#1D63AF" ></Button>
+                <Button DockPanel.Dock="Right" IsDefault="True" Content="Apply" Margin="5" Width="80" Foreground="White" Background="#1D63AF" ></Button>
             </DockPanel>
         </StackPanel>
     </Grid>

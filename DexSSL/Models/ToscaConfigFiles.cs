@@ -2,53 +2,129 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
+using System.IO;
 using System.Text;
 
 namespace DexSSL
 {
-    public class ToscaConfigFiles : IDataErrorInfo
+    public class ToscaConfigFiles : IDataErrorInfo, INotifyPropertyChanged
     {
 
 
-        public string ServerConfig { get; set; }
-        public string AgentConfig { get; set; }
-        public string DexServerHostIP { get; set; }
+        private string outputConfigPath;
+        private string dexServerHostName;
+        private string dexServerPort;
+
+
+        #region Constructor
+
+        public ToscaConfigFiles()
+        {
+            preloadConfig();
+
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string OutputConfigPath
+        {
+            get { return outputConfigPath; }
+            set
+            {
+                outputConfigPath = value;
+                NotifyPropertyChanged(nameof(OutputConfigPath));
+            }
+        }
+
+        public string DexServerHostName
+        {
+            get { return dexServerHostName; }
+            set
+            {
+                dexServerHostName = value;
+                NotifyPropertyChanged(nameof(DexServerHostName));
+            }
+        }
 
         public string DexServerPort
         {
-            get { return DexServerPort; }
-            set { DexServerPort = DexServerHostIP.StartsWith("https") ? "443" : "80"; }
+            get { return dexServerPort; }
+            set
+            {
+                dexServerPort = value;
+                NotifyPropertyChanged(nameof(DexServerPort));
+            }
         }
 
-        public string this[string name]{
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region IDataErrorInfo Members
+
+        public string Error
+        {
+            get;
+            private set;
+        }
+
+        /// IDataErrorInfo
+        public string this[string propertyName]{
             get { 
                 string result = String.Empty;
-                if (name == "ServerConfig")
+                if (propertyName == "OutputConfigPath")
                 {
-                    if (this.ServerConfig == "")
+                    if (string.IsNullOrEmpty(OutputConfigPath))
                     {
-                        result = "Server web.config path must not be empty";
+                        result = "Output path must not be empty";
                     }
                 }
-                if (name == "AgentConfig")
+                if (propertyName == "DexServerHostName")
                 {
-                    if (this.AgentConfig == "")
+                    if (string.IsNullOrEmpty(dexServerHostName))
                     {
-                        result = "Agent web.config path must not be empty";
+                        result = "Hostname must not be empty. Use Full Computer Name.";
                     }
                 }
-                if (name == "DexServerHostIP")
+                if (propertyName == "DexServerPort")
                 {
-                    if (this.DexServerHostIP == "")
+                    var isNumeric = int.TryParse(dexServerPort, out int n);
+                    if (string.IsNullOrEmpty(dexServerPort) || !isNumeric)
                     {
-                        result = "Host/IP must not be empty";
+                        result = "Port must be integer.";
                     }
                 }
+
                 return result;
             }
         }
 
+        #endregion
 
-        public string Error => null;
+        #region Private Methods
+        private void preloadConfig()
+        {
+            if (Directory.Exists(@"C:\Users\"+Environment.UserName+@"\Desktop"))
+            {
+                OutputConfigPath = @"C:\Users\" + Environment.UserName + @"\Desktop\";
+            }
+            else
+            {
+                OutputConfigPath = @"C:\";
+            }
+
+            DexServerPort = "443";
+        }
+        #endregion
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DexSSL.ViewModels
+namespace DexSSL.Commands
 {
-    class ToscaConfigFileViewModel
+    class UpdateToscaConfigFiles
     {
     }
 }
