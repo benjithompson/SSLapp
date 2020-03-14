@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DexSSL.Commands
 {
-    class UpdateToscaConfigFiles
+    class BuildToscaConfigFiles
     {
     }
 }

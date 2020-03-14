@@ -14,7 +14,7 @@ namespace DexSSL
         private string outputConfigPath;
         private string dexServerHostName;
         private string dexServerPort;
-
+        private string certThumbprint;
 
         #region Constructor
 
@@ -55,6 +55,15 @@ namespace DexSSL
             {
                 dexServerPort = value;
                 NotifyPropertyChanged(nameof(DexServerPort));
+            }
+        }
+        public string CertThumbprint
+        {
+            get { return certThumbprint; }
+            set
+            {
+                dexServerPort = value;
+                NotifyPropertyChanged(nameof(CertThumbprint));
             }
         }
 

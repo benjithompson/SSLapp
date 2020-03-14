@@ -36,6 +36,7 @@ namespace DexSSL.ViewModels
             Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.OutputConfigPath));
             Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.DexServerHostName));
             Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.DexServerPort));
+            Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.CertThumbprint));
         }
     }
 }

@@ -7,7 +7,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         xmlns:src="clr-namespace:DexSSL"
-        Title="MainWindow" Height="410" Width="380">
+        Title="MainWindow" Height="335" Width="410"
+        ResizeMode="NoResize">
 
     <Window.Resources>
 
@@ -22,28 +23,38 @@
 
     <Grid>
         <StackPanel>
-            <Label Content="DEX Config Files Output Path" VerticalAlignment="Top" Margin="5,5,5,0" Height="25"/>
+            <Label Content="Config Files Output Path" VerticalAlignment="Top" Margin="5,5,5,0" Height="25"/>
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding ToscaConfigFiles.OutputConfigPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Margin="10,0,5,5" 
                          Width="325"  
                          Height="25"/>
-                <Button Name="buttonOpenServerConfig" Command="{Binding UpdateCommand}" Width="30" Height="25" Margin="0,0,5,5"></Button>
+                <Button Name="buttonOpenServerConfig" Command="{Binding UpdateCommand}" 
+                        Width="30" 
+                        Height="25" 
+                        Margin="0,0,5,5"/>
             </StackPanel>
             <DockPanel>
-                <Label Content="Hostname/IP" Width="320" Margin="5,0"></Label>
-                <Label Content="Port" Width="180" Margin="5,0"></Label>
+                <Label Content="Full Computer Name" Width="320" Margin="5,0"></Label>
+                <Label Content="Port" Width="170" Margin="5,0"></Label>
             </DockPanel>
-            <DockPanel>
+            <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding ToscaConfigFiles.DexServerHostName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
-                         Width="320" 
+                         Width="325" 
                          Margin="10,0,5,0"/>
                 <TextBox Text="{Binding ToscaConfigFiles.DexServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
-                         Width="35" 
-                         Margin="0,0,10,0"/>
-            </DockPanel>
+                         Width="45" 
+                         Margin="0,5,10,5"/>
+            </StackPanel>
+            <Label Content="Certificate Thumbprint" VerticalAlignment="Top" Margin="5,5,5,0" Height="25"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding ToscaConfigFiles.CertificateThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Height="25" 
+                         Width="325" 
+                         Margin="10,0,5,0"/>
+            </StackPanel>
             <Label Content="SSL" Margin="5,5,5,0"/>
             <RadioButton Name="rbSSLTrue" GroupName="rbSSLEnabled" IsChecked="True" Content="True" Margin="20,0,0,0"/>
             <RadioButton Name="rbSSLFalse" GroupName="rbSSLEnabled" Content="False" Margin="20,5,0,0"/>
@@ -51,7 +62,11 @@
                 LastChildFill="False"
                 VerticalAlignment="Bottom" 
                 Height="35">
-                <Button DockPanel.Dock="Right" IsDefault="True" Content="Apply" Margin="5" Width="80" Foreground="White" Background="#1D63AF" ></Button>
+                <Button DockPanel.Dock="Right" IsDefault="True" Content="Apply" 
+                        Margin="0,0,10,0" 
+                        Width="80" 
+                        Foreground="White" 
+                        Background="#1D63AF" />
             </DockPanel>
         </StackPanel>
     </Grid>
