@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.IO;
-using System.Text;
+using static DexSSL.Utils.FieldValidations;
+
 
 namespace DexSSL
 {
@@ -15,12 +16,12 @@ namespace DexSSL
         private string dexServerHostName;
         private string dexServerPort;
         private string certThumbprint;
+        public bool HasErrors = true;
 
         #region Constructor
 
         public ToscaConfigFiles()
         {
-            preloadConfig();
 
         }
 
@@ -37,7 +38,6 @@ namespace DexSSL
                 NotifyPropertyChanged(nameof(OutputConfigPath));
             }
         }
-
         public string DexServerHostName
         {
             get { return dexServerHostName; }
@@ -47,7 +47,6 @@ namespace DexSSL
                 NotifyPropertyChanged(nameof(DexServerHostName));
             }
         }
-
         public string DexServerPort
         {
             get { return dexServerPort; }
@@ -62,10 +61,12 @@ namespace DexSSL
             get { return certThumbprint; }
             set
             {
-                dexServerPort = value;
+                certThumbprint = value;
                 NotifyPropertyChanged(nameof(CertThumbprint));
             }
         }
+
+
 
         #endregion
 
@@ -87,6 +88,7 @@ namespace DexSSL
             private set;
         }
 
+
         /// IDataErrorInfo
         public string this[string propertyName]{
             get { 
@@ -97,12 +99,16 @@ namespace DexSSL
                     {
                         result = "Output path must not be empty";
                     }
+                    else if(!Directory.Exists(OutputConfigPath))
+                    {
+                        result = "Directory does not exist";
+                    }
                 }
                 if (propertyName == "DexServerHostName")
                 {
                     if (string.IsNullOrEmpty(dexServerHostName))
                     {
-                        result = "Hostname must not be empty. Use Full Computer Name.";
+                        result = " ";
                     }
                 }
                 if (propertyName == "DexServerPort")
@@ -110,30 +116,24 @@ namespace DexSSL
                     var isNumeric = int.TryParse(dexServerPort, out int n);
                     if (string.IsNullOrEmpty(dexServerPort) || !isNumeric)
                     {
-                        result = "Port must be integer.";
+                        result = " ";
                     }
                 }
-
+                if (propertyName == "CertThumbprint")
+                {
+                    if (!CertThumbprintIsValid(certThumbprint))
+                    {
+                        result = " ";
+                    }
+                }
+                if(String.IsNullOrEmpty(result))
+                {
+                    HasErrors = false;
+                }
                 return result;
             }
         }
 
-        #endregion
-
-        #region Private Methods
-        private void preloadConfig()
-        {
-            if (Directory.Exists(@"C:\Users\"+Environment.UserName+@"\Desktop"))
-            {
-                OutputConfigPath = @"C:\Users\" + Environment.UserName + @"\Desktop\";
-            }
-            else
-            {
-                OutputConfigPath = @"C:\";
-            }
-
-            DexServerPort = "443";
-        }
         #endregion
     }
 }

@@ -7,18 +7,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         xmlns:src="clr-namespace:DexSSL"
-        Title="MainWindow" Height="335" Width="410"
-        ResizeMode="NoResize">
+        Title="MainWindow" Height="365" Width="410"
+        ResizeMode="NoResize"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}">
 
     <Window.Resources>
-
         <ControlTemplate x:Key="validationTemplate">
             <DockPanel>
                 <AdornedElementPlaceholder/>
                 <TextBlock Foreground="Red" FontWeight="Bold" FontSize="20">!</TextBlock>
             </DockPanel>
         </ControlTemplate>
-
     </Window.Resources>
 
     <Grid>
@@ -30,32 +34,35 @@
                          Width="325"  
                          Height="25"/>
                 <Button Name="buttonOpenServerConfig" Command="{Binding UpdateCommand}" 
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
                         Width="30" 
                         Height="25" 
-                        Margin="0,0,5,5"/>
+                        Margin="0,0,5,5" />
             </StackPanel>
             <DockPanel>
-                <Label Content="Full Computer Name" Width="320" Margin="5,0"></Label>
-                <Label Content="Port" Width="170" Margin="5,0"></Label>
+                <Label Content="Full Computer Name" Width="320" Margin="5,15,0,0"></Label>
+                <Label Content="Port" Width="170" Margin="5,15,0,0"></Label>
             </DockPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding ToscaConfigFiles.DexServerHostName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
                          Width="325" 
-                         Margin="10,0,5,0"/>
+                         Margin="10,0,5,0"
+                         materialDesign:HintAssist.Hint="hostname.domain.com"/>
                 <TextBox Text="{Binding ToscaConfigFiles.DexServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
                          Width="45" 
-                         Margin="0,5,10,5"/>
+                         Margin="0,0,10,0"
+                         materialDesign:HintAssist.Hint="443"/>
             </StackPanel>
-            <Label Content="Certificate Thumbprint" VerticalAlignment="Top" Margin="5,5,5,0" Height="25"/>
+            <Label Content="Certificate Thumbprint" VerticalAlignment="Top" Margin="5,15,5,0" Height="25"/>
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding ToscaConfigFiles.CertificateThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <TextBox Text="{Binding ToscaConfigFiles.CertThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
                          Width="325" 
                          Margin="10,0,5,0"/>
             </StackPanel>
-            <Label Content="SSL" Margin="5,5,5,0"/>
+            <Label Content="SSL" Margin="5,15,5,0"/>
             <RadioButton Name="rbSSLTrue" GroupName="rbSSLEnabled" IsChecked="True" Content="True" Margin="20,0,0,0"/>
             <RadioButton Name="rbSSLFalse" GroupName="rbSSLEnabled" Content="False" Margin="20,5,0,0"/>
             <DockPanel Margin="0,10,0,0" 
@@ -65,8 +72,8 @@
                 <Button DockPanel.Dock="Right" IsDefault="True" Content="Apply" 
                         Margin="0,0,10,0" 
                         Width="80" 
-                        Foreground="White" 
-                        Background="#1D63AF" />
+                        Foreground="White"
+                        Command="{Binding ClickCommand}"/>
             </DockPanel>
         </StackPanel>
     </Grid>

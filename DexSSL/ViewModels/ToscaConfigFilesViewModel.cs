@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DexSSL.Commands;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -25,18 +26,27 @@ namespace DexSSL.ViewModels
             }
         }
 
-        public ICommand UpdateCommand
+        private ICommand _clickCommand;
+        public ICommand ClickCommand
         {
-            get;
-            private set;
+            get
+            {
+                return _clickCommand ?? (_clickCommand = new CommandHandler(() => ApplyConfig(), () => CanExecute));
+            }
         }
 
-        public void SaveChanges()
+        public static bool CanExecute
         {
-            Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.OutputConfigPath));
-            Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.DexServerHostName));
-            Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.DexServerPort));
-            Debug.Assert(false, string.Format("{0} was updated", ToscaConfigFiles.CertThumbprint));
+            get
+            {
+                // check if executing is allowed, i.e., validate, check if a process is running, etc. 
+                return true;
+            }
+        }
+
+        public void ApplyConfig()
+        {
+            Debug.Assert(false, "ApplyConfig called");
         }
     }
 }
