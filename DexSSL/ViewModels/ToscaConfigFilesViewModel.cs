@@ -10,15 +10,15 @@ namespace DexSSL.ViewModels
     internal class ToscaConfigFilesViewModel
     {
 
-        private static ToscaConfigFiles _ToscaConfigFiles;
+        private static ToscaConfigFilesModel _ToscaConfigFiles;
 
         //Constructor
         public ToscaConfigFilesViewModel()
         {
-            _ToscaConfigFiles = new ToscaConfigFiles();
+            _ToscaConfigFiles = new ToscaConfigFilesModel();
         }
 
-        public ToscaConfigFiles ToscaConfigFiles
+        public ToscaConfigFilesModel ToscaConfigFiles
         {
             get
             {
