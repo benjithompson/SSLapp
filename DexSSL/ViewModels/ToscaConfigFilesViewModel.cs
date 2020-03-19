@@ -10,7 +10,7 @@ namespace DexSSL.ViewModels
     internal class ToscaConfigFilesViewModel
     {
 
-        private ToscaConfigFiles _ToscaConfigFiles;
+        private static ToscaConfigFiles _ToscaConfigFiles;
 
         //Constructor
         public ToscaConfigFilesViewModel()
@@ -37,6 +37,7 @@ namespace DexSSL.ViewModels
 
         public static bool CanExecute
         {
+            
             get
             {
                 // check if executing is allowed, i.e., validate, check if a process is running, etc. 
@@ -44,7 +45,7 @@ namespace DexSSL.ViewModels
             }
         }
 
-        public void ApplyConfig()
+        public static void ApplyConfig()
         {
             Debug.Assert(false, "ApplyConfig called");
         }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.IO;
 using static DexSSL.Utils.FieldValidations;
+using static DexSSL.Utils.CertValidation;
 
 
 namespace DexSSL
@@ -16,7 +17,7 @@ namespace DexSSL
         private string dexServerHostName;
         private string dexServerPort;
         private string certThumbprint;
-        public bool HasErrors = true;
+        private bool isValid;
 
         #region Constructor
 
@@ -66,8 +67,6 @@ namespace DexSSL
             }
         }
 
-
-
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -108,7 +107,7 @@ namespace DexSSL
                 {
                     if (string.IsNullOrEmpty(dexServerHostName))
                     {
-                        result = " ";
+                        result = "Enter valid hostname";
                     }
                 }
                 if (propertyName == "DexServerPort")
@@ -116,24 +115,25 @@ namespace DexSSL
                     var isNumeric = int.TryParse(dexServerPort, out int n);
                     if (string.IsNullOrEmpty(dexServerPort) || !isNumeric)
                     {
-                        result = " ";
+                        result = "Must be valid port";
                     }
                 }
                 if (propertyName == "CertThumbprint")
                 {
                     if (!CertThumbprintIsValid(certThumbprint))
                     {
-                        result = " ";
+                        result = "Invalid Thumbprint";
                     }
-                }
-                if(String.IsNullOrEmpty(result))
-                {
-                    HasErrors = false;
+                    else if (!CertificateIsFound(certThumbprint))
+                    {
+                        result = "Cert not found";
+                    }   
                 }
                 return result;
             }
         }
 
         #endregion
+
     }
 }

@@ -59,7 +59,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBox Text="{Binding ToscaConfigFiles.CertThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
-                         Width="325" 
+                         Width="375" 
                          Margin="10,0,5,0"/>
             </StackPanel>
             <Label Content="SSL" Margin="5,15,5,0"/>
