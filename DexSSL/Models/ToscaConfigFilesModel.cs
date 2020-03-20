@@ -17,6 +17,7 @@ namespace DexSSL
         private string hostname;
         private string dexServerPort;
         private string certThumbprint;
+        private string issuedTo;
 
         #region Constructor
 
@@ -24,7 +25,7 @@ namespace DexSSL
         {
             serverPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
             outputConfigPath = @"C:\Temp";
-            dexServerPort = "443";
+            dexServerPort = "";
             NotifyPropertyChanged(nameof(ServerPath));
             NotifyPropertyChanged(nameof(OutputConfigPath));
             NotifyPropertyChanged(nameof(DexServerPort));
@@ -59,7 +60,6 @@ namespace DexSSL
             {
                 hostname = value;
                 NotifyPropertyChanged(nameof(Hostname));
-                NotifyPropertyChanged(nameof(CertThumbprint));
             }
         }
         public string DexServerPort
@@ -139,22 +139,34 @@ namespace DexSSL
                 {
                     if (string.IsNullOrEmpty(Hostname))
                     {
-                        result = "Enter valid hostname";
+                        return "Enter valid hostname";
+                    }
+                    if(hostname != issuedTo)
+                    {
+                        return "Hostname doesn't match certificate";
                     }
                 }
                 if (propertyName == "DexServerPort")
                 {
+                    
+                    if (string.IsNullOrEmpty(dexServerPort)){
+                        return result;
+                    }
                     var isNumeric = int.TryParse(dexServerPort, out int n);
-                    if (string.IsNullOrEmpty(dexServerPort) || !isNumeric)
+                    if (!isNumeric)
                     {
                         result = "Must be valid port";
                     }
                 }
                 if (propertyName == "CertThumbprint")
                 {
+                    if (string.IsNullOrEmpty(certThumbprint))
+                    {
+                        return "Enter Thumbprint";
+                    }
                     if (!CertThumbprintIsValid(certThumbprint))
                     {
-                        result = "Invalid Thumbprint";
+                        result = "Enter valid thumbprint";
                     }
                     else if (!CertificateIsFound(certThumbprint))
                     {
@@ -162,18 +174,17 @@ namespace DexSSL
                     }else
                     {
                         
-                        var issuedTo = GetCertificateIssuedTo(CertThumbprint);
-                        if (String.IsNullOrEmpty(Hostname)) 
+                        issuedTo = GetCertificateIssuedTo(CertThumbprint);
+
+                        if (String.IsNullOrEmpty(issuedTo)) 
                         {
-                            return "Can't compare empty hostname";
+                            return "Cert 'Issued To' empty";
                         }
-                        if (issuedTo.ToLower() != Hostname.ToLower())
+                        else
                         {
-                            result = "cert issueto doesn't match hostname provided";
+                            Hostname = issuedTo;
                         }
                     }
-                    
-
                 }
                 return result;
             }

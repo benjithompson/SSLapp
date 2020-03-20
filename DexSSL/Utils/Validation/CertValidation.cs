@@ -47,8 +47,6 @@ namespace DexSSL.Utils
             {
                 return c.GetNameInfo(X509NameType.SimpleName, false);
             }
-           
-        }
-                
+        }   
     }
 }
