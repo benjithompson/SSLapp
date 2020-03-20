@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
+using DexSSL.Utils.Files;
 
 
 namespace DexSSL.Commands
@@ -11,7 +12,7 @@ namespace DexSSL.Commands
     {
         public static void ApplyConfig(string serverpath)
         {
-            Utils.Files.HandleFiles.UpdateFiles(serverpath);
+            HandleFiles.UpdateFiles(serverpath);
         }
 
         public static void OpenDirectory(string path)
@@ -19,9 +20,9 @@ namespace DexSSL.Commands
             Debug.Assert(false, "OpenDirectory called with" + path);
         }
 
-        public static void BackupDirectory(string path)
+        public static void BackupDirectory(string backuppath, string serverpath)
         {
-            Utils.Files.HandleFiles.BackupFiles(path);
+            HandleFiles.BackupFiles(backuppath, serverpath);
         }
 
     }

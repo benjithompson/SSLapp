@@ -49,7 +49,7 @@ namespace DexSSL.ViewModels
         {
             get
             {
-                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.Commands.OpenDirectory(_ToscaConfigFiles.OutputConfigPath), () => CanExecute));
+                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.Commands.BackupDirectory(_ToscaConfigFiles.OutputConfigPath, _ToscaConfigFiles.ServerPath), () => CanExecute));
             }
         }
 

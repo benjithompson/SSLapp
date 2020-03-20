@@ -22,7 +22,12 @@ namespace DexSSL
 
         public ToscaConfigFilesModel()
         {
-
+            serverPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
+            outputConfigPath = @"C:\Temp";
+            dexServerPort = "443";
+            NotifyPropertyChanged(nameof(ServerPath));
+            NotifyPropertyChanged(nameof(OutputConfigPath));
+            NotifyPropertyChanged(nameof(DexServerPort));
         }
 
         #endregion
@@ -76,7 +81,6 @@ namespace DexSSL
                 NotifyPropertyChanged(nameof(Hostname));
             }
         }
-
         public string DefaultServerPath
         {
             get { return @"C:\Program Files (x86)\TRICENTIS\Tosca Server\";}
