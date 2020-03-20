@@ -1,8 +1,4 @@
 ﻿using DexSSL.Commands;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Windows.Input;
 
 namespace DexSSL.ViewModels
@@ -11,6 +7,9 @@ namespace DexSSL.ViewModels
     {
 
         private static ToscaConfigFilesModel _ToscaConfigFiles;
+        private ICommand _applyCommand;
+        private ICommand _openServerPathCommand;
+        private ICommand _backupToPathCommand;
 
         //Constructor
         public ToscaConfigFilesViewModel()
@@ -18,26 +17,11 @@ namespace DexSSL.ViewModels
             _ToscaConfigFiles = new ToscaConfigFilesModel();
         }
 
-        public ToscaConfigFilesModel ToscaConfigFiles
-        {
-            get
-            {
-                return _ToscaConfigFiles;
-            }
-        }
-
-        private ICommand _clickCommand;
-        public ICommand ClickCommand
-        {
-            get
-            {
-                return _clickCommand ?? (_clickCommand = new CommandHandler(() => ApplyConfig(), () => CanExecute));
-            }
-        }
+        public static ToscaConfigFilesModel ToscaConfigFiles => _ToscaConfigFiles;
 
         public static bool CanExecute
         {
-            
+
             get
             {
                 // check if executing is allowed, i.e., validate, check if a process is running, etc. 
@@ -45,9 +29,30 @@ namespace DexSSL.ViewModels
             }
         }
 
-        public static void ApplyConfig()
+        public ICommand ApplyCommand
         {
-            Debug.Assert(false, "ApplyConfig called");
+            get
+            {
+                return _applyCommand ?? (_applyCommand = new CommandHandler(() => Commands.Commands.ApplyConfig(_ToscaConfigFiles.ServerPath), () => CanExecute));
+            }
         }
+
+        public ICommand OpenServerPath
+        {
+            get
+            {
+                return _openServerPathCommand ?? (_openServerPathCommand = new CommandHandler(() => Commands.Commands.OpenDirectory(_ToscaConfigFiles.ServerPath), () => CanExecute));
+            }
+        }
+
+        public ICommand BackupToPath
+        {
+            get
+            {
+                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.Commands.OpenDirectory(_ToscaConfigFiles.OutputConfigPath), () => CanExecute));
+            }
+        }
+
+
     }
 }

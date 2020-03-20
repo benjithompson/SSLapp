@@ -14,10 +14,9 @@ namespace DexSSL
 
         private string serverPath;
         private string outputConfigPath;
-        private string dexServerHostName;
+        private string hostname;
         private string dexServerPort;
         private string certThumbprint;
-        private bool isValid;
 
         #region Constructor
 
@@ -48,13 +47,14 @@ namespace DexSSL
                 NotifyPropertyChanged(nameof(OutputConfigPath));
             }
         }
-        public string DexServerHostName
+        public string Hostname
         {
-            get { return dexServerHostName; }
+            get { return hostname; }
             set
             {
-                dexServerHostName = value;
-                NotifyPropertyChanged(nameof(DexServerHostName));
+                hostname = value;
+                NotifyPropertyChanged(nameof(Hostname));
+                NotifyPropertyChanged(nameof(CertThumbprint));
             }
         }
         public string DexServerPort
@@ -73,9 +73,18 @@ namespace DexSSL
             {
                 certThumbprint = value;
                 NotifyPropertyChanged(nameof(CertThumbprint));
+                NotifyPropertyChanged(nameof(Hostname));
             }
         }
 
+        public string DefaultServerPath
+        {
+            get { return @"C:\Program Files (x86)\TRICENTIS\Tosca Server\";}
+        }
+        public string DefaultBackupPath
+        {
+            get { return @"C:\temp\"; }
+        }
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -96,18 +105,17 @@ namespace DexSSL
             private set;
         }
 
-
         /// IDataErrorInfo
         public string this[string propertyName]{
             get { 
                 string result = String.Empty;
                 if (propertyName == "ServerPath")
                 {
-                    if (string.IsNullOrEmpty(OutputConfigPath))
+                    if (string.IsNullOrEmpty(ServerPath))
                     {
                         result = "Server path must not be empty";
                     }
-                    else if (!Directory.Exists(OutputConfigPath))
+                    else if (!Directory.Exists(ServerPath))
                     {
                         result = "Directory does not exist";
                     }
@@ -116,16 +124,16 @@ namespace DexSSL
                 {
                     if (string.IsNullOrEmpty(OutputConfigPath))
                     {
-                        result = "Output path must not be empty";
+                        result = "Backup path must not be empty";
                     }
                     else if(!Directory.Exists(OutputConfigPath))
                     {
                         result = "Directory does not exist";
                     }
                 }
-                if (propertyName == "DexServerHostName")
+                if (propertyName == "Hostname")
                 {
-                    if (string.IsNullOrEmpty(dexServerHostName))
+                    if (string.IsNullOrEmpty(Hostname))
                     {
                         result = "Enter valid hostname";
                     }
@@ -147,13 +155,26 @@ namespace DexSSL
                     else if (!CertificateIsFound(certThumbprint))
                     {
                         result = "Cert not found";
-                    }   
+                    }else
+                    {
+                        
+                        var issuedTo = GetCertificateIssuedTo(CertThumbprint);
+                        if (String.IsNullOrEmpty(Hostname)) 
+                        {
+                            return "Can't compare empty hostname";
+                        }
+                        if (issuedTo.ToLower() != Hostname.ToLower())
+                        {
+                            result = "cert issueto doesn't match hostname provided";
+                        }
+                    }
+                    
+
                 }
                 return result;
             }
         }
 
         #endregion
-
     }
 }
