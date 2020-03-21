@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
-using DexSSL.Utils.Files;
-using DexSSL.ViewModels;
+using SSLapp.Utils.Files;
+using SSLapp.ViewModels;
 
 
-namespace DexSSL.Commands
+namespace SSLapp.Commands
 {
     class Commands
     {

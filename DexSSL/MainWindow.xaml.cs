@@ -14,9 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DexSSL.ViewModels;
+using SSLapp.ViewModels;
 
-namespace DexSSL
+namespace SSLapp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

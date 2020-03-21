@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DexSSL.Views
+namespace SSLapp.Views
 {
     /// <summary>
     /// Interaction logic for ToscaConfigFilesView.xaml

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace DexSSL.Utils
+namespace SSLapp.Utils
 {
     static class CertValidation
     {

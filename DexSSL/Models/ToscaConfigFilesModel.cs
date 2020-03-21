@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.IO;
-using static DexSSL.Utils.FieldValidations;
-using static DexSSL.Utils.CertValidation;
+using static SSLapp.Utils.FieldValidations;
+using static SSLapp.Utils.CertValidation;
 
 
-namespace DexSSL.Models
+namespace SSLapp.Models
 {
     public class ToscaConfigFilesModel : IDataErrorInfo, INotifyPropertyChanged
     {

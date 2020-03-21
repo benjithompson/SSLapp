@@ -2,17 +2,52 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using SSLapp.ViewModels;
 
-namespace DexSSL.Utils.Files
+namespace SSLapp.Utils.Files
 {
     class HandleFiles
     {
-        public static void UpdateFiles(string filepath)
+        public static bool UpdateFiles(string serverpath)
         {
-            if (filepath is null)
+            if (string.IsNullOrEmpty(serverpath))
             {
-                throw new ArgumentNullException(nameof(filepath));
+                return false;
             }
+
+            //json parser
+
+            //xml parser
+
+            try
+            {
+
+                var serverappspaths = Directory.EnumerateDirectories(serverpath);
+                foreach (var serverapppath in serverappspaths)
+                {
+
+                    var appsettings = Directory.EnumerateFiles(serverapppath, "appsettings.json");
+                    foreach (var appsetting in appsettings)
+                    {
+                        UpdateJSONFiles.UpdateFile(appsetting, ToscaConfigFilesViewModel.ToscaConfigFiles);
+                    }
+
+                    var webconfigs = Directory.EnumerateFiles(serverapppath, "*.config");
+                    foreach (var webconfig in webconfigs)
+                    {
+                        //open file and replace values
+                       // UpdateXMLFiles.UpdateFile(webconfig, ToscaConfigFilesViewModel.ToscaConfigFiles);
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            return true;
         }
 
         public static bool BackupFiles(string backuppath, string serverpath)

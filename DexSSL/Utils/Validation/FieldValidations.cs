@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace DexSSL.Utils
+namespace SSLapp.Utils
 {
     static class FieldValidations
     {

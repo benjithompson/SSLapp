@@ -1,8 +1,8 @@
-﻿using DexSSL.Commands;
-using DexSSL.Models;
+﻿using SSLapp.Commands;
+using SSLapp.Models;
 using System.Windows.Input;
 
-namespace DexSSL.ViewModels
+namespace SSLapp.ViewModels
 {
     public class ToscaConfigFilesViewModel
     {
