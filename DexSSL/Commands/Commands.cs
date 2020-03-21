@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using DexSSL.Utils.Files;
+using DexSSL.ViewModels;
 
 
 namespace DexSSL.Commands
@@ -22,8 +23,12 @@ namespace DexSSL.Commands
 
         public static void BackupDirectory(string backuppath, string serverpath)
         {
-            HandleFiles.BackupFiles(backuppath, serverpath);
+            var completed = HandleFiles.BackupFiles(backuppath, serverpath);
+            if (completed)
+            {
+                ToscaConfigFilesViewModel.ToscaConfigFiles.BackupState = "Done!";
+            }
+            
         }
-
     }
 }

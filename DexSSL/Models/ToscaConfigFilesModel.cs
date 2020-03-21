@@ -7,7 +7,7 @@ using static DexSSL.Utils.FieldValidations;
 using static DexSSL.Utils.CertValidation;
 
 
-namespace DexSSL
+namespace DexSSL.Models
 {
     public class ToscaConfigFilesModel : IDataErrorInfo, INotifyPropertyChanged
     {
@@ -18,6 +18,7 @@ namespace DexSSL
         private string dexServerPort;
         private string certThumbprint;
         private string issuedTo;
+        private string backupState;
 
         #region Constructor
 
@@ -26,6 +27,7 @@ namespace DexSSL
             serverPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
             outputConfigPath = @"C:\Temp";
             dexServerPort = "";
+            backupState = "Backup";
             NotifyPropertyChanged(nameof(ServerPath));
             NotifyPropertyChanged(nameof(OutputConfigPath));
             NotifyPropertyChanged(nameof(DexServerPort));
@@ -42,6 +44,8 @@ namespace DexSSL
             {
                 serverPath = value;
                 NotifyPropertyChanged(nameof(ServerPath));
+                backupState = "Backup";
+                NotifyPropertyChanged(nameof(BackupState));
             }
         }
         public string OutputConfigPath
@@ -51,6 +55,8 @@ namespace DexSSL
             {
                 outputConfigPath = value;
                 NotifyPropertyChanged(nameof(OutputConfigPath));
+                backupState = "Backup";
+                NotifyPropertyChanged(nameof(BackupState));
             }
         }
         public string Hostname
@@ -89,6 +95,15 @@ namespace DexSSL
         {
             get { return @"C:\temp\"; }
         }
+        public string BackupState {
+            get { return backupState; }
+            set
+            {
+                backupState = value;
+                NotifyPropertyChanged(nameof(BackupState));
+            } 
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -185,6 +200,13 @@ namespace DexSSL
                             Hostname = issuedTo;
                         }
                     }
+                }
+                if (propertyName == "BackupState")
+                {
+                    //if (string.IsNullOrEmpty(backupState))
+                    //{
+                    //    result = "needs backup";
+                    //}
                 }
                 return result;
             }
