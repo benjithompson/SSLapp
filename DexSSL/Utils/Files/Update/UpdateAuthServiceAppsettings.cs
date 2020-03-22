@@ -25,6 +25,7 @@ namespace SSLapp.Utils.Files.Update
                 UpdateServiceDiscovery(jsonObj, config);
                 UpdateScheme(jsonObj);
                 UpdateHost(jsonObj, config);
+                UpdateCertificate(jsonObj, config);
                 string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
 
                 File.WriteAllText(appsetting, output);
