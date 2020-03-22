@@ -26,7 +26,7 @@ namespace SSLapp.ViewModels
             get
             {
                 // check if executing is allowed, i.e., validate, check if a process is running, etc. 
-                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname) || string.IsNullOrEmpty(_ToscaConfigFilesModel.CertThumbprint))
+                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname) || string.IsNullOrEmpty(_ToscaConfigFilesModel.GetCertificate.GetCertificateThumbprint()))
                 {
                     return false;
                 }

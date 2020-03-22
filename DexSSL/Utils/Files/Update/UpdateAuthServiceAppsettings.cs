@@ -24,7 +24,7 @@ namespace SSLapp.Utils.Files.Update
 
                 UpdateServiceDiscovery(jsonObj, config);
                 UpdateScheme(jsonObj);
-
+                UpdateHost(jsonObj, config);
                 string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
 
                 File.WriteAllText(appsetting, output);
@@ -75,6 +75,8 @@ namespace SSLapp.Utils.Files.Update
             try
             {
                 jsonObj["Discovery"]["Endpoints"][0]["Host"] = config.Hostname;
+                jsonObj["Discovery"]["Endpoints"][1]["Host"] = config.Hostname;
+                jsonObj["Discovery"]["Endpoints"][2]["Host"] = config.Hostname;
             }
             catch (Exception)
             {
@@ -82,6 +84,21 @@ namespace SSLapp.Utils.Files.Update
                 throw;
             }
             
+        }
+        private static void UpdateCertificate(dynamic jsonObj, ToscaConfigFilesModel config)
+        {
+            try
+            {
+                jsonObj["HttpServer"]["Endpoints"]["Https"]["Thumbprint"] = config.GetCertificate.GetCertificateThumbprint();
+                jsonObj["HttpServer"]["Endpoints"]["Https"]["StoreName"] = config.GetCertificate.GetCertificateStoreName();
+                jsonObj["HttpServer"]["Endpoints"]["Https"]["StoreLocation"] = config.GetCertificate.GetCertificateStoreLocation();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
     }
 

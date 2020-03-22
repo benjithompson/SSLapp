@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.IO;
 using static SSLapp.Utils.FieldValidations;
-using static SSLapp.Utils.CertValidation;
+using SSLapp.Utils;
 
 
 namespace SSLapp.Models
@@ -12,22 +12,24 @@ namespace SSLapp.Models
     public class ToscaConfigFilesModel : IDataErrorInfo, INotifyPropertyChanged
     {
 
-        private string serverPath;
-        private string outputConfigPath;
-        private string hostname;
-        private string dexServerPort;
+        private string _serverPath;
+        private string _outputConfigPath;
+        private string _hostname;
+        private string _dexServerPort;
+        private string _backupState;
         private string certThumbprint;
-        private string issuedTo;
-        private string backupState;
+        private HTTPSCertificate _httpCert = new HTTPSCertificate();
+       
 
         #region Constructor
 
         public ToscaConfigFilesModel()
         {
-            serverPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
-            outputConfigPath = @"C:\Temp";
-            dexServerPort = "";
-            backupState = "Backup";
+            _serverPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
+            _outputConfigPath = @"C:\Temp";
+            _dexServerPort = "";
+            _backupState = "Backup";
+
             NotifyPropertyChanged(nameof(ServerPath));
             NotifyPropertyChanged(nameof(OutputConfigPath));
             NotifyPropertyChanged(nameof(DexServerPort));
@@ -39,44 +41,45 @@ namespace SSLapp.Models
 
         public string ServerPath
         {
-            get { return serverPath; }
+            get { return _serverPath; }
             set
             {
-                serverPath = value;
+                _serverPath = value;
                 NotifyPropertyChanged(nameof(ServerPath));
-                backupState = "Backup";
+                _backupState = "Backup";
                 NotifyPropertyChanged(nameof(BackupState));
             }
         }
         public string OutputConfigPath
         {
-            get { return outputConfigPath; }
+            get { return _outputConfigPath; }
             set
             {
-                outputConfigPath = value;
+                _outputConfigPath = value;
                 NotifyPropertyChanged(nameof(OutputConfigPath));
-                backupState = "Backup";
+                _backupState = "Backup";
                 NotifyPropertyChanged(nameof(BackupState));
             }
         }
         public string Hostname
         {
-            get { return hostname; }
+            get { return _hostname; }
             set
             {
-                hostname = value;
+                _hostname = value;
                 NotifyPropertyChanged(nameof(Hostname));
             }
         }
         public string DexServerPort
         {
-            get { return dexServerPort; }
+            get { return _dexServerPort; }
             set
             {
-                dexServerPort = value;
+                _dexServerPort = value;
                 NotifyPropertyChanged(nameof(DexServerPort));
             }
         }
+
         public string CertThumbprint
         {
             get { return certThumbprint; }
@@ -87,6 +90,12 @@ namespace SSLapp.Models
                 NotifyPropertyChanged(nameof(Hostname));
             }
         }
+
+        public HTTPSCertificate GetCertificate
+        {
+            get { return _httpCert; } 
+        }
+
         public string DefaultServerPath
         {
             get { return @"C:\Program Files (x86)\TRICENTIS\Tosca Server\";}
@@ -96,10 +105,10 @@ namespace SSLapp.Models
             get { return @"C:\temp\"; }
         }
         public string BackupState {
-            get { return backupState; }
+            get { return _backupState; }
             set
             {
-                backupState = value;
+                _backupState = value;
                 NotifyPropertyChanged(nameof(BackupState));
             } 
         }
@@ -156,7 +165,7 @@ namespace SSLapp.Models
                     {
                         return "Enter valid hostname";
                     }
-                    if(hostname != issuedTo)
+                    if(_hostname != _httpCert.GetCertIssuedTo())
                     {
                         return "Hostname doesn't match certificate";
                     }
@@ -164,10 +173,10 @@ namespace SSLapp.Models
                 if (propertyName == "DexServerPort")
                 {
                     
-                    if (string.IsNullOrEmpty(dexServerPort)){
+                    if (string.IsNullOrEmpty(_dexServerPort)){
                         return result;
                     }
-                    var isNumeric = int.TryParse(dexServerPort, out int n);
+                    var isNumeric = int.TryParse(_dexServerPort, out int n);
                     if (!isNumeric)
                     {
                         result = "Must be valid port";
@@ -183,21 +192,22 @@ namespace SSLapp.Models
                     {
                         result = "Enter valid thumbprint";
                     }
-                    else if (!CertificateIsFound(certThumbprint))
+
+                    _httpCert.SetCertificate(certThumbprint);
+
+                    if (!_httpCert.CertificateIsValid(certThumbprint))
                     {
                         result = "Cert not found";
                     }else
                     {
-                        
-                        issuedTo = GetCertificateIssuedTo(CertThumbprint);
 
-                        if (String.IsNullOrEmpty(issuedTo)) 
+                        if (String.IsNullOrEmpty(_httpCert.GetCertIssuedTo())) 
                         {
                             return "Cert 'Issued To' empty";
                         }
                         else
                         {
-                            Hostname = issuedTo;
+                            Hostname = _httpCert.GetCertIssuedTo();
                         }
                     }
                 }
