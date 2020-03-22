@@ -16,12 +16,13 @@ namespace SSLapp.Commands
         public static void UpdateToscaServerFiles(string serverpath)
         {
             Console.WriteLine("UpdateToscaServerFiles called.");
-            BaseFileUpdateHandler updater = new BaseFileUpdateHandler(new UpdateAuthServiceAppsettings(), new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
+            BaseFileUpdateHandler updater = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
             var serverApps = updater.GetToscaServerDirectories(serverpath);
             foreach (var serverApp in serverApps)
             {
-                updater.Update(serverApp);
+                updater.AddFileUpdateBehavior(serverApp);
             }
+            updater.UpdateAll();
         }
 
         public static void OpenDirectory(string path)
@@ -32,7 +33,7 @@ namespace SSLapp.Commands
         public static void BackupDirectory(string backuppath, string serverpath)
         {
 
-            var completed = FileHandler.BackupFiles(backuppath, serverpath);
+            var completed = BackupFiles.BackupToscaServerFiles(backuppath, serverpath);
             if (completed)
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.BackupState = "Done!";

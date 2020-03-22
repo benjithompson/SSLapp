@@ -19,33 +19,48 @@ namespace SSLapp.Utils
         public void SetCertificate(string thumbprint)
         {
 
-            X509Store store;
-            store = new X509Store(StoreName.Root, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.OpenExistingOnly);
-            var c = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false).OfType<X509Certificate2>().FirstOrDefault();
-            store.Close();
-            if (c != null)
+            X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
+            RootStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+
+            X509Certificate2Collection rootcollection = RootStore.Certificates;
+            X509Certificate2Collection rootfcollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
+            X509Certificate2Collection rootscollection = X509Certificate2UI.SelectFromCollection(rootfcollection, "Certificate Select", "Verify Certificate inforamtion and click Ok.", X509SelectionFlag.SingleSelection);
+            Console.WriteLine("Number of certificates: {0}{1}", rootscollection.Count, Environment.NewLine);
+            RootStore.Close();
+            RootStore.Dispose();
+            
+
+            if (rootscollection.Count == 1)
             {
-                _thumbprint = thumbprint;
+                _thumbprint = rootscollection[0].Thumbprint;
                 _certStoreLocation = StoreLocation.LocalMachine.ToString();
                 _certStoreName = StoreName.Root.ToString();
-                _certIssuedTo = c.GetNameInfo(X509NameType.SimpleName, false);
-                _certValid = true;
-                return;
-            }
-            store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.OpenExistingOnly);
-            c = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false).OfType<X509Certificate2>().FirstOrDefault();
-            store.Close();
-            if (c != null)
-            {
-                _thumbprint = thumbprint;
-                _certStoreLocation = StoreLocation.LocalMachine.ToString();
-                _certStoreName = StoreName.My.ToString();
-                _certIssuedTo = c.GetNameInfo(X509NameType.SimpleName, false);
+                _certIssuedTo = rootscollection[0].GetNameInfo(X509NameType.SimpleName, false);
                 _certValid = true;
             }
+
+        //    X509Store MyStore = new X509Store("MY", StoreLocation.LocalMachine);
+        //    MyStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+
+        //    X509Certificate2Collection collection = MyStore.Certificates;
+        //    X509Certificate2Collection fcollection = collection.Find(X509FindType.FindByThumbprint, thumbprint, true);
+        //    X509Certificate2Collection scollection = X509Certificate2UI.SelectFromCollection(fcollection, "Certificate Select", "Verify Certificate inforamtion and click Ok.", X509SelectionFlag.SingleSelection);
+        //    Console.WriteLine("Number of certificates: {0}{1}", scollection.Count, Environment.NewLine);
+        //    MyStore.Close();
+        //    MyStore.Dispose();
+
+        //    if (scollection.Count == 1)
+        //    {
+        //        _thumbprint = scollection[0].Thumbprint;
+        //        _certStoreLocation = StoreLocation.LocalMachine.ToString();
+        //        _certStoreName = StoreName.Root.ToString();
+        //        _certIssuedTo = scollection[0].GetNameInfo(X509NameType.SimpleName, false);
+        //        _certValid = true;
+        //        return;
+        //    }
+
         }
+
         public string GetCertificateThumbprint() => _thumbprint;
 
         public string GetCertificateStoreName() => _certStoreName;

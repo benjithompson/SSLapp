@@ -190,7 +190,7 @@ namespace SSLapp.Models
                     }
                     if (!CertThumbprintIsValid(certThumbprint))
                     {
-                        result = "Enter valid thumbprint";
+                        return "Enter valid thumbprint";
                     }
 
                     _httpCert.SetCertificate(certThumbprint);

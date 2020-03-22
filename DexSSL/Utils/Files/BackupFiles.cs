@@ -7,48 +7,10 @@ using System.Diagnostics;
 
 namespace SSLapp.Utils.Files
 {
-    class FileHandler
+    class BackupFiles
     {
-        public static bool UpdateFiles(string serverpath)
-        {
-            if (string.IsNullOrEmpty(serverpath))
-            {
-                return false;
-            }
 
-            try
-            {
-                Console.WriteLine("UpdateFiles called.");
-                var serverappspaths = Directory.EnumerateDirectories(serverpath);
-                foreach (var serverapppath in serverappspaths)
-                {
-
-                    var appsettings = Directory.EnumerateFiles(serverapppath, "appsettings.json");
-                    foreach (var appsetting in appsettings)
-                    {
-                        //UpdateJSONFiles.UpdateFile(appsetting, ToscaConfigFilesViewModel.ToscaConfigFiles);
-                        //BaseFileUpdateHandler updateFiles = new BaseFileUpdateHandler(new );
-                    }
-
-                    //var webconfigs = Directory.EnumerateFiles(serverapppath, "*.config");
-                    //foreach (var webconfig in webconfigs)
-                    //{
-                    //    //open file and replace values
-                    //   // UpdateXMLFiles.UpdateFile(webconfig, ToscaConfigFilesViewModel.ToscaConfigFiles);
-                    //}
-
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
-
-            return true;
-        }
-
-        public static bool BackupFiles(string backuppath, string serverpath)
+        public static bool BackupToscaServerFiles(string backuppath, string serverpath)
         {
             if (string.IsNullOrEmpty(backuppath))
             {

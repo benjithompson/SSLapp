@@ -4,43 +4,50 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using SSLapp.Models;
+using System.Xml;
 
 namespace SSLapp.Utils.Files.Update
 {
     class UpdateToscaAdminConsoleSettings : IUpdateFilesBehavior
     {
-        public void Update(string filepath, ToscaConfigFilesModel config)
+
+        public void Update(string directoryPath, ToscaConfigFilesModel config)
         {
+            //update JSON
+            IEnumerable<string> appsettingsList = Directory.GetFiles(directoryPath, "appsettings.json");
+            foreach (var appsetting in appsettingsList)
+            {
+                string json = File.ReadAllText(appsetting);
+                dynamic jsonObj = JsonConvert.DeserializeObject(json);
+                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
+                UpdateBaseUrl(jsonObj, config, appsetting);
+                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                File.WriteAllText(appsetting, output);
+            }
+
+            //update web.config
+            IEnumerable<string> webConfigList = Directory.GetFiles(directoryPath, "web.config");
+            XmlDocument doc = new XmlDocument();
+            foreach (var webconfig in webConfigList)
+            {
+                doc.Load(webconfig);
+                UpdateXMLFields.UpdateCORS(ref doc, config, webconfig);
+            }
 
         }
-        public void Update(IEnumerable<string> filelist, ToscaConfigFilesModel config)
-        {
-            throw new NotImplementedException();
-        }
 
-        private void UpdateServiceDiscovery(dynamic jsonObj, ToscaConfigFilesModel config)
+        public static void UpdateBaseUrl(dynamic jsonObj, ToscaConfigFilesModel config, string appsetting)
         {
-            var value = (string)jsonObj["Discovery"]["ServiceDiscovery"].Value;
-            string[] sd = value.Split(':');
-            var endpoint = @"https://" + config.Hostname + ":" + sd[2];
-            jsonObj["Discovery"]["ServiceDiscovery"] = endpoint;
-        }
+            try
+            {
+                jsonObj["AdminConsoleSettings"]["BaseUrl"] = config.Hostname;
+            }
+            catch (Exception)
+            {
 
-        private void UpdateBaseUrl(dynamic jsonObj, ToscaConfigFilesModel config)
-        {
-
-        }
-
-        private void UpdateScheme(dynamic jsonObj)
-        {
-            jsonObj["Discovery"]["Endpoints"][0]["Scheme"] = "https";
-            jsonObj["Discovery"]["Endpoints"][1]["Scheme"] = "https";
-            jsonObj["Discovery"]["Endpoints"][2]["Scheme"] = "https";
-            jsonObj["HttpServer"]["Endpoints"]["Https"]["Scheme"] = "https";
-        }
-
-        private static void UpdateHost(dynamic jsonObj, ToscaConfigFilesModel config)
-        {
+                Console.WriteLine(appsetting + " does not have json field 'AdminConsoleSettings/BaseUrl'");
+            }
+            
         }
     }
 }

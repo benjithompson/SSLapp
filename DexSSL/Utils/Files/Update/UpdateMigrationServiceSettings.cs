@@ -9,40 +9,20 @@ namespace SSLapp.Utils.Files.Update
 {
     class UpdateMigrationServiceSettings : IUpdateFilesBehavior
     {
-        public void Update(string filepath, ToscaConfigFilesModel config)
+        public void Update(string directoryPath, ToscaConfigFilesModel config)
         {
+            IEnumerable<string> appsettingsList = Directory.GetFiles(directoryPath, "appsettings.json");
 
+            foreach (var appsetting in appsettingsList)
+            {
+                string json = File.ReadAllText(appsetting);
+                dynamic jsonObj = JsonConvert.DeserializeObject(json);
+
+                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, directoryPath);
+                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+
+                File.WriteAllText(appsetting, output);
+            }
         }
-        public void Update(IEnumerable<string> filelist, ToscaConfigFilesModel config)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void UpdateServiceDiscovery(dynamic jsonObj, ToscaConfigFilesModel config)
-        {
-            var value = (string)jsonObj["Discovery"]["ServiceDiscovery"].Value;
-            string[] sd = value.Split(':');
-            var endpoint = @"https://" + config.Hostname + ":" + sd[2];
-            jsonObj["Discovery"]["ServiceDiscovery"] = endpoint;
-        }
-
-        private void UpdateBaseUrl(dynamic jsonObj, ToscaConfigFilesModel config)
-        {
-
-        }
-
-        private void UpdateScheme(dynamic jsonObj)
-        {
-            jsonObj["Discovery"]["Endpoints"][0]["Scheme"] = "https";
-            jsonObj["Discovery"]["Endpoints"][1]["Scheme"] = "https";
-            jsonObj["Discovery"]["Endpoints"][2]["Scheme"] = "https";
-            jsonObj["HttpServer"]["Endpoints"]["Https"]["Scheme"] = "https";
-        }
-
-        private static void UpdateHost(dynamic jsonObj, ToscaConfigFilesModel config)
-        {
-        }
-
-
     }
 }

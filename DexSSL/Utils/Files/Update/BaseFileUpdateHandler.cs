@@ -8,7 +8,7 @@ namespace SSLapp.Utils.Files.Update
 {
     class BaseFileUpdateHandler
     {
-        IUpdateFilesBehavior _updateFilesBehavior;
+        List<Tuple<string, IUpdateFilesBehavior>> _updateFilesBehaviorList = new List<Tuple<string, IUpdateFilesBehavior>>();
         IGetToscaServerDirectories _getDirectoriesBehavior;
         ToscaConfigFilesModel _config;
 
@@ -17,73 +17,74 @@ namespace SSLapp.Utils.Files.Update
             _config = config;
         }
 
-        public BaseFileUpdateHandler(IUpdateFilesBehavior updateFileBehavior, IGetToscaServerDirectories getToscaServerDirectories, ToscaConfigFilesModel config)
+        public BaseFileUpdateHandler(IGetToscaServerDirectories getToscaServerDirectories, ToscaConfigFilesModel config)
         {
-            _updateFilesBehavior = updateFileBehavior;
             _getDirectoriesBehavior = getToscaServerDirectories;
             _config = config;
         }
 
-        public void SetFileUpdateBehavior(IUpdateFilesBehavior updateBehavior)
+        public void AddFileUpdateBehavior(string toscaServerAppName)
         {
-            _updateFilesBehavior = updateBehavior;
-        }
-        public void SetFileUpdateBehavior(string toscaServerAppName)
-        {
-            switch (toscaServerAppName)
+            var appname = Path.GetFileName(toscaServerAppName);
+            switch (appname)
             {
+                case "ServiceDiscovery":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateServiceDiscoverySettings()));
+                    break;
                 case "AuthenticationService":
-                    _updateFilesBehavior = new UpdateAuthServiceAppsettings();
-                    break;
-                case "AutomationObjectService":
-                    _updateFilesBehavior = new UpdateAOSSettings();
-                    break;
-                case "DexAdmin":
-                    _updateFilesBehavior = new UpdateDexAdminAppsettings();
-                    break;
-                case "DEXRdpServer":
-                    _updateFilesBehavior = new UpdateDEXRdpServerSettings();
-                    break;
-                case "DEXServer":
-                    _updateFilesBehavior = new UpdateDEXServerSettings();
-                    break;
-                case "FileService":
-                    _updateFilesBehavior = new UpdateFileServiceSettings();
-                    break;
-                case "LicenseAdministration":
-                    _updateFilesBehavior = new UpdateLicenseAdministrationSettings();
-                    break;
-                case "MigrationService":
-                    _updateFilesBehavior = new UpdateMigrationServiceSettings();
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateAuthServiceAppsettings()));
                     break;
                 case "ProjectService":
-                    _updateFilesBehavior = new UpdateProjectServiceSettings();
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateProjectServiceSettings()));
                     break;
-                case "RESTApi":
-                    _updateFilesBehavior = new UpdateRESTApiSettings();
-                    break;
-                case "ServiceDiscovery":
-                    _updateFilesBehavior = new UpdateServiceDiscoverySettings();
-                    break;
-                case "TestDataObjectViewer":
-                    _updateFilesBehavior = new UpdateTestDataObjectViewerSettings();
-                    break;
-                case "TestDataService":
-                    _updateFilesBehavior = new UpdateTestDataServiceSettings();
+                case "MigrationService":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateMigrationServiceSettings()));
                     break;
                 case "ToscaAdministrationConsole":
-                    _updateFilesBehavior = new UpdateToscaAdminConsoleSettings();
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateToscaAdminConsoleSettings()));
                     break;
+
+                //case "AutomationObjectService":
+                //    _updateFilesBehavior = new UpdateAOSSettings();
+                //    break;
+                //case "DexAdmin":
+                //    _updateFilesBehavior = new UpdateDexAdminAppsettings();
+                //    break;
+                //case "DEXRdpServer":
+                //    _updateFilesBehavior = new UpdateDEXRdpServerSettings();
+                //    break;
+                //case "DEXServer":
+                //    _updateFilesBehavior = new UpdateDEXServerSettings();
+                //    break;
+                //case "FileService":
+                //    _updateFilesBehavior = new UpdateFileServiceSettings();
+                //    break;
+                //case "LicenseAdministration":
+                //    _updateFilesBehavior = new UpdateLicenseAdministrationSettings();
+                //    break;
+                //case "RESTApi":
+                //    _updateFilesBehavior = new UpdateRESTApiSettings();
+                //    break;
+                //case "TestDataObjectViewer":
+                //    _updateFilesBehavior = new UpdateTestDataObjectViewerSettings();
+                //    break;
+                //case "TestDataService":
+                //    _updateFilesBehavior = new UpdateTestDataServiceSettings();
+                //    break;
                 default:
                     break;
             }
         }
 
-
-        public void Update(string directoryPath)
+        public void UpdateAll()
         {
-            SetFileUpdateBehavior(Path.GetFileName(directoryPath));
-            _updateFilesBehavior.Update(directoryPath, _config);
+            foreach (var updater in _updateFilesBehaviorList)
+            {
+                var path = updater.Item1;
+                var behavior = updater.Item2;
+                Console.WriteLine("Updating " + Path.GetFileName(path));
+                behavior.Update(path, _config);
+            }
         }
 
         public IEnumerable<string> GetToscaServerDirectories(string serverPath)
