@@ -33,11 +33,6 @@ namespace SSLapp.Utils.Files
 
         }
 
-        public static void UpdateField(string field, string value)
-        {
-            throw new NotImplementedException();
-        }
-
         private static void UpdateServiceDiscovery(dynamic jsonObj, ToscaConfigFilesModel config)
         {
             var value = (string)jsonObj["Discovery"]["ServiceDiscovery"].Value;

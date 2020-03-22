@@ -51,7 +51,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _applyCommand ?? (_applyCommand = new CommandHandler(() => Commands.Commands.ApplyConfig(_ToscaConfigFilesModel.ServerPath), () => CanExecuteApply));
+                return _applyCommand ?? (_applyCommand = new CommandHandler(() => Commands.Commands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteApply));
             }
         }
 

@@ -3,10 +3,11 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using SSLapp.ViewModels;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files
 {
-    class HandleFiles
+    class FileHandler
     {
         public static bool UpdateFiles(string serverpath)
         {
@@ -15,13 +16,9 @@ namespace SSLapp.Utils.Files
                 return false;
             }
 
-            //json parser
-
-            //xml parser
-
             try
             {
-
+                Console.WriteLine("UpdateFiles called.");
                 var serverappspaths = Directory.EnumerateDirectories(serverpath);
                 foreach (var serverapppath in serverappspaths)
                 {
@@ -29,15 +26,16 @@ namespace SSLapp.Utils.Files
                     var appsettings = Directory.EnumerateFiles(serverapppath, "appsettings.json");
                     foreach (var appsetting in appsettings)
                     {
-                        UpdateJSONFiles.UpdateFile(appsetting, ToscaConfigFilesViewModel.ToscaConfigFiles);
+                        //UpdateJSONFiles.UpdateFile(appsetting, ToscaConfigFilesViewModel.ToscaConfigFiles);
+                        //BaseFileUpdateHandler updateFiles = new BaseFileUpdateHandler(new );
                     }
 
-                    var webconfigs = Directory.EnumerateFiles(serverapppath, "*.config");
-                    foreach (var webconfig in webconfigs)
-                    {
-                        //open file and replace values
-                       // UpdateXMLFiles.UpdateFile(webconfig, ToscaConfigFilesViewModel.ToscaConfigFiles);
-                    }
+                    //var webconfigs = Directory.EnumerateFiles(serverapppath, "*.config");
+                    //foreach (var webconfig in webconfigs)
+                    //{
+                    //    //open file and replace values
+                    //   // UpdateXMLFiles.UpdateFile(webconfig, ToscaConfigFilesViewModel.ToscaConfigFiles);
+                    //}
 
                 }
             }
