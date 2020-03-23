@@ -19,9 +19,11 @@ namespace SSLapp.Utils.Files.Update
 
             foreach (var appsetting in appsettingsList)
             {
+                Console.WriteLine("Updating JSON files in Authentication service");
                 string json = File.ReadAllText(appsetting);
+                Console.WriteLine("file opened. Serializing to JSON");
                 dynamic jsonObj = JsonConvert.DeserializeObject(json);
-
+                Console.WriteLine("jsonObj created");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
                 UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
                 UpdateJSONFields.UpdateHost(jsonObj, config, appsetting);

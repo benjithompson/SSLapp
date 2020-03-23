@@ -12,7 +12,7 @@ namespace SSLapp.Utils.Files.Update
         {
             try
             {
-                xmlObj.SelectSingleNode("/appSettings/add").Attributes["value"].Value = "hello";
+                var corsValue = xmlObj.SelectSingleNode("/configuration/system.webServer/httpProtocol/customHeaders/add").Attributes["value"].Value;
             }
             catch (Exception)
             {
