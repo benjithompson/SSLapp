@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SSLapp.Models;
 using Newtonsoft.Json.Linq;
 
@@ -8,8 +6,9 @@ namespace SSLapp.Utils.Files.Update
 {
     static class UpdateJSONFields
     {
-        public static void UpdateCertificate(dynamic jsonObj, ToscaConfigFilesModel config, string appsetting)
+        public static void UpdateCertificate(JObject jsonObj, ToscaConfigFilesModel config, string appsetting)
         {
+            Console.WriteLine("updatecert");
             try
             {
                 jsonObj["HttpServer"]["Endpoints"]["Https"]["Thumbprint"] = config.GetCertificate.GetCertificateThumbprint();
@@ -22,11 +21,12 @@ namespace SSLapp.Utils.Files.Update
             }
         }
 
-        public static void UpdateServiceDiscovery(dynamic jsonObj, ToscaConfigFilesModel config, string appsetting)
+        public static void UpdateServiceDiscovery(JObject jsonObj, ToscaConfigFilesModel config, string appsetting)
         {
+            Console.WriteLine("updateservdiscovery");
             try
             {
-                var value = (string)jsonObj["Discovery"]["ServiceDiscovery"].Value;
+                var value = (string)jsonObj["Discovery"]["ServiceDiscovery"];
                 string[] sd = value.Split(':');
                 var endpoint = @"https://" + config.Hostname + ":" + sd[2];
                 jsonObj["Discovery"]["ServiceDiscovery"] = endpoint;
@@ -38,11 +38,12 @@ namespace SSLapp.Utils.Files.Update
 
         }
 
-        public static void UpdateScheme(dynamic jsonObj, string appsetting)
+        public static void UpdateScheme(JObject jsonObj, string appsetting)
         {
+            Console.WriteLine("updatescheme");
             try
             {
-                var endpointsArray = (JArray)jsonObj["Discovery"]["Endpoints"];
+                var endpointsArray = jsonObj["Discovery"]["Endpoints"];
                 foreach (var endpoint in endpointsArray)
                 {
                     endpoint["Scheme"] = "https";
@@ -64,11 +65,12 @@ namespace SSLapp.Utils.Files.Update
             }
         }
 
-        public static void UpdateHost(dynamic jsonObj, ToscaConfigFilesModel config, string appsetting)
+        public static void UpdateHost(JObject jsonObj, ToscaConfigFilesModel config, string appsetting)
         {
+            Console.WriteLine("updatehost");
             try
             {
-                var endpointsArray = (JArray)jsonObj["Discovery"]["Endpoints"];
+                var endpointsArray = jsonObj["Discovery"]["Endpoints"];
                 foreach (var endpoint in endpointsArray)
                 {
                     endpoint["Host"] = config.Hostname;

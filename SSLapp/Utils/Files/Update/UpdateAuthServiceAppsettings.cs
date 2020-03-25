@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using Newtonsoft.Json;
 using SSLapp.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SSLapp.Utils.Files.Appsettings;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -19,22 +21,34 @@ namespace SSLapp.Utils.Files.Update
 
             foreach (var appsetting in appsettingsList)
             {
+
+                //TESTING for Self-Contained. Passing Dynamic jsonObj seems to break
+
+                //======================================================
+
                 Console.WriteLine("Updating JSON files in Authentication service");
                 string json = File.ReadAllText(appsetting);
-                Console.WriteLine("file opened. Serializing to JSON");
-                dynamic jsonObj = JsonConvert.DeserializeObject(json);
-                Console.WriteLine("jsonObj created");
+                Console.WriteLine("Appsettings.json opened. Serializing to JSON...");
+                JObject jsonObj = JObject.Parse(json);
+                Console.WriteLine("Serialized!");
+                Console.WriteLine("Updating fields:");
+                Console.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
+                Console.WriteLine("---Schemes.");
                 UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
+                Console.WriteLine("---Host.");
                 UpdateJSONFields.UpdateHost(jsonObj, config, appsetting);
+                Console.WriteLine("---HTTPS Thumbprint.");
                 UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
+                Console.WriteLine("---Token Thumbprint.");
                 UpdateTokenCertificate(jsonObj, config);
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-
+                string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                Console.WriteLine("writing updated file...");
                 File.WriteAllText(appsetting, output);
+                Console.WriteLine("writefiles complete!");
             }
         }
-        public static void UpdateTokenCertificate(dynamic jsonObj, ToscaConfigFilesModel config)
+        public static void UpdateTokenCertificate(JObject jsonObj, ToscaConfigFilesModel config)
         {
             try
             {
