@@ -8,7 +8,6 @@ namespace SSLapp.Utils.Files.Update
     {
         public static void UpdateCertificate(JObject jsonObj, ToscaConfigFilesModel config, string appsetting)
         {
-            Console.WriteLine("updatecert");
             try
             {
                 jsonObj["HttpServer"]["Endpoints"]["Https"]["Thumbprint"] = config.GetCertificate.GetCertificateThumbprint();
@@ -18,6 +17,20 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
                 Console.WriteLine(appsetting + " file doesn't contain 'HttpServer/Endpoints/Https/(Thumbprint|StoreName|StoreLocation)'");
+            }
+        }
+
+        public static void UpdateTokenCertificate(JObject jsonObj, ToscaConfigFilesModel config)
+        {
+            try
+            {
+                jsonObj["TokenSignCertificate"]["Thumbprint"] = config.GetCertificate.GetCertificateThumbprint();
+                jsonObj["TokenSignCertificate"]["StoreName"] = config.GetCertificate.GetCertificateStoreName();
+                jsonObj["TokenSignCertificate"]["StoreLocation"] = config.GetCertificate.GetCertificateStoreLocation();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

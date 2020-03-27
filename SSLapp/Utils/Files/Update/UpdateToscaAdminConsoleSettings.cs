@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SSLapp.Models;
 using System.Xml;
 
@@ -14,25 +15,20 @@ namespace SSLapp.Utils.Files.Update
         public void Update(string directoryPath, ToscaConfigFilesModel config)
         {
             //update JSON
-            IEnumerable<string> appsettingsList = Directory.GetFiles(directoryPath, "appsettings.json");
-            foreach (var appsetting in appsettingsList)
-            {
-                string json = File.ReadAllText(appsetting);
-                dynamic jsonObj = JsonConvert.DeserializeObject(json);
-                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
-                UpdateBaseUrl(jsonObj, config, appsetting);
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-                File.WriteAllText(appsetting, output);
-            }
+            var appsetting = directoryPath + @"\appsettings.json";
+            string json = File.ReadAllText(appsetting);
+            JObject jsonObj = JObject.Parse(json);
+            UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
+            UpdateBaseUrl(jsonObj, config, appsetting);
+            string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(appsetting, output);
 
             //update web.config
-            IEnumerable<string> webConfigList = Directory.GetFiles(directoryPath, "web.config");
+            var webconfig = directoryPath + @"\web.config";
             XmlDocument doc = new XmlDocument();
-            foreach (var webconfig in webConfigList)
-            {
-                doc.Load(webconfig);
-                UpdateXMLFields.UpdateCORS(ref doc, config, webconfig);
-            }
+            doc.Load(directoryPath + @"\web.config");
+            UpdateXMLFields.UpdateCORS(ref doc, config, webconfig);
+  
 
         }
 

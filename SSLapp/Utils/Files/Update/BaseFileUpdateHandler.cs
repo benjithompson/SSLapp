@@ -53,9 +53,9 @@ namespace SSLapp.Utils.Files.Update
                 //case "DEXRdpServer":
                 //    _updateFilesBehavior = new UpdateDEXRdpServerSettings();
                 //    break;
-                //case "DEXServer":
-                //    _updateFilesBehavior = new UpdateDEXServerSettings();
-                //    break;
+                case "DEXServer":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateDEXServerSettings()));
+                    break;
                 //case "FileService":
                 //    _updateFilesBehavior = new UpdateFileServiceSettings();
                 //    break;

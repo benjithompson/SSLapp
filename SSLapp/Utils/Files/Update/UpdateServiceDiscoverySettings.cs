@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SSLapp.Models;
 
 namespace SSLapp.Utils.Files.Update
@@ -15,15 +16,19 @@ namespace SSLapp.Utils.Files.Update
 
             foreach (var appsetting in appsettingsList)
             {
+                Console.WriteLine("Updating JSON files in ServiceDiscovery");
                 string json = File.ReadAllText(appsetting);
-                dynamic jsonObj = JsonConvert.DeserializeObject(json);
-
+                JObject jsonObj = JObject.Parse(json);
+                Console.WriteLine("Updating fields:");
+                Console.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
+                Console.WriteLine("---Scheme.");
                 UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
+                Console.WriteLine("---HTTPS Thumbprint.");
                 UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
-                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-
+                string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                 File.WriteAllText(appsetting, output);
+                Console.WriteLine("Update complete!");
             }
         }
     }

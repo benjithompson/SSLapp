@@ -6,6 +6,7 @@ using System.Windows;
 using SSLapp.Utils.Files;
 using SSLapp.Utils.Files.Update;
 using SSLapp.ViewModels;
+using Ookii.Dialogs.Wpf;
 using System.IO;
 
 
@@ -16,18 +17,24 @@ namespace SSLapp.Commands
         public static void UpdateToscaServerFiles(string serverpath)
         {
             Console.WriteLine("UpdateToscaServerFiles called.");
-            BaseFileUpdateHandler updater = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
-            var serverApps = updater.GetToscaServerDirectories(serverpath);
+            BaseFileUpdateHandler updateHandler = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
+            var serverApps = updateHandler.GetToscaServerDirectories(serverpath);
             foreach (var serverApp in serverApps)
             {
-                updater.AddFileUpdateBehavior(serverApp);
+                updateHandler.AddFileUpdateBehavior(serverApp);
             }
-            updater.UpdateAll();
+            updateHandler.UpdateAll();
         }
 
         public static void OpenDirectory(string path)
         {
-            Debug.Assert(false, "OpenDirectory called with" + path);
+            Console.WriteLine("Open Directory " + path);
+            VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog();
+            fd.SelectedPath = path;
+            fd.ShowDialog();
+            var selectedPath = fd.SelectedPath;
+            Console.WriteLine("Selected Path: " + selectedPath);
+            ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath = selectedPath;
         }
 
         public static void BackupDirectory(string backuppath, string serverpath)
