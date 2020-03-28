@@ -9,7 +9,16 @@ namespace SSLapp.Utils.Files.Update
     {
         public IEnumerable<string> GetDirectories(string serverPath)
         {
-            return Directory.GetDirectories(serverPath);
+            try
+            {
+                return Directory.GetDirectories(serverPath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
     }
 }
