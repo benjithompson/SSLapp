@@ -28,7 +28,6 @@ namespace SSLapp.Utils.Files
             }
 
             //create Tosca Server folder in BackupPath
-            backuppath = backuppath + @"\Tosca Server";
             try
             {
                 Directory.CreateDirectory(backuppath);
@@ -47,13 +46,18 @@ namespace SSLapp.Utils.Files
                         File.Copy(appsetting, appfolder + appname, true);
                     }
 
-                    var webconfigs = Directory.EnumerateFiles(serverapppath, "*.config");
+                    var webconfigs = Directory.EnumerateFiles(serverapppath, "*web.config");
                     foreach (var webconfig in webconfigs)
                     {
                         var webconfigname = Path.GetFileName(webconfig);
                         File.Copy(webconfig, appfolder + webconfigname, true);
                     }
-
+                    var execonfigs = Directory.EnumerateFiles(serverapppath, "*exe.config");
+                    foreach (var execonfig in execonfigs)
+                    {
+                        var webconfigname = Path.GetFileName(execonfig);
+                        File.Copy(execonfig, appfolder + webconfigname, true);
+                    }
                 }
             }
             catch (Exception e)
