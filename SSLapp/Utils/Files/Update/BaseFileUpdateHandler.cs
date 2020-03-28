@@ -82,7 +82,6 @@ namespace SSLapp.Utils.Files.Update
             {
                 var path = updater.Item1;
                 var behavior = updater.Item2;
-                Console.WriteLine("Updating " + Path.GetFileName(path));
                 behavior.Update(path, _config);
             }
         }

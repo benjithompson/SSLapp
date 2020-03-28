@@ -16,7 +16,8 @@ namespace SSLapp.Commands
     {
         public static void UpdateToscaServerFiles(string serverpath)
         {
-            Console.WriteLine("UpdateToscaServerFiles called.");
+            Console.WriteLine("Updating Tosca Server Files.");
+            Console.WriteLine("============================\n");
             BaseFileUpdateHandler updateHandler = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
             var serverApps = updateHandler.GetToscaServerDirectories(serverpath);
             foreach (var serverApp in serverApps)
@@ -25,6 +26,8 @@ namespace SSLapp.Commands
             }
             updateHandler.UpdateAll();
             Console.WriteLine("Updating files complete!");
+
+            //confirm restart of services:
 
         }
 
@@ -52,7 +55,6 @@ namespace SSLapp.Commands
 
         public static void BackupToscaServerSettings(string backuppath, string serverpath)
         {
-
             var completed = BackupFiles.BackupToscaServerFiles(backuppath, serverpath);
             if (completed)
             {
