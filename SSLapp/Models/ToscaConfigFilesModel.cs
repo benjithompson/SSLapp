@@ -16,8 +16,9 @@ namespace SSLapp.Models
         private string _outputConfigPath;
         private string _hostname;
         private string _dexServerPort;
-        private string _backupState;
         private string certThumbprint;
+        private string _backupState;
+        private string _appliedState;
         private HTTPSCertificate _httpCert = new HTTPSCertificate();
        
 
@@ -29,7 +30,7 @@ namespace SSLapp.Models
             _outputConfigPath = @"C:\Temp";
             _dexServerPort = "";
             _backupState = "Backup";
-
+            _appliedState = "Apply";
             NotifyPropertyChanged(nameof(ServerPath));
             NotifyPropertyChanged(nameof(OutputConfigPath));
             NotifyPropertyChanged(nameof(DexServerPort));
@@ -48,9 +49,10 @@ namespace SSLapp.Models
                 NotifyPropertyChanged(nameof(ServerPath));
                 _backupState = "Backup";
                 NotifyPropertyChanged(nameof(BackupState));
+                _appliedState = "Apply";
+                NotifyPropertyChanged(nameof(AppliedState));
             }
         }
-
         public string OutputConfigPath
         {
             get { return _outputConfigPath; }
@@ -80,7 +82,6 @@ namespace SSLapp.Models
                 NotifyPropertyChanged(nameof(DexServerPort));
             }
         }
-
         public string CertThumbprint
         {
             get { return certThumbprint; }
@@ -91,12 +92,10 @@ namespace SSLapp.Models
                 NotifyPropertyChanged(nameof(Hostname));
             }
         }
-
         public HTTPSCertificate GetCertificate
         {
             get { return _httpCert; } 
         }
-
         public string DefaultServerPath
         {
             get { return @"C:\Program Files (x86)\TRICENTIS\Tosca Server\";}
@@ -112,6 +111,15 @@ namespace SSLapp.Models
                 _backupState = value;
                 NotifyPropertyChanged(nameof(BackupState));
             } 
+        }
+        public string AppliedState
+        {
+            get { return _appliedState; }
+            set
+            {
+                _appliedState = value;
+                NotifyPropertyChanged(nameof(AppliedState));
+            }
         }
 
         #endregion
@@ -140,25 +148,11 @@ namespace SSLapp.Models
                 string result = String.Empty;
                 if (propertyName == "ServerPath")
                 {
-                    if (string.IsNullOrEmpty(ServerPath))
-                    {
-                        result = "Server path must not be empty";
-                    }
-                    else if (!Directory.Exists(ServerPath))
-                    {
-                        result = "Directory does not exist";
-                    }
+                    result = ServerPathValidation();
                 }
                 if (propertyName == "OutputConfigPath")
                 {
-                    if (string.IsNullOrEmpty(OutputConfigPath))
-                    {
-                        result = "Backup path must not be empty";
-                    }
-                    else if(!Directory.Exists(OutputConfigPath))
-                    {
-                        result = "Directory does not exist";
-                    }
+                    result = BackupPathValidation();
                 }
                 if (propertyName == "Hostname")
                 {
@@ -194,14 +188,12 @@ namespace SSLapp.Models
                         return "Enter valid thumbprint";
                     }
 
-                    _httpCert.SetCertificate(certThumbprint);
-
-                    if (!_httpCert.CertificateIsValid(certThumbprint))
+                    if (!_httpCert.CertificateFound(certThumbprint))
                     {
                         result = "Cert not found";
                     }else
                     {
-
+                        _httpCert.SetCertificateWithThumbprint(certThumbprint);
                         if (String.IsNullOrEmpty(_httpCert.GetCertIssuedTo())) 
                         {
                             return "Cert 'Issued To' empty";
@@ -221,6 +213,39 @@ namespace SSLapp.Models
                 }
                 return result;
             }
+        }
+
+        public string BackupPathValidation()
+        {
+            var result = string.Empty;
+            if (string.IsNullOrEmpty(OutputConfigPath))
+            {
+                result = "Backup path must not be empty";
+            }
+            else if (!Directory.Exists(OutputConfigPath))
+            {
+                result = "Directory does not exist";
+            }
+            return result;
+        }
+
+        public string ServerPathValidation()
+        {
+            var result = string.Empty;
+            if (string.IsNullOrEmpty(ServerPath))
+            {
+                result = "Server path must not be empty";
+            }
+            else if (!Directory.Exists(ServerPath))
+            {
+                result = "Directory does not exist";
+            }
+            return result;
+        }
+
+        public bool BackupValid()
+        {
+            return string.IsNullOrEmpty(BackupPathValidation()) && string.IsNullOrEmpty(ServerPathValidation());
         }
 
         #endregion
