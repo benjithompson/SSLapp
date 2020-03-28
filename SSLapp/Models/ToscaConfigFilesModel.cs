@@ -50,6 +50,7 @@ namespace SSLapp.Models
                 NotifyPropertyChanged(nameof(BackupState));
             }
         }
+
         public string OutputConfigPath
         {
             get { return _outputConfigPath; }

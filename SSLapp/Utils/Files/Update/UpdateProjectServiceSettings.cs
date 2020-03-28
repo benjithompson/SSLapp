@@ -16,10 +16,9 @@ namespace SSLapp.Utils.Files.Update
 
             foreach (var appsetting in appsettingsList)
             {
-                Console.WriteLine("Updating JSON files in Project service");
+                Console.WriteLine("Updating files in Project service");
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
-                Console.WriteLine("Updating fields:");
                 Console.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
                 Console.WriteLine("---Scheme.");
@@ -28,7 +27,6 @@ namespace SSLapp.Utils.Files.Update
                 UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                 File.WriteAllText(appsetting, output);
-                Console.WriteLine("Update complete!");
             }
         }
     }

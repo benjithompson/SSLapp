@@ -16,10 +16,9 @@ namespace SSLapp.Utils.Files.Update
 
             foreach (var appsetting in appsettingsList)
             {
-                Console.WriteLine("Updating JSON files in Migration service");
+                Console.WriteLine("Updating files in Migration service");
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
-                Console.WriteLine("Updating fields:");
                 Console.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, directoryPath);
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);

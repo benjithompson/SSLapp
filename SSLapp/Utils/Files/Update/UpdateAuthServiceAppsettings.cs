@@ -21,12 +21,9 @@ namespace SSLapp.Utils.Files.Update
             foreach (var appsetting in appsettingsList)
             {
 
-                Console.WriteLine("Updating JSON files in Authentication service");
+                Console.WriteLine("Updating files in Authentication service");
                 string json = File.ReadAllText(appsetting);
-                Console.WriteLine("Appsettings.json opened. Serializing to JSON...");
                 JObject jsonObj = JObject.Parse(json);
-                Console.WriteLine("Serialized!");
-                Console.WriteLine("Updating fields:");
                 Console.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
                 Console.WriteLine("---Scheme.");
@@ -38,9 +35,7 @@ namespace SSLapp.Utils.Files.Update
                 Console.WriteLine("---Token Thumbprint.");
                 UpdateJSONFields.UpdateTokenCertificate(jsonObj, config);
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                Console.WriteLine("writing updated file...");
                 File.WriteAllText(appsetting, output);
-                Console.WriteLine("Update complete!");
             }
         }
     }

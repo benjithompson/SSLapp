@@ -36,7 +36,6 @@ namespace SSLapp.Utils.Files.Update
 
         public static void UpdateServiceDiscovery(JObject jsonObj, ToscaConfigFilesModel config, string appsetting)
         {
-            Console.WriteLine("updateservdiscovery");
             try
             {
                 var value = (string)jsonObj["Discovery"]["ServiceDiscovery"];
@@ -53,7 +52,6 @@ namespace SSLapp.Utils.Files.Update
 
         public static void UpdateScheme(JObject jsonObj, string appsetting)
         {
-            Console.WriteLine("updatescheme");
             try
             {
                 var endpointsArray = jsonObj["Discovery"]["Endpoints"];
@@ -80,7 +78,6 @@ namespace SSLapp.Utils.Files.Update
 
         public static void UpdateHost(JObject jsonObj, ToscaConfigFilesModel config, string appsetting)
         {
-            Console.WriteLine("updatehost");
             try
             {
                 var endpointsArray = jsonObj["Discovery"]["Endpoints"];

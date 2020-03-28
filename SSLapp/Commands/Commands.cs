@@ -24,9 +24,11 @@ namespace SSLapp.Commands
                 updateHandler.AddFileUpdateBehavior(serverApp);
             }
             updateHandler.UpdateAll();
+            Console.WriteLine("Updating files complete!");
+
         }
 
-        public static void OpenDirectory(string path)
+        public static void OpenServerDirectory(string path)
         {
             Console.WriteLine("Open Directory " + path);
             VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog();
@@ -37,7 +39,18 @@ namespace SSLapp.Commands
             ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath = selectedPath;
         }
 
-        public static void BackupDirectory(string backuppath, string serverpath)
+        public static void OpenBackupDirectory(string path)
+        {
+            Console.WriteLine("Open Directory " + path);
+            VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog();
+            fd.SelectedPath = path;
+            fd.ShowDialog();
+            var selectedPath = fd.SelectedPath;
+            Console.WriteLine("Selected Path: " + selectedPath);
+            ToscaConfigFilesViewModel.ToscaConfigFiles.OutputConfigPath = selectedPath;
+        }
+
+        public static void BackupToscaServerSettings(string backuppath, string serverpath)
         {
 
             var completed = BackupFiles.BackupToscaServerFiles(backuppath, serverpath);
