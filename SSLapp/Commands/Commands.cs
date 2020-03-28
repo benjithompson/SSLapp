@@ -26,6 +26,7 @@ namespace SSLapp.Commands
             }
             updateHandler.UpdateAll();
             Console.WriteLine("Updating files complete!");
+            ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = "Applied!";
             //TODO: Prompt Update Complete.
             //TODO: confirm restart of services:
 
