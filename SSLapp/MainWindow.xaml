@@ -80,7 +80,7 @@
                 VerticalAlignment="Bottom" 
                 HorizontalAlignment="Center"
                 Height="125">
-                <Button DockPanel.Dock="Right" IsDefault="True" Content="Apply" 
+                <Button DockPanel.Dock="Right" IsDefault="True" Content="{Binding ToscaConfigFiles.AppliedState}"
                         Margin="70,15,15,15" 
                         Width="80" 
                         Foreground="White"

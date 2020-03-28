@@ -27,7 +27,7 @@ namespace SSLapp.ViewModels
             get
             {
                 // check if executing is allowed, i.e., validate, check if a process is running, etc. 
-                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname) || string.IsNullOrEmpty(_ToscaConfigFilesModel.GetCertificate.GetCertificateThumbprint()))
+                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname) || string.IsNullOrEmpty(_ToscaConfigFilesModel.GetCertificate.GetCertificateThumbprint()) || !string.IsNullOrEmpty(_ToscaConfigFilesModel.ServerPathValidation()))
                 {
                     return false;
                 }
@@ -39,12 +39,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                // check if executing is allowed, i.e., validate, check if a process is running, etc. 
-                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.ServerPath) || string.IsNullOrEmpty(_ToscaConfigFilesModel.OutputConfigPath))
-                {
-                    return false;
-                }
-                return true;
+                return _ToscaConfigFilesModel.BackupValid();
             }
         }
 

@@ -12,7 +12,6 @@ namespace SSLapp.Utils
         private string _certIssuedTo;
         private string _certStoreName;
         private string _certStoreLocation;
-        private bool _certValid;
 
         public HTTPSCertificate(){}
 
@@ -36,15 +35,27 @@ namespace SSLapp.Utils
                 _certStoreLocation = StoreLocation.LocalMachine.ToString();
                 _certStoreName = StoreName.Root.ToString();
                 _certIssuedTo = rootscollection[0].GetNameInfo(X509NameType.SimpleName, false);
-                _certValid = true;
             }
         }
 
-        public string GetCertificateThumbprint() => _thumbprint;
+        public bool CertificateFound(string thumbprint)
+        {
+            X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
+            RootStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
 
+            X509Certificate2Collection rootcollection = RootStore.Certificates;
+            X509Certificate2Collection rootfcollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
+
+            if(rootfcollection.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public string GetCertificateThumbprint() => _thumbprint;
         public string GetCertificateStoreName() => _certStoreName;
         public string GetCertificateStoreLocation() => _certStoreLocation;
         public string GetCertIssuedTo() => _certIssuedTo;
-        public bool CertificateIsValid(string thumbprint) => _certValid;
     }
 }
