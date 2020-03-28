@@ -26,8 +26,8 @@ namespace SSLapp.Commands
             }
             updateHandler.UpdateAll();
             Console.WriteLine("Updating files complete!");
-
-            //confirm restart of services:
+            //TODO: Prompt Update Complete.
+            //TODO: confirm restart of services:
 
         }
 
@@ -59,6 +59,8 @@ namespace SSLapp.Commands
             if (completed)
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.BackupState = "Done!";
+                //TODO: dialog to show complete
+                MessageBox.Show("Tosca Server Appsettings and Web.config files backed up to " + backuppath, "Backup Complete");
             }
             
         }

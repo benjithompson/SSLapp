@@ -43,35 +43,35 @@ namespace SSLapp.Utils.Files.Update
                 case "ToscaAdministrationConsole":
                     _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateToscaAdminConsoleSettings()));
                     break;
-
-                //case "AutomationObjectService":
-                //    _updateFilesBehavior = new UpdateAOSSettings();
-                //    break;
-                //case "DexAdmin":
-                //    _updateFilesBehavior = new UpdateDexAdminAppsettings();
-                //    break;
-                //case "DEXRdpServer":
-                //    _updateFilesBehavior = new UpdateDEXRdpServerSettings();
-                //    break;
+                case "AutomationObjectService":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateServiceDiscoverySettings()));
+                    break;
+                case "DexAdmin":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateDexAdminAppsettings()));
+                    break;
+                case "DEXRdpServer":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateDEXRdpServerSettings()));
+                    break;
                 case "DEXServer":
                     _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateDEXServerSettings()));
                     break;
-                //case "FileService":
-                //    _updateFilesBehavior = new UpdateFileServiceSettings();
-                //    break;
-                //case "LicenseAdministration":
-                //    _updateFilesBehavior = new UpdateLicenseAdministrationSettings();
-                //    break;
-                //case "RESTApi":
-                //    _updateFilesBehavior = new UpdateRESTApiSettings();
-                //    break;
-                //case "TestDataObjectViewer":
-                //    _updateFilesBehavior = new UpdateTestDataObjectViewerSettings();
-                //    break;
-                //case "TestDataService":
-                //    _updateFilesBehavior = new UpdateTestDataServiceSettings();
-                //    break;
+                case "FileService":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateFileServiceSettings()));
+                    break;
+                case "LicenseAdministration":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateLicenseAdministrationSettings()));
+                    break;
+                case "RESTApi":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateRESTApiSettings()));
+                    break;
+                case "TestDataObjectViewer":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateTestDataObjectViewerSettings()));
+                    break;
+                case "TestDataService":
+                    _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateTestDataServiceSettings()));
+                    break;
                 default:
+                    //TODO: Log unmatched toscaServerAppName (folder) 
                     break;
             }
         }
