@@ -16,7 +16,7 @@ namespace SSLapp.Utils
 
         public HTTPSCertificate(){}
 
-        public void SetCertificate(string thumbprint)
+        public void SetCertificateWithThumbprint(string thumbprint)
         {
 
             X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
