@@ -9,6 +9,4 @@
         Title="SSLapp" Height="440" Width="490"
         ResizeMode="CanMinimize">
     <controls:ToscaConfigFilesView/>
-
-
 </Window>
