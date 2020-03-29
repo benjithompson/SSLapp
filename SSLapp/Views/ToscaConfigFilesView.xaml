@@ -101,13 +101,13 @@
                          Width="365" 
                          Margin="20,5,5,5"
                          materialDesign:HintAssist.Hint="hostname.domain.com"
-                                 materialDesign:HintAssist.HintOpacity=".2"/>
+                                 materialDesign:HintAssist.HintOpacity=".35"/>
                         <TextBox Text="{Binding ToscaConfigFiles.DexServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
                          Width="45" 
                          Margin="15,5,5,5"
                          materialDesign:HintAssist.Hint="443"
-                                 materialDesign:HintAssist.HintOpacity=".2"/>
+                                 materialDesign:HintAssist.HintOpacity=".35"/>
                     </StackPanel>
                     <DockPanel
                         Height="172">
