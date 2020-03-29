@@ -62,7 +62,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => Commands.Commands.OpenBackupDirectory(_ToscaConfigFilesModel.OutputConfigPath), () => true));
+                return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => Commands.Commands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
             }
         }
 
@@ -70,7 +70,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.Commands.BackupToscaServerSettings(_ToscaConfigFilesModel.OutputConfigPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
+                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.Commands.BackupToscaServerSettings(_ToscaConfigFilesModel.BackupPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
             }
         }
     }

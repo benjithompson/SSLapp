@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 using SSLapp.Models;
 using System.Xml;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -24,7 +25,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Console.WriteLine("Web.config file not found at" + directoryPath + @"\Web.config");
+                Debug.WriteLine("Web.config file not found at" + directoryPath + @"\Web.config");
                 return;
             }
 
@@ -42,15 +43,13 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Console.WriteLine("Node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+                Debug.WriteLine("Node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
             }
 
             using (FileStream fs = File.OpenWrite(directoryPath + @"\Web.config"))
             {
                 doc.Save(fs);
             }
-
-
         }
     }
 }

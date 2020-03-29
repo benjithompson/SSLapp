@@ -1,5 +1,6 @@
 ﻿using SSLapp.Models;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
@@ -15,16 +16,16 @@ namespace SSLapp.Utils.Files.Update
             foreach (var appsetting in appsettingsList)
             {
 
-                Console.WriteLine("Updating files in AO service");
+                Debug.WriteLine("Updating files in AO service");
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
-                Console.WriteLine("---ServiceDiscovery.");
+                Debug.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
-                Console.WriteLine("---Scheme.");
+                Debug.WriteLine("---Scheme.");
                 UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
-                Console.WriteLine("---HTTPS Thumbprint.");
+                Debug.WriteLine("---HTTPS Thumbprint.");
                 UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
-                Console.WriteLine("---DexBaseUrl");
+                Debug.WriteLine("---DexBaseUrl");
                 UpdateDexBaseUrl(jsonObj, config, appsetting);
             }
         }
@@ -37,7 +38,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Console.WriteLine(appsetting + " file doesn't contain 'AutomationObjectServiceConfig/DexBaseUrl'");
+                Debug.WriteLine(appsetting + " file doesn't contain 'AutomationObjectServiceConfig/DexBaseUrl'");
             }
         }
     }

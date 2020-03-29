@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SSLapp.Models;
@@ -15,11 +16,11 @@ namespace SSLapp.Utils.Files.Update
         public void Update(string directoryPath, ToscaConfigFilesModel config)
         {
             //update JSON
-            Console.WriteLine("Updating files in Administration Console");
+            Debug.WriteLine("Updating files in Administration Console");
             var appsetting = directoryPath + @"\appsettings.json";
             string json = File.ReadAllText(appsetting);
             JObject jsonObj = JObject.Parse(json);
-            Console.WriteLine("---ServiceDiscovery.");
+            Debug.WriteLine("---ServiceDiscovery.");
             UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
             UpdateBaseUrl(jsonObj, config, appsetting);
             string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
@@ -31,12 +32,12 @@ namespace SSLapp.Utils.Files.Update
             try
             {
                 doc.Load(directoryPath + @"\web.config");
-                Console.WriteLine("---CORS.");
+                Debug.WriteLine("---CORS.");
                 UpdateXMLFields.UpdateCORS(ref doc, config, webconfig);
             }
             catch (Exception)
             {
-                Console.WriteLine("Unable to update file at " + directoryPath+@"\Web.config");
+                Debug.WriteLine("Unable to update file at " + directoryPath+@"\Web.config");
             }
 
         }
@@ -50,7 +51,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Console.WriteLine(appsetting + " does not have json field 'AdminConsoleSettings/BaseUrl'");
+                Debug.WriteLine(appsetting + " does not have json field 'AdminConsoleSettings/BaseUrl'");
             }
             
         }

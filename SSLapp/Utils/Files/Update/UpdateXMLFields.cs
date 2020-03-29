@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using SSLapp.Models;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -20,7 +21,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Console.WriteLine(webconfig + " XML error while adding value");
+                Debug.WriteLine(webconfig + " XML error while adding value");
             }
             
         }

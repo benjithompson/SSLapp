@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SSLapp.Models;
 using System.IO;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -26,6 +27,7 @@ namespace SSLapp.Utils.Files.Update
         public void AddFileUpdateBehavior(string toscaServerAppName)
         {
             var appname = Path.GetFileName(toscaServerAppName);
+            Debug.Write(appname + " added to Update List: ");
             switch (appname)
             {
                 case "ServiceDiscovery":
@@ -71,7 +73,7 @@ namespace SSLapp.Utils.Files.Update
                     _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateTestDataServiceSettings()));
                     break;
                 default:
-                    //TODO: Log unmatched toscaServerAppName (folder) 
+                    Debug.WriteLine(Path.GetFileName(toscaServerAppName) + " does not have an Updater.");
                     break;
             }
         }

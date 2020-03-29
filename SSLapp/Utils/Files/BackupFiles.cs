@@ -36,6 +36,7 @@ namespace SSLapp.Utils.Files
                 {
 
                     var foldername = Path.GetFileName(serverapppath);
+                    Debug.WriteLine("Backing up " + foldername);
                     var appfolder = backuppath + @"\" + foldername + @"\";
                     Directory.CreateDirectory(appfolder);
 
@@ -62,7 +63,7 @@ namespace SSLapp.Utils.Files
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
             return true;

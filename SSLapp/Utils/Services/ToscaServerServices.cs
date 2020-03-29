@@ -22,7 +22,7 @@ namespace SSLapp.Utils.Services
             }
             catch
             {
-                Console.WriteLine("Service " + serviceName + " failed to start.");
+                Debug.WriteLine("Service " + serviceName + " failed to start.");
             }
         }
         public static void StopService(string serviceName, int timeoutMilliseconds)
@@ -37,7 +37,7 @@ namespace SSLapp.Utils.Services
             }
             catch
             {
-                Console.WriteLine("Service " + serviceName + " failed to stop.");
+                Debug.WriteLine("Service " + serviceName + " failed to stop.");
             }
         }
 
@@ -61,7 +61,7 @@ namespace SSLapp.Utils.Services
             }
             catch
             {
-                Console.WriteLine("Service " + serviceName + " failed to restart.");
+                Debug.WriteLine("Service " + serviceName + " failed to restart.");
             }
         }
     }

@@ -32,7 +32,7 @@
                    Margin="15,15,15,0" 
                    Height="25"/>
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding ToscaConfigFiles.OutputConfigPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <TextBox Text="{Binding ToscaConfigFiles.BackupPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Margin="20,5,5,5" 
                          Width="390"  
                          Height="25"/>

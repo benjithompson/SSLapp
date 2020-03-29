@@ -1,6 +1,7 @@
 ﻿using System;
 using SSLapp.Models;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -16,7 +17,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Console.WriteLine(appsetting + " file doesn't contain 'HttpServer/Endpoints/Https/(Thumbprint|StoreName|StoreLocation)'");
+                Debug.WriteLine(appsetting + " file doesn't contain 'HttpServer/Endpoints/Https/(Thumbprint|StoreName|StoreLocation)'");
             }
         }
 
@@ -45,7 +46,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Console.WriteLine(appsetting + " file doesn't contain 'Discovery/ServiceDiscovery'");
+                Debug.WriteLine(appsetting + " file doesn't contain 'Discovery/ServiceDiscovery'");
             }
 
         }
@@ -63,7 +64,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Console.WriteLine(appsetting+ " file doesn't contain Discovery/Endpoints");
+                Debug.WriteLine(appsetting+ " file doesn't contain Discovery/Endpoints");
             }
             try
             {
@@ -72,7 +73,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Console.WriteLine(appsetting + " doesn't contain 'HttpServer/Endpoints/Https/Scheme'");
+                Debug.WriteLine(appsetting + " doesn't contain 'HttpServer/Endpoints/Https/Scheme'");
             }
         }
 
@@ -89,7 +90,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Console.WriteLine(appsetting + " doesn't contain 'Discovery/Endpoints'");
+                Debug.WriteLine(appsetting + " doesn't contain 'Discovery/Endpoints'");
             }
 
         }

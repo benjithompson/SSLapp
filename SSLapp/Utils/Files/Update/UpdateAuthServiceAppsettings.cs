@@ -5,6 +5,7 @@ using System.IO;
 using SSLapp.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -21,18 +22,18 @@ namespace SSLapp.Utils.Files.Update
             foreach (var appsetting in appsettingsList)
             {
 
-                Console.WriteLine("Updating files in Authentication service");
+                Debug.WriteLine("Updating files in Authentication service");
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
-                Console.WriteLine("---ServiceDiscovery.");
+                Debug.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
-                Console.WriteLine("---Scheme.");
+                Debug.WriteLine("---Scheme.");
                 UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
-                Console.WriteLine("---Host.");
+                Debug.WriteLine("---Host.");
                 UpdateJSONFields.UpdateHost(jsonObj, config, appsetting);
-                Console.WriteLine("---HTTPS Thumbprint.");
+                Debug.WriteLine("---HTTPS Thumbprint.");
                 UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
-                Console.WriteLine("---Token Thumbprint.");
+                Debug.WriteLine("---Token Thumbprint.");
                 UpdateJSONFields.UpdateTokenCertificate(jsonObj, config);
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                 File.WriteAllText(appsetting, output);

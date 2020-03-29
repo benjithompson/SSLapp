@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Diagnostics;
 
 namespace SSLapp.Utils
 {
@@ -17,25 +18,38 @@ namespace SSLapp.Utils
 
         public void SetCertificateWithThumbprint(string thumbprint)
         {
-
-            X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
-            RootStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-
-            X509Certificate2Collection rootcollection = RootStore.Certificates;
-            X509Certificate2Collection rootfcollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
-            X509Certificate2Collection rootscollection = X509Certificate2UI.SelectFromCollection(rootfcollection, "Certificate Select", "Verify Certificate inforamtion and click Ok.", X509SelectionFlag.SingleSelection);
-            Console.WriteLine("Certificate Thumbprint selected: {0}{1}", rootscollection[0].Thumbprint, Environment.NewLine);
-            RootStore.Close();
-            RootStore.Dispose();
-            
-
-            if (rootscollection.Count == 1)
+            try
             {
-                _thumbprint = rootscollection[0].Thumbprint;
-                _certStoreLocation = StoreLocation.LocalMachine.ToString();
-                _certStoreName = StoreName.Root.ToString();
-                _certIssuedTo = rootscollection[0].GetNameInfo(X509NameType.SimpleName, false);
+                Debug.WriteLine("Searching for " + thumbprint + " in Root Certificate Store.");
+                X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
+                RootStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+
+                X509Certificate2Collection rootcollection = RootStore.Certificates;
+                X509Certificate2Collection rootfcollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
+                Debug.WriteLine("Found " + rootfcollection.Count + " certificate in store.");
+                if (rootfcollection.Count > 1)
+                {
+                    rootfcollection = X509Certificate2UI.SelectFromCollection(rootfcollection, "Certificate Select", "Verify Certificate inforamtion and click Ok.", X509SelectionFlag.SingleSelection);
+                }
+                Debug.WriteLine("Certificate selected: {0}{1}", rootfcollection[0].FriendlyName, Environment.NewLine);
+                RootStore.Close();
+                RootStore.Dispose();
+
+
+                if (rootfcollection.Count == 1)
+                {
+                    _thumbprint = rootfcollection[0].Thumbprint;
+                    _certStoreLocation = StoreLocation.LocalMachine.ToString();
+                    _certStoreName = StoreName.Root.ToString();
+                    _certIssuedTo = rootfcollection[0].GetNameInfo(X509NameType.SimpleName, false);
+                }
             }
+            catch (Exception)
+            {
+
+                Debug.WriteLine("Certificate Exeception.");
+            }
+
         }
 
         public bool CertificateFound(string thumbprint)

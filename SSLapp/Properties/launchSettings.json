@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SSLapp": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

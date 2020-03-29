@@ -5,7 +5,7 @@ using System.Dynamic;
 using System.IO;
 using static SSLapp.Utils.FieldValidations;
 using SSLapp.Utils;
-
+using System.Diagnostics;
 
 namespace SSLapp.Models
 {
@@ -13,7 +13,7 @@ namespace SSLapp.Models
     {
 
         private string _serverPath;
-        private string _outputConfigPath;
+        private string _backupPath;
         private string _hostname;
         private string _dexServerPort;
         private string certThumbprint;
@@ -26,14 +26,11 @@ namespace SSLapp.Models
 
         public ToscaConfigFilesModel()
         {
-            _serverPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
-            _outputConfigPath = @"C:\Temp";
-            _dexServerPort = "";
-            _backupState = "Backup";
-            _appliedState = "Apply";
-            NotifyPropertyChanged(nameof(ServerPath));
-            NotifyPropertyChanged(nameof(OutputConfigPath));
-            NotifyPropertyChanged(nameof(DexServerPort));
+            ServerPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
+            BackupPath = @"C:\Temp";
+            DexServerPort = "";
+            BackupState = "Backup";
+            AppliedState = "Apply";
         }
 
         #endregion
@@ -47,21 +44,18 @@ namespace SSLapp.Models
             {
                 _serverPath = value;
                 NotifyPropertyChanged(nameof(ServerPath));
-                _backupState = "Backup";
-                NotifyPropertyChanged(nameof(BackupState));
-                _appliedState = "Apply";
-                NotifyPropertyChanged(nameof(AppliedState));
+                BackupState = "Backup";
+                AppliedState = "Apply";
             }
         }
-        public string OutputConfigPath
+        public string BackupPath
         {
-            get { return _outputConfigPath; }
+            get { return _backupPath; }
             set
             {
-                _outputConfigPath = value;
-                NotifyPropertyChanged(nameof(OutputConfigPath));
-                _backupState = "Backup";
-                NotifyPropertyChanged(nameof(BackupState));
+                _backupPath = value;
+                NotifyPropertyChanged(nameof(BackupPath));
+                BackupState = "Backup";
             }
         }
         public string Hostname
@@ -71,6 +65,7 @@ namespace SSLapp.Models
             {
                 _hostname = value;
                 NotifyPropertyChanged(nameof(Hostname));
+                AppliedState = "Apply";
             }
         }
         public string DexServerPort
@@ -80,6 +75,7 @@ namespace SSLapp.Models
             {
                 _dexServerPort = value;
                 NotifyPropertyChanged(nameof(DexServerPort));
+                AppliedState = "Apply";
             }
         }
         public string CertThumbprint
@@ -89,7 +85,7 @@ namespace SSLapp.Models
             {
                 certThumbprint = value;
                 NotifyPropertyChanged(nameof(CertThumbprint));
-                NotifyPropertyChanged(nameof(Hostname));
+                AppliedState = "Apply";
             }
         }
         public HTTPSCertificate GetCertificate
@@ -218,11 +214,11 @@ namespace SSLapp.Models
         public string BackupPathValidation()
         {
             var result = string.Empty;
-            if (string.IsNullOrEmpty(OutputConfigPath))
+            if (string.IsNullOrEmpty(BackupPath))
             {
                 result = "Backup path must not be empty";
             }
-            else if (!Directory.Exists(OutputConfigPath))
+            else if (!Directory.Exists(BackupPath))
             {
                 result = "Directory does not exist";
             }
@@ -245,7 +241,9 @@ namespace SSLapp.Models
 
         public bool BackupValid()
         {
-            return string.IsNullOrEmpty(BackupPathValidation()) && string.IsNullOrEmpty(ServerPathValidation());
+            
+            var isValid = string.IsNullOrEmpty(BackupPathValidation()) && string.IsNullOrEmpty(ServerPathValidation());
+            return isValid;
         }
 
         #endregion

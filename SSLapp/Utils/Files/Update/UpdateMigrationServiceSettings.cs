@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SSLapp.Models;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -16,10 +17,10 @@ namespace SSLapp.Utils.Files.Update
 
             foreach (var appsetting in appsettingsList)
             {
-                Console.WriteLine("Updating files in Migration service");
+                Debug.WriteLine("Updating files in Migration service");
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
-                Console.WriteLine("---ServiceDiscovery.");
+                Debug.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, directoryPath);
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                 File.WriteAllText(appsetting, output);

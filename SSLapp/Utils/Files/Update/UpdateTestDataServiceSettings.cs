@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using SSLapp.Models;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -11,7 +12,7 @@ namespace SSLapp.Utils.Files.Update
     {
         public void Update(string filepath, ToscaConfigFilesModel config)
         {
-            Console.WriteLine("TDS not implemented");
+            Debug.WriteLine("TDS not implemented");
         }
     }
 }
