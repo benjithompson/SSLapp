@@ -73,7 +73,7 @@ namespace SSLapp.Utils.Files.Update
                     _updateFilesBehaviorList.Add(new Tuple<string, IUpdateFilesBehavior>(toscaServerAppName, new UpdateTestDataServiceSettings()));
                     break;
                 default:
-                    Debug.WriteLine(Path.GetFileName(toscaServerAppName) + " does not have an Updater.");
+                    Trace.WriteLine(Path.GetFileName(toscaServerAppName) + " does not have an Updater.");
                     break;
             }
         }

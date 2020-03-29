@@ -17,14 +17,14 @@ namespace SSLapp.Utils.Files.Update
 
             foreach (var appsetting in appsettingsList)
             {
-                Debug.WriteLine("Updating files in Project service");
+                Trace.WriteLine("Updating files in Project service");
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
-                Debug.WriteLine("---ServiceDiscovery.");
+                Trace.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
-                Debug.WriteLine("---Scheme.");
+                Trace.WriteLine("---Scheme.");
                 UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
-                Debug.WriteLine("---HTTPS Thumpbrint.");
+                Trace.WriteLine("---HTTPS Thumpbrint.");
                 UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                 File.WriteAllText(appsetting, output);

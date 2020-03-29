@@ -13,7 +13,7 @@ namespace SSLapp
         {
             InitializeComponent();
             DataContext = new ToscaConfigFilesViewModel();
-            Debug.WriteLine("App Started.");
+            Trace.WriteLine("App Started.");
         }
     }
 }

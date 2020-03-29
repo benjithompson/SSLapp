@@ -21,7 +21,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Debug.WriteLine(webconfig + " XML error while adding value");
+                Trace.WriteLine(webconfig + " XML error while adding value");
             }
             
         }

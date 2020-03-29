@@ -12,7 +12,7 @@ namespace SSLapp.Utils.Files.Update
     {
         public void Update(string filepath, ToscaConfigFilesModel config)
         {
-            Debug.WriteLine("TD Object Viewer not implemented");
+            Trace.WriteLine("TD Object Viewer not implemented");
         }
 
     }

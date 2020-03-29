@@ -12,7 +12,7 @@ namespace SSLapp.Utils.Files.Update
     {
         public void Update(string filepath, ToscaConfigFilesModel config)
         {
-            Debug.WriteLine("License Administration not implemented");
+            Trace.WriteLine("License Administration not implemented");
         }
     }
 }

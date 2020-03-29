@@ -20,18 +20,18 @@ namespace SSLapp.Utils
         {
             try
             {
-                Debug.WriteLine("Searching for " + thumbprint + " in Root Certificate Store.");
+                Trace.WriteLine("Searching for " + thumbprint + " in Root Certificate Store.");
                 X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
                 RootStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
 
                 X509Certificate2Collection rootcollection = RootStore.Certificates;
                 X509Certificate2Collection rootfcollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
-                Debug.WriteLine("Found " + rootfcollection.Count + " certificate in store.");
+                Trace.WriteLine("Found " + rootfcollection.Count + " certificate in store.");
                 if (rootfcollection.Count > 1)
                 {
                     rootfcollection = X509Certificate2UI.SelectFromCollection(rootfcollection, "Certificate Select", "Verify Certificate inforamtion and click Ok.", X509SelectionFlag.SingleSelection);
                 }
-                Debug.WriteLine("Certificate selected: {0}{1}", rootfcollection[0].FriendlyName, Environment.NewLine);
+                Trace.WriteLine("Certificate selected: {0}{1}", rootfcollection[0].FriendlyName);
                 RootStore.Close();
                 RootStore.Dispose();
 
@@ -47,7 +47,7 @@ namespace SSLapp.Utils
             catch (Exception)
             {
 
-                Debug.WriteLine("Certificate Exeception.");
+                Trace.WriteLine("Certificate Exeception.");
             }
 
         }

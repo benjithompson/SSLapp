@@ -16,16 +16,16 @@ namespace SSLapp.Utils.Files.Update
             foreach (var appsetting in appsettingsList)
             {
 
-                Debug.WriteLine("Updating files in AO service");
+                Trace.WriteLine("Updating files in AO service");
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
-                Debug.WriteLine("---ServiceDiscovery.");
+                Trace.WriteLine("---ServiceDiscovery.");
                 UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
-                Debug.WriteLine("---Scheme.");
+                Trace.WriteLine("---Scheme.");
                 UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
-                Debug.WriteLine("---HTTPS Thumbprint.");
+                Trace.WriteLine("---HTTPS Thumbprint.");
                 UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
-                Debug.WriteLine("---DexBaseUrl");
+                Trace.WriteLine("---DexBaseUrl");
                 UpdateDexBaseUrl(jsonObj, config, appsetting);
             }
         }
@@ -38,7 +38,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Debug.WriteLine(appsetting + " file doesn't contain 'AutomationObjectServiceConfig/DexBaseUrl'");
+                Trace.WriteLine(appsetting + " file doesn't contain 'AutomationObjectServiceConfig/DexBaseUrl'");
             }
         }
     }

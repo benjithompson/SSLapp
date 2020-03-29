@@ -16,11 +16,11 @@ namespace SSLapp.Utils.Files.Update
         public void Update(string directoryPath, ToscaConfigFilesModel config)
         {
             //update JSON
-            Debug.WriteLine("Updating files in Administration Console");
+            Trace.WriteLine("Updating files in Administration Console");
             var appsetting = directoryPath + @"\appsettings.json";
             string json = File.ReadAllText(appsetting);
             JObject jsonObj = JObject.Parse(json);
-            Debug.WriteLine("---ServiceDiscovery.");
+            Trace.WriteLine("---ServiceDiscovery.");
             UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
             UpdateBaseUrl(jsonObj, config, appsetting);
             string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
@@ -32,12 +32,12 @@ namespace SSLapp.Utils.Files.Update
             try
             {
                 doc.Load(directoryPath + @"\web.config");
-                Debug.WriteLine("---CORS.");
+                Trace.WriteLine("---CORS.");
                 UpdateXMLFields.UpdateCORS(ref doc, config, webconfig);
             }
             catch (Exception)
             {
-                Debug.WriteLine("Unable to update file at " + directoryPath+@"\Web.config");
+                Trace.WriteLine("Unable to update file at " + directoryPath+@"\Web.config");
             }
 
         }
@@ -51,7 +51,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Debug.WriteLine(appsetting + " does not have json field 'AdminConsoleSettings/BaseUrl'");
+                Trace.WriteLine(appsetting + " does not have json field 'AdminConsoleSettings/BaseUrl'");
             }
             
         }

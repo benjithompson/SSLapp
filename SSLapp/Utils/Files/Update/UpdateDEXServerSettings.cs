@@ -25,7 +25,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Debug.WriteLine("Web.config file not found at" + directoryPath + @"\Web.config");
+                Trace.WriteLine("Web.config file not found at" + directoryPath + @"\Web.config");
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Debug.WriteLine("Node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+                Trace.WriteLine("Node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
             }
 
             using (FileStream fs = File.OpenWrite(directoryPath + @"\Web.config"))

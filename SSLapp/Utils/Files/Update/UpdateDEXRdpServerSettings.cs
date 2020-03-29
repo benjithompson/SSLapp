@@ -7,7 +7,7 @@ namespace SSLapp.Utils.Files.Update
     {
         public void Update(string filepath, ToscaConfigFilesModel config)
         {
-            Debug.WriteLine("RdpServer not implemented");
+            Trace.WriteLine("RdpServer not implemented");
         }
     }
 }

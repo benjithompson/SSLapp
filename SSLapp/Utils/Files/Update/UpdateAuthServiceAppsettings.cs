@@ -16,28 +16,36 @@ namespace SSLapp.Utils.Files.Update
 
         public void Update(string directoryPath, ToscaConfigFilesModel config)
         {
+            try
+            {
+                IEnumerable<string> appsettingsList = Directory.GetFiles(directoryPath, "appsettings.json");
 
-            IEnumerable<string> appsettingsList = Directory.GetFiles(directoryPath, "appsettings.json");
+                foreach (var appsetting in appsettingsList)
+                {
 
-            foreach (var appsetting in appsettingsList)
+                    Trace.WriteLine("Updating files in Authentication service");
+                    string json = File.ReadAllText(appsetting);
+                    JObject jsonObj = JObject.Parse(json);
+                    Trace.WriteLine("---ServiceDiscovery.");
+                    UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
+                    Trace.WriteLine("---Scheme.");
+                    UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
+                    Trace.WriteLine("---Host.");
+                    UpdateJSONFields.UpdateHost(jsonObj, config, appsetting);
+                    Trace.WriteLine("---HTTPS Thumbprint.");
+                    UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
+                    Trace.WriteLine("---Token Thumbprint.");
+                    UpdateJSONFields.UpdateTokenCertificate(jsonObj, config);
+                    string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                    File.WriteAllText(appsetting, output);
+                }
+            }
+            catch (Exception)
             {
 
-                Debug.WriteLine("Updating files in Authentication service");
-                string json = File.ReadAllText(appsetting);
-                JObject jsonObj = JObject.Parse(json);
-                Debug.WriteLine("---ServiceDiscovery.");
-                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
-                Debug.WriteLine("---Scheme.");
-                UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
-                Debug.WriteLine("---Host.");
-                UpdateJSONFields.UpdateHost(jsonObj, config, appsetting);
-                Debug.WriteLine("---HTTPS Thumbprint.");
-                UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
-                Debug.WriteLine("---Token Thumbprint.");
-                UpdateJSONFields.UpdateTokenCertificate(jsonObj, config);
-                string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                File.WriteAllText(appsetting, output);
+                Trace.WriteLine("AuthService Update Exception.");
             }
+
         }
     }
 }

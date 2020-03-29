@@ -17,7 +17,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Debug.WriteLine(appsetting + " file doesn't contain 'HttpServer/Endpoints/Https/(Thumbprint|StoreName|StoreLocation)'");
+                Trace.WriteLine(appsetting + " file doesn't contain 'HttpServer/Endpoints/Https/(Thumbprint|StoreName|StoreLocation)'");
             }
         }
 
@@ -46,7 +46,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Debug.WriteLine(appsetting + " file doesn't contain 'Discovery/ServiceDiscovery'");
+                Trace.WriteLine(appsetting + " file doesn't contain 'Discovery/ServiceDiscovery'");
             }
 
         }
@@ -64,7 +64,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Debug.WriteLine(appsetting+ " file doesn't contain Discovery/Endpoints");
+                Trace.WriteLine(appsetting+ " file doesn't contain Discovery/Endpoints");
             }
             try
             {
@@ -73,7 +73,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Debug.WriteLine(appsetting + " doesn't contain 'HttpServer/Endpoints/Https/Scheme'");
+                Trace.WriteLine(appsetting + " doesn't contain 'HttpServer/Endpoints/Https/Scheme'");
             }
         }
 
@@ -90,7 +90,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Debug.WriteLine(appsetting + " doesn't contain 'Discovery/Endpoints'");
+                Trace.WriteLine(appsetting + " doesn't contain 'Discovery/Endpoints'");
             }
 
         }

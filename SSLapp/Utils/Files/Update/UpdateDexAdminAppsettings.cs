@@ -12,7 +12,7 @@ namespace SSLapp.Utils.Files.Update
     {
         public void Update(string filepath, ToscaConfigFilesModel config)
         {
-            Debug.WriteLine("Dex Admin not implemented");
+            Trace.WriteLine("Dex Admin not implemented");
         }
     }
 }

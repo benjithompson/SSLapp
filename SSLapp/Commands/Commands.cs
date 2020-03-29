@@ -12,8 +12,8 @@ namespace SSLapp.Commands
     {
         public static void UpdateToscaServerFiles(string serverpath)
         {
-            Debug.WriteLine("Updating Tosca Server Files.");
-            Debug.WriteLine("============================\n");
+            Trace.WriteLine("Updating Tosca Server Files.");
+            Trace.WriteLine("============================\n");
             BaseFileUpdateHandler updateHandler = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
             var serverApps = updateHandler.GetToscaServerDirectories(serverpath);
             foreach (var serverApp in serverApps)
@@ -21,7 +21,7 @@ namespace SSLapp.Commands
                 updateHandler.AddFileUpdateBehavior(serverApp);
             }
             updateHandler.UpdateAll();
-            Debug.WriteLine("Updating files complete!");
+            Trace.WriteLine("Updating files complete!");
             ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = "👍";
             //TODO: Prompt Update Complete.
             //TODO: confirm restart of services:
@@ -30,23 +30,23 @@ namespace SSLapp.Commands
 
         public static void OpenServerDirectory(string path)
         {
-            Debug.WriteLine("Open Directory " + path);
+            Trace.WriteLine("Open Directory " + path);
             VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog();
             fd.SelectedPath = path;
             fd.ShowDialog();
             var selectedPath = fd.SelectedPath;
-            Debug.WriteLine("Selected Path: " + selectedPath);
+            Trace.WriteLine("Selected Path: " + selectedPath);
             ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath = selectedPath;
         }
 
         public static void OpenBackupDirectory(string path)
         {
-            Debug.WriteLine("Open Directory " + path);
+            Trace.WriteLine("Open Directory " + path);
             VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog();
             fd.SelectedPath = path;
             fd.ShowDialog();
             var selectedPath = fd.SelectedPath;
-            Debug.WriteLine("Selected Path: " + selectedPath);
+            Trace.WriteLine("Selected Path: " + selectedPath);
             ToscaConfigFilesViewModel.ToscaConfigFiles.BackupPath = selectedPath;
         }
 

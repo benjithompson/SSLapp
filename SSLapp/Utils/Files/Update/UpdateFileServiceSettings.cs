@@ -12,7 +12,7 @@ namespace SSLapp.Utils.Files.Update
     {
         public void Update(string filepath, ToscaConfigFilesModel config)
         {
-            Debug.WriteLine("File Service not implemented");
+            Trace.WriteLine("File Service not implemented");
         }
 
     }
