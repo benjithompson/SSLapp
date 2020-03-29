@@ -8,7 +8,7 @@
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>RDS_190526-Confusing-Emojis-Waving-1558959914182_16af9407cc6_original-ratio.ico</ApplicationIcon>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
     <StartupObject />
     <Authors>Ben Thompson</Authors>
   </PropertyGroup>

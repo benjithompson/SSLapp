@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         xmlns:controls="clr-namespace:SSLapp.Views"
         xmlns:src="clr-namespace:SSLapp"
-        Title="SSLapp" Height="440" Width="490"
+        Title="SSLapp" Height="440" Width="610"
         ResizeMode="CanMinimize">
     <controls:ToscaConfigFilesView/>
 </Window>
