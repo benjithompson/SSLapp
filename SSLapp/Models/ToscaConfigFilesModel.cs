@@ -175,30 +175,7 @@ namespace SSLapp.Models
                 }
                 if (propertyName == "CertThumbprint")
                 {
-                    if (string.IsNullOrEmpty(certThumbprint))
-                    {
-                        return "Enter Thumbprint";
-                    }
-                    if (!CertThumbprintIsValid(certThumbprint))
-                    {
-                        return "Enter valid thumbprint";
-                    }
-
-                    if (!_httpCert.CertificateFound(certThumbprint))
-                    {
-                        result = "Cert not found";
-                    }else
-                    {
-                        _httpCert.SetCertificateWithThumbprint(certThumbprint);
-                        if (String.IsNullOrEmpty(_httpCert.GetCertIssuedTo())) 
-                        {
-                            return "Cert 'Issued To' empty";
-                        }
-                        else
-                        {
-                            Hostname = _httpCert.GetCertIssuedTo();
-                        }
-                    }
+                    return CertThumbprintValidation();
                 }
                 if (propertyName == "BackupState")
                 {
@@ -236,6 +213,28 @@ namespace SSLapp.Models
             {
                 result = "Directory does not exist";
             }
+            return result;
+        }
+
+        public string CertThumbprintValidation()
+        {
+            var result = string.Empty;
+            if (string.IsNullOrEmpty(certThumbprint))
+            {
+                return "Enter Thumbprint";
+            }
+            else if (!CertThumbprintIsValid(certThumbprint))
+            {
+                return "Enter valid thumbprint";
+            }
+
+            else if (!_httpCert.CertificateFound(certThumbprint))
+            {
+                result = "Cert not found in Trusted Root";
+            }
+            _httpCert.SetCertificateWithThumbprint(certThumbprint);
+            Hostname = _httpCert.GetCertIssuedTo();
+
             return result;
         }
 

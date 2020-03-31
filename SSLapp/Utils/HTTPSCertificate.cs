@@ -16,25 +16,25 @@ namespace SSLapp.Utils
 
         public HTTPSCertificate(){}
 
+        public HTTPSCertificate(string thumbprint)
+        {
+            SetCertificateWithThumbprint(thumbprint);
+        }
+
+        public string GetCertificateThumbprint() => _thumbprint;
+        public string GetCertificateStoreName() => _certStoreName;
+        public string GetCertificateStoreLocation() => _certStoreLocation;
+        public string GetCertIssuedTo() => _certIssuedTo;
         public void SetCertificateWithThumbprint(string thumbprint)
         {
             try
             {
-                Trace.WriteLine("Searching for " + thumbprint + " in Root Certificate Store.");
-                X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
-                RootStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-
-                X509Certificate2Collection rootcollection = RootStore.Certificates;
-                X509Certificate2Collection rootfcollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
-                Trace.WriteLine("Found " + rootfcollection.Count + " certificate in store.");
+                X509Certificate2Collection rootfcollection = GetCertificate(thumbprint);
                 if (rootfcollection.Count > 1)
                 {
                     rootfcollection = X509Certificate2UI.SelectFromCollection(rootfcollection, "Certificate Select", "Verify Certificate inforamtion and click Ok.", X509SelectionFlag.SingleSelection);
                 }
                 Trace.WriteLine("Certificate selected: {0}{1}", rootfcollection[0].FriendlyName);
-                RootStore.Close();
-                RootStore.Dispose();
-
 
                 if (rootfcollection.Count == 1)
                 {
@@ -46,30 +46,29 @@ namespace SSLapp.Utils
             }
             catch (Exception)
             {
-
                 Trace.WriteLine("Certificate Exeception.");
             }
-
         }
 
-        public bool CertificateFound(string thumbprint)
+        public X509Certificate2Collection GetCertificate(string thumbprint, string storeLocation = "Root")
         {
-            X509Store RootStore = new X509Store("Root", StoreLocation.LocalMachine);
+            Trace.WriteLine("Searching for " + thumbprint + " in " + storeLocation + " Certificate Store.");
+            X509Store RootStore = new X509Store(storeLocation, StoreLocation.LocalMachine);
             RootStore.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-
             X509Certificate2Collection rootcollection = RootStore.Certificates;
-            X509Certificate2Collection rootfcollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
+            RootStore.Close();
+            X509Certificate2Collection certCollection = rootcollection.Find(X509FindType.FindByThumbprint, thumbprint, true);
+            Trace.WriteLine("Found " + certCollection.Count + " certificate in store.");
+            return certCollection;
+        }
 
-            if(rootfcollection.Count > 0)
+        public bool CertificateFound(string thumbprint, string storeLocation="Root")
+        {
+            if(GetCertificate(thumbprint).Count > 0)
             {
                 return true;
             }
             return false;
         }
-
-        public string GetCertificateThumbprint() => _thumbprint;
-        public string GetCertificateStoreName() => _certStoreName;
-        public string GetCertificateStoreLocation() => _certStoreLocation;
-        public string GetCertIssuedTo() => _certIssuedTo;
     }
 }
