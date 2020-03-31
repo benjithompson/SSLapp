@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SSLapp.Views"
+             xmlns:local="clr-namespace:SSLapp.Models"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -18,7 +18,8 @@
                 <SolidColorBrush Color="#1D63AF"></SolidColorBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <TabControl TabStripPlacement="Left" SelectionChanged="TabControl_SelectionChanged"
+        <TabControl 
+            TabStripPlacement="Left"
              Margin="0" Padding="0">
             <TabControl.Resources>
                 <Style TargetType="{x:Type TabPanel}">
@@ -61,16 +62,17 @@
                      Height="30"
                      Margin="0"
                      Padding="0">
-                <StackPanel>
-                    <Label Content="Tosca Server Root Path" VerticalAlignment="Top" 
+                <AdornerDecorator>
+                    <StackPanel>
+                        <Label Content="Tosca Server Root Path" VerticalAlignment="Top" 
                         Margin="15,15,15,0" 
                         Height="25"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding ToscaConfigFiles.ServerPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.ServerPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Margin="20,5,5,5" 
                          Width="390"  
                          Height="25"/>
-                        <Button Name="buttonOpenServerPath2" 
+                            <Button Name="buttonOpenServerPath2" 
                         Command="{Binding OpenServerPath}" 
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                                 BorderThickness="1"
@@ -78,64 +80,67 @@
                         Width="30" 
                         Height="25" 
                         Margin="5,5,5,5" />
-                    </StackPanel>
-                    <Label Content="Certificate Thumbprint" VerticalAlignment="Top" 
+                        </StackPanel>
+                        <Label Content="Certificate Thumbprint" VerticalAlignment="Top" 
                         Margin="15,15,15,0" 
                         Height="25"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding ToscaConfigFiles.CertThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.CertThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
                          Width="430" 
                          Margin="20,5,5,5"/>
-                    </StackPanel>
-                    <DockPanel>
-                        <Label Content="Full Computer Name" 
+                        </StackPanel>
+                        <DockPanel>
+                            <Label Content="Full Computer Name" 
                        Width="360" 
                        Margin="15,15,15,0"/>
-                        <Label Content="Port" Width="170" 
+                            <Label Content="Port" Width="170" 
                        Margin="10,15,15,0"/>
-                    </DockPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding ToscaConfigFiles.Hostname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.Hostname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
                          Width="365" 
                          Margin="20,5,5,5"
                          materialDesign:HintAssist.Hint="hostname.domain.com"
                                  materialDesign:HintAssist.HintOpacity=".35"/>
-                        <TextBox Text="{Binding ToscaConfigFiles.DexServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            <TextBox Text="{Binding ToscaConfigFiles.DexServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Height="25" 
                          Width="45" 
                          Margin="15,5,5,5"
                          materialDesign:HintAssist.Hint="443"
                                  materialDesign:HintAssist.HintOpacity=".35"/>
-                    </StackPanel>
-                    <DockPanel
+                        </StackPanel>
+                        <DockPanel
                         Height="172">
-                        <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.AppliedState}"
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.AppliedState}"
                             Margin="15" 
                             Width="80"
                             HorizontalAlignment="Right"
                                  VerticalAlignment="Bottom"
                             Foreground="White"
                             Command="{Binding ApplyCommand}"/>
-                    </DockPanel>
-                </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
+                </AdornerDecorator>
+               
             </TabItem>
             <TabItem Header="Backup"
                      Width="120"
                      Height="30"
                      Margin="0"
                      Padding="0">
-                <StackPanel>
-                    <Label Content="Tosca Server Root Path" 
+                <AdornerDecorator>
+                    <StackPanel>
+                        <Label Content="Tosca Server Root Path" 
                         Margin="15,15,15,0" 
                         Height="25"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Text="{Binding ToscaConfigFiles.ServerPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.ServerPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Margin="20,5,5,5" 
                          Width="390"  
                          Height="25"/>
-                        <Button Name="buttonOpenServerPath" 
+                            <Button Name="buttonOpenServerPath" 
                         Command="{Binding OpenServerPath}" 
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         BorderThickness="1"
@@ -143,18 +148,18 @@
                         Width="30" 
                         Height="25" 
                         Margin="5,5,5,5" />
-                    </StackPanel>
-                    <Label Content="Backup Path" VerticalAlignment="Top" 
+                        </StackPanel>
+                        <Label Content="Backup Path" VerticalAlignment="Top" 
                         Margin="15,15,15,0" 
                         Height="25"/>
-                    <DockPanel
+                        <DockPanel
                         Height="Auto">
-                        <TextBox Text="{Binding ToscaConfigFiles.BackupPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            <TextBox Text="{Binding ToscaConfigFiles.BackupPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                             VerticalAlignment="Top"
                             Margin="20,5,5,5" 
                             Width="390"  
                             Height="25"/>
-                        <Button Name="buttonOpenBackupPath"  
+                            <Button Name="buttonOpenBackupPath"  
                             Style="{StaticResource MaterialDesignOutlinedButton}"
                             Width="30" 
                             Height="25" 
@@ -162,17 +167,18 @@
                             Command="{Binding OpenBackupPath}"
                             BorderThickness="1"
                             BorderBrush="#5a94e0"/>
-                    </DockPanel>
-                    <DockPanel Height="235">
-                        <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.BackupState, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                        </DockPanel>
+                        <DockPanel Height="235">
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.BackupState, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                             Margin="15,15,15,15" 
                             Width="80" 
                             Foreground="White"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding BackupToPath}"/>
-                    </DockPanel>
-                </StackPanel>
+                        </DockPanel>
+                    </StackPanel>
+                </AdornerDecorator>
             </TabItem>
         </TabControl>
     </Grid>
