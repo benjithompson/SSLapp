@@ -146,7 +146,7 @@ namespace SSLapp.Models
                 {
                     result = ServerPathValidation();
                 }
-                if (propertyName == "OutputConfigPath")
+                if (propertyName == "BackupPath")
                 {
                     result = BackupPathValidation();
                 }
@@ -241,7 +241,6 @@ namespace SSLapp.Models
 
         public bool BackupValid()
         {
-            
             var isValid = string.IsNullOrEmpty(BackupPathValidation()) && string.IsNullOrEmpty(ServerPathValidation());
             return isValid;
         }
