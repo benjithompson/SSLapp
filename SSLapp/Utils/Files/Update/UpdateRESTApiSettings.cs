@@ -10,7 +10,14 @@ namespace SSLapp.Utils.Files.Update
 {
     class UpdateRESTApiSettings : IUpdateFilesBehavior
     {
-        public void Update(string filepath, ToscaConfigFilesModel config)
+        public UpdateRESTApiSettings(string appPath)
+        {
+            AppPath = appPath;
+        }
+        public string AppPath { get; set; }
+        public bool Updated => throw new NotImplementedException();
+        public int UpdatedFilesCount => throw new NotImplementedException();
+        public void Update(ToscaConfigFilesModel config)
         {
             Trace.WriteLine("REST Api not implemented");
         }

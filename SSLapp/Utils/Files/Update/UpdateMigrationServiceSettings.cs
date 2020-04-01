@@ -11,9 +11,16 @@ namespace SSLapp.Utils.Files.Update
 {
     class UpdateMigrationServiceSettings : IUpdateFilesBehavior
     {
-        public void Update(string directoryPath, ToscaConfigFilesModel config)
+        public UpdateMigrationServiceSettings(string appPath)
         {
-            IEnumerable<string> appsettingsList = Directory.GetFiles(directoryPath, "appsettings.json");
+            AppPath = appPath;
+        }
+        public string AppPath { get; set; }
+        public bool Updated => throw new NotImplementedException();
+        public int UpdatedFilesCount => throw new NotImplementedException();
+        public void Update(ToscaConfigFilesModel config)
+        {
+            IEnumerable<string> appsettingsList = Directory.GetFiles(AppPath, "appsettings.json");
 
             foreach (var appsetting in appsettingsList)
             {
@@ -21,7 +28,7 @@ namespace SSLapp.Utils.Files.Update
                 string json = File.ReadAllText(appsetting);
                 JObject jsonObj = JObject.Parse(json);
                 Trace.WriteLine("---ServiceDiscovery.");
-                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, directoryPath);
+                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, AppPath);
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                 File.WriteAllText(appsetting, output);
             }

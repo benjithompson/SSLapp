@@ -7,7 +7,9 @@ namespace SSLapp.Utils.Files.Update
 {
     interface IUpdateFilesBehavior
     {
-        public void Update(string directoryPath, ToscaConfigFilesModel config);
-
+        public string AppPath { get; set; }
+        public bool Updated { get; }
+        public int UpdatedFilesCount { get; }
+        public void Update(ToscaConfigFilesModel config);
     }
 }

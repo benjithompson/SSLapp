@@ -9,9 +9,17 @@ namespace SSLapp.Utils.Files.Update
 {
     class UpdateAOSSettings : IUpdateFilesBehavior
     {
-        public void Update(string directoryPath, ToscaConfigFilesModel config)
+        public UpdateAOSSettings(string appPath)
         {
-            IEnumerable<string> appsettingsList = Directory.GetFiles(directoryPath, "appsettings.json");
+            AppPath = appPath;
+        }
+
+        public string AppPath { get; set; }
+        public bool Updated => throw new NotImplementedException();
+        public int UpdatedFilesCount => throw new NotImplementedException();
+        public void Update(ToscaConfigFilesModel config)
+        {
+            IEnumerable<string> appsettingsList = Directory.GetFiles(AppPath, "appsettings.json");
 
             foreach (var appsetting in appsettingsList)
             {

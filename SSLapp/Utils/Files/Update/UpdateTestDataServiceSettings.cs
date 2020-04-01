@@ -10,7 +10,14 @@ namespace SSLapp.Utils.Files.Update
 {
     class UpdateTestDataServiceSettings : IUpdateFilesBehavior
     {
-        public void Update(string filepath, ToscaConfigFilesModel config)
+        public UpdateTestDataServiceSettings(string appPath)
+        {
+            AppPath = appPath;
+        }
+        public string AppPath { get; set; }
+        public bool Updated => throw new NotImplementedException();
+        public int UpdatedFilesCount => throw new NotImplementedException();
+        public void Update(ToscaConfigFilesModel config)
         {
             Trace.WriteLine("TDS not implemented");
         }

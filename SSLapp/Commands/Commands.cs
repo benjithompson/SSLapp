@@ -14,14 +14,21 @@ namespace SSLapp.Commands
         {
             Trace.WriteLine("Updating Tosca Server Files.");
             Trace.WriteLine("============================\n");
-            BaseFileUpdateHandler updateHandler = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
-            var serverApps = updateHandler.GetToscaServerDirectories(serverpath);
-            foreach (var serverApp in serverApps)
+            BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
+            var installedApps = fileUpdateHandler.GetInstalledToscaServerApps(serverpath);
+            //create factory
+            UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
+            foreach (var appPath in installedApps)
             {
-                updateHandler.AddFileUpdateBehavior(serverApp);
+                //create update behavior based on App Folder name
+                var updater = updateFactory.TryCreate(appPath);
+                if (updater != null)
+                {
+                    fileUpdateHandler.AddUpdateBehavior(updater);
+                }
             }
-            updateHandler.UpdateAll();
-            Trace.WriteLine("Updating files complete!");
+            fileUpdateHandler.UpdateAll();
+            Trace.WriteLine("Update process complete.");
             ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = "👍";
             //TODO: Prompt Update Complete.
             //TODO: confirm restart of services:

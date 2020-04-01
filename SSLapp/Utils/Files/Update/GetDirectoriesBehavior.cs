@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -16,7 +17,8 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                throw;
+                Trace.WriteLine("GetDirectories failed with an exception.");
+                return new List<string>();
             }
 
         }

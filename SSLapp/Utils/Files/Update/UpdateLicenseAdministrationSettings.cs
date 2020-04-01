@@ -10,7 +10,14 @@ namespace SSLapp.Utils.Files.Update
 {
     class UpdateLicenseAdministrationSettings : IUpdateFilesBehavior
     {
-        public void Update(string filepath, ToscaConfigFilesModel config)
+        public UpdateLicenseAdministrationSettings(string appPath)
+        {
+            AppPath = appPath;
+        }
+        public string AppPath { get; set; }
+        public bool Updated => throw new NotImplementedException();
+        public int UpdatedFilesCount => throw new NotImplementedException();
+        public void Update(ToscaConfigFilesModel config)
         {
             Trace.WriteLine("License Administration not implemented");
         }

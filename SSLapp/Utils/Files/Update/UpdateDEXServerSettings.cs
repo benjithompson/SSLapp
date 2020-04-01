@@ -11,21 +11,28 @@ namespace SSLapp.Utils.Files.Update
 {
     class UpdateDEXServerSettings : IUpdateFilesBehavior
     {
-        public void Update(string directoryPath, ToscaConfigFilesModel config)
+        public UpdateDEXServerSettings(string appPath)
+        {
+            AppPath = appPath;
+        }
+        public string AppPath { get; set; }
+        public bool Updated => throw new NotImplementedException();
+        public int UpdatedFilesCount => throw new NotImplementedException();
+        public void Update(ToscaConfigFilesModel config)
         {
             XmlDocument doc;
             //update web.config
             try
             {
-                var webconfig = directoryPath + @"\web.config";
+                var webconfig = AppPath + @"\web.config";
                 doc = new XmlDocument();
-                //doc.Load(directoryPath + @"\web.config");
+                //doc.Load(AppPath + @"\web.config");
                 doc.Load(@"C:\Program Files (x86)\TRICENTIS\Tosca Server\DEXServer\Web.config");
             }
             catch (Exception)
             {
 
-                Trace.WriteLine("Web.config file not found at" + directoryPath + @"\Web.config");
+                Trace.WriteLine("Web.config file not found at" + AppPath + @"\Web.config");
                 return;
             }
 
@@ -46,7 +53,7 @@ namespace SSLapp.Utils.Files.Update
                 Trace.WriteLine("Node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
             }
 
-            using (FileStream fs = File.OpenWrite(directoryPath + @"\Web.config"))
+            using (FileStream fs = File.OpenWrite(AppPath + @"\Web.config"))
             {
                 doc.Save(fs);
             }
