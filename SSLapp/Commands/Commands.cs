@@ -5,6 +5,7 @@ using SSLapp.Utils.Files.Update;
 using SSLapp.ViewModels;
 using Ookii.Dialogs.Wpf;
 using System;
+using System.Linq;
 
 namespace SSLapp.Commands
 {
@@ -15,19 +16,20 @@ namespace SSLapp.Commands
             Trace.WriteLine("Updating Tosca Server Files.");
             Trace.WriteLine("============================\n");
             BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
-            var installedApps = fileUpdateHandler.GetInstalledToscaServerApps(serverpath);
+            var installedApps = fileUpdateHandler.GetInstalledToscaServerApps(serverpath).ToList();
             //create factory
             UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
+            var count = 0;
             foreach (var appPath in installedApps)
             {
-                var count = 0;
+                
                 //create update behavior based on App Folder name
                 var updater = updateFactory.TryCreate(appPath);
                 if (updater != null)
                 {
                     fileUpdateHandler.AddUpdateBehavior(updater);
                     count++;
-                    ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = Convert.ToString(count);
+                    ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = Convert.ToString(count) + "/" + installedApps.Count;
                 }
                 
             }
