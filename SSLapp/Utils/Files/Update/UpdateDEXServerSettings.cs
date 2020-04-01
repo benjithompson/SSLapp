@@ -14,10 +14,12 @@ namespace SSLapp.Utils.Files.Update
         public UpdateDEXServerSettings(string appPath)
         {
             AppPath = appPath;
+            UpdatedFilesCount = 0;
+            Updated = false;
         }
         public string AppPath { get; set; }
-        public bool Updated => throw new NotImplementedException();
-        public int UpdatedFilesCount => throw new NotImplementedException();
+        public bool Updated { get; set; }
+        public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
             XmlDocument doc;
@@ -56,7 +58,9 @@ namespace SSLapp.Utils.Files.Update
             using (FileStream fs = File.OpenWrite(AppPath + @"\Web.config"))
             {
                 doc.Save(fs);
+                UpdatedFilesCount++;
             }
+            Updated = true;
         }
     }
 }

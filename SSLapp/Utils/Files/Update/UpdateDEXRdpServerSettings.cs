@@ -8,10 +8,12 @@ namespace SSLapp.Utils.Files.Update
         public UpdateDEXRdpServerSettings(string appPath)
         {
             AppPath = appPath;
+            UpdatedFilesCount = 0;
+            Updated = false;
         }
         public string AppPath { get ; set; }
-        public bool Updated => throw new System.NotImplementedException();
-        public int UpdatedFilesCount => throw new System.NotImplementedException();
+        public bool Updated { get; set; }
+        public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
             Trace.WriteLine("RdpServer not implemented");

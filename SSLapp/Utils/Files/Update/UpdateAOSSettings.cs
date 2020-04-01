@@ -12,30 +12,40 @@ namespace SSLapp.Utils.Files.Update
         public UpdateAOSSettings(string appPath)
         {
             AppPath = appPath;
+            UpdatedFilesCount = 0;
+            Updated = false;
         }
 
         public string AppPath { get; set; }
-        public bool Updated => throw new NotImplementedException();
-        public int UpdatedFilesCount => throw new NotImplementedException();
+        public bool Updated { get; set; }
+        public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
             IEnumerable<string> appsettingsList = Directory.GetFiles(AppPath, "appsettings.json");
 
             foreach (var appsetting in appsettingsList)
             {
-
-                Trace.WriteLine("Updating files in AO service");
-                string json = File.ReadAllText(appsetting);
-                JObject jsonObj = JObject.Parse(json);
-                Trace.WriteLine("---ServiceDiscovery.");
-                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
-                Trace.WriteLine("---Scheme.");
-                UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
-                Trace.WriteLine("---HTTPS Thumbprint.");
-                UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
-                Trace.WriteLine("---DexBaseUrl");
-                UpdateDexBaseUrl(jsonObj, config, appsetting);
+                try
+                {
+                    Trace.WriteLine("Updating files in AO service");
+                    string json = File.ReadAllText(appsetting);
+                    JObject jsonObj = JObject.Parse(json);
+                    Trace.WriteLine("---ServiceDiscovery.");
+                    UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
+                    Trace.WriteLine("---Scheme.");
+                    UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
+                    Trace.WriteLine("---HTTPS Thumbprint.");
+                    UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
+                    Trace.WriteLine("---DexBaseUrl");
+                    UpdateDexBaseUrl(jsonObj, config, appsetting);
+                    UpdatedFilesCount++;
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine("Failed to updated file at " + AppPath);
+                }
             }
+            Updated = true;
         }
 
         public void UpdateDexBaseUrl(JObject jsonObj,ToscaConfigFilesModel config, string appsetting)

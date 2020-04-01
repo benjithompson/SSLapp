@@ -13,10 +13,12 @@ namespace SSLapp.Utils.Files.Update
         public UpdateDexAdminsettings(string appPath)
         {
             AppPath = appPath;
+            UpdatedFilesCount = 0;
+            Updated = false;
         }
         public string AppPath { get; set; }
-        public bool Updated => throw new NotImplementedException();
-        public int UpdatedFilesCount => throw new NotImplementedException();
+        public bool Updated { get; set; }
+        public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
             Trace.WriteLine("Dex Admin not implemented");
