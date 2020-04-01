@@ -14,10 +14,12 @@ namespace SSLapp.Utils.Files.Update
         public UpdateAuthServiceAppsettings(string appPath)
         {
             AppPath = appPath;
+            UpdatedFilesCount = 0;
+            Updated = false;
         }
         public string AppPath { get ; set; }
-        public bool Updated => throw new NotImplementedException();
-        public int UpdatedFilesCount => throw new NotImplementedException();
+        public bool Updated { get; set; }
+        public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
             try
@@ -42,13 +44,15 @@ namespace SSLapp.Utils.Files.Update
                     UpdateJSONFields.UpdateTokenCertificate(jsonObj, config);
                     string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                     File.WriteAllText(appsetting, output);
+                    UpdatedFilesCount++;
                 }
             }
             catch (Exception)
             {
 
-                Trace.WriteLine("AuthService Update Exception.");
+                Trace.WriteLine("Failed to updated file at " + AppPath);
             }
+            Updated = true;
 
         }
     }

@@ -14,24 +14,36 @@ namespace SSLapp.Utils.Files.Update
         public UpdateMigrationServiceSettings(string appPath)
         {
             AppPath = appPath;
+            UpdatedFilesCount = 0;
+            Updated = false;
         }
         public string AppPath { get; set; }
-        public bool Updated => throw new NotImplementedException();
-        public int UpdatedFilesCount => throw new NotImplementedException();
+        public bool Updated { get; set; }
+        public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
             IEnumerable<string> appsettingsList = Directory.GetFiles(AppPath, "appsettings.json");
 
             foreach (var appsetting in appsettingsList)
             {
-                Trace.WriteLine("Updating files in Migration service");
-                string json = File.ReadAllText(appsetting);
-                JObject jsonObj = JObject.Parse(json);
-                Trace.WriteLine("---ServiceDiscovery.");
-                UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, AppPath);
-                string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                File.WriteAllText(appsetting, output);
+                try
+                {
+                    Trace.WriteLine("Updating files in Migration service");
+                    string json = File.ReadAllText(appsetting);
+                    JObject jsonObj = JObject.Parse(json);
+                    Trace.WriteLine("---ServiceDiscovery.");
+                    UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, AppPath);
+                    string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                    File.WriteAllText(appsetting, output);
+                    UpdatedFilesCount++;
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine("Failed to updated file at " + AppPath);
+                }
+
             }
+            Updated = true;
         }
     }
 }

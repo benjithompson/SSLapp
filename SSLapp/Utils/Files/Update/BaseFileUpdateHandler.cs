@@ -23,9 +23,21 @@ namespace SSLapp.Utils.Files.Update
             var count = 0;
             foreach (var updater in _updateFilesBehaviorList)
             {
-                count += updater.GetFilesUpdatedCount();
+                count += updater.UpdatedFilesCount;
             }
             return count;
+        }
+
+        public bool UpdateSucceeded()
+        {
+            foreach (var updater in _updateFilesBehaviorList)
+            {
+                if (!updater.Updated)
+                {
+                    return false; 
+                }
+            }
+            return true;
         }
 
         public BaseFileUpdateHandler(ToscaConfigFilesModel config)
