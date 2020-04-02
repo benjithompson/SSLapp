@@ -6,6 +6,7 @@ using SSLapp.ViewModels;
 using Ookii.Dialogs.Wpf;
 using System;
 using System.Linq;
+using SSLapp.Views;
 
 namespace SSLapp.Commands
 {
@@ -21,29 +22,27 @@ namespace SSLapp.Commands
             UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
             var count = 0;
             foreach (var appPath in installedApps)
-            {
-                
+            { 
                 //create update behavior based on App Folder name
                 var updater = updateFactory.TryCreate(appPath);
                 if (updater != null)
                 {
                     fileUpdateHandler.AddUpdateBehavior(updater);
                     count++;
-                    ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = Convert.ToString(count) + "/" + installedApps.Count;
-                }
-                
+                } 
             }
             fileUpdateHandler.UpdateAll();
             Trace.WriteLine("Update process complete.");
-            Trace.WriteLine(fileUpdateHandler.GetUpdatedFilesCount() + " files updated.");
             if (fileUpdateHandler.UpdateSucceeded())
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = "👍";
             }
 
             //TODO: Prompt Update Complete.
-            //TODO: confirm restart of services:
 
+            //UpdateCompleteView updateView = new UpdateCompleteView();
+            //updateView.Show();
+            //TODO: confirm restart of services:
         }
 
         public static void OpenServerDirectory(string path)
@@ -77,6 +76,11 @@ namespace SSLapp.Commands
                 //TODO: dialog to show complete
             }
             
+        }
+
+        public static void AcceptCommand()
+        {
+            Trace.WriteLine("AcceptCommand called");
         }
     }
 }

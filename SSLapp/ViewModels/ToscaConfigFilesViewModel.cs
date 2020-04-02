@@ -1,12 +1,12 @@
 ﻿using SSLapp.Commands;
 using SSLapp.Models;
 using System.Windows.Input;
+using System.ComponentModel;
 
 namespace SSLapp.ViewModels
 {
     public class ToscaConfigFilesViewModel
     {
-
         private static ToscaConfigFilesModel _ToscaConfigFilesModel;
         private ICommand _applyCommand;
         private ICommand _openServerPathCommand;
@@ -20,7 +20,6 @@ namespace SSLapp.ViewModels
         }
 
         public static ToscaConfigFilesModel ToscaConfigFiles => _ToscaConfigFilesModel;
-
         public static bool CanExecuteApply
         {
 
@@ -34,7 +33,6 @@ namespace SSLapp.ViewModels
                 return true;
             }
         }
-
         public static bool CanExecuteBackup
         {
             get
@@ -43,14 +41,16 @@ namespace SSLapp.ViewModels
             }
         }
 
+        #region Commands
+
         public ICommand ApplyCommand
         {
             get
             {
-                return _applyCommand ?? (_applyCommand = new CommandHandler(() => Commands.Commands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteApply));
+                return _applyCommand ?? (_applyCommand = new CommandHandler(() 
+                    => Commands.Commands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteApply));
             }
         }
-
         public ICommand OpenServerPath
         {
             get
@@ -65,7 +65,6 @@ namespace SSLapp.ViewModels
                 return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => Commands.Commands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
             }
         }
-
         public ICommand BackupToPath
         {
             get
@@ -73,5 +72,7 @@ namespace SSLapp.ViewModels
                 return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.Commands.BackupToscaServerSettings(_ToscaConfigFilesModel.BackupPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
             }
         }
+
+        #endregion
     }
 }
