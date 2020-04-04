@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Input;
 using SSLapp.Commands;
 using SSLapp.Models;
+using SSLapp.Views;
 
 namespace SSLapp.ViewModels
 {
@@ -11,6 +12,8 @@ namespace SSLapp.ViewModels
     {
         private static UpdateCompleteModel _updateCompleteModel;
         private ICommand _accept_command;
+        private ICommand _decline_command;
+        public event EventHandler OnRequestClose;
 
         public UpdateCompleteViewModel()
         {
@@ -25,6 +28,19 @@ namespace SSLapp.ViewModels
             {
                 return _accept_command ?? (_accept_command = new CommandHandler(() => Commands.Commands.AcceptCommand(), () => true));
             }
+        }
+
+        public ICommand DeclineCommand
+        {
+            get
+            {
+                return _decline_command ?? (_decline_command = new CommandHandler(() => DeclineCommandHandler(), () => true));
+            }
+        }
+
+        private void DeclineCommandHandler()
+        {
+            OnRequestClose(this, new EventArgs());
         }
 
     }

@@ -7,19 +7,30 @@ namespace SSLapp.Models
 {
     class UpdateCompleteModel : INotifyPropertyChanged
     {
-        private string _button;
+        private string _acceptButton;
+        private string _declineButton;
 
         public UpdateCompleteModel()
         {
-            _button = "Ok";
+            _acceptButton = "Ok";
+            _declineButton = "Close";
         }
-        public string Button
+        public string AcceptButton
         {
-            get { return _button; }
+            get { return _acceptButton; }
             set
             {
-                _button = value;
-                NotifyPropertyChanged(nameof(Button));
+                _acceptButton = value;
+                NotifyPropertyChanged(nameof(AcceptButton));
+            }
+        }
+        public string DeclineButton
+        {
+            get { return _declineButton; }
+            set
+            {
+                _declineButton = value;
+                NotifyPropertyChanged(nameof(DeclineButton));
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

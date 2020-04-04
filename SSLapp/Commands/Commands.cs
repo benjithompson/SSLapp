@@ -22,14 +22,14 @@ namespace SSLapp.Commands
             UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
             var count = 0;
             foreach (var appPath in installedApps)
-            { 
+            {
                 //create update behavior based on App Folder name
                 var updater = updateFactory.TryCreate(appPath);
                 if (updater != null)
                 {
                     fileUpdateHandler.AddUpdateBehavior(updater);
                     count++;
-                } 
+                }
             }
             fileUpdateHandler.UpdateAll();
             Trace.WriteLine("Update process complete.");
@@ -38,10 +38,14 @@ namespace SSLapp.Commands
                 ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = "👍";
             }
 
-            //TODO: Prompt Update Complete.
+            var vm = new UpdateCompleteViewModel();
+            var UpdateWindow = new UpdateCompleteView
+            {
+                DataContext = vm
+            };
+            vm.OnRequestClose += (s, e) => UpdateWindow.Close();
+            UpdateWindow.ShowDialog();
 
-            //UpdateCompleteView updateView = new UpdateCompleteView();
-            //updateView.Show();
             //TODO: confirm restart of services:
         }
 
@@ -81,6 +85,12 @@ namespace SSLapp.Commands
         public static void AcceptCommand()
         {
             Trace.WriteLine("AcceptCommand called");
+        }
+
+        public static void DeclineCommand(Window UpdateCompleteWindow)
+        {
+            Trace.WriteLine("DeclineCommand called");
+            UpdateCompleteWindow.Close();
         }
     }
 }

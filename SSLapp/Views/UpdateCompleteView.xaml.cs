@@ -16,7 +16,7 @@ namespace SSLapp.Views
     /// <summary>
     /// Interaction logic for UpdateCompleteView.xaml
     /// </summary>
-    public partial class UpdateCompleteView : Window
+    public partial class UpdateCompleteView : Window, ICloseable
     {
         public UpdateCompleteView()
         {

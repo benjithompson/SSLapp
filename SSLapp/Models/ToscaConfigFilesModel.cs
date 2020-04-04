@@ -20,7 +20,6 @@ namespace SSLapp.Models
         private string _backupState;
         private string _appliedState;
         private HTTPSCertificate _httpCert = new HTTPSCertificate();
-       
 
         #region Constructor
 
