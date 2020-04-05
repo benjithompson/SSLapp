@@ -10,7 +10,7 @@ using SSLapp.Views;
 
 namespace SSLapp.Commands
 {
-    class Commands
+    class ToscaConfigCommands
     {
         public static void UpdateToscaServerFiles(string serverpath)
         {
@@ -37,16 +37,7 @@ namespace SSLapp.Commands
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = "👍";
             }
-
-            var vm = new UpdateCompleteViewModel();
-            var UpdateWindow = new UpdateCompleteView
-            {
-                DataContext = vm
-            };
-            vm.OnRequestClose += (s, e) => UpdateWindow.Close();
-            UpdateWindow.ShowDialog();
-
-            //TODO: confirm restart of services:
+            RestartServicesWindow();
         }
 
         public static void OpenServerDirectory(string path)
@@ -82,15 +73,13 @@ namespace SSLapp.Commands
             
         }
 
-        public static void AcceptCommand()
+        public static void RestartServicesWindow()
         {
-            Trace.WriteLine("AcceptCommand called");
-        }
-
-        public static void DeclineCommand(Window UpdateCompleteWindow)
-        {
-            Trace.WriteLine("DeclineCommand called");
-            UpdateCompleteWindow.Close();
+            var vm = new UpdateCompleteViewModel();
+            var UpdateWindow = new UpdateCompleteView {DataContext = vm};
+            vm.OnRequestClose += (s, e) => UpdateWindow.Close();
+            UpdateWindow.Owner = Application.Current.MainWindow;
+            UpdateWindow.ShowDialog();
         }
     }
 }

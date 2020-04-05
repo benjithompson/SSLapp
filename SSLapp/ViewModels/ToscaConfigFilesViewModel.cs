@@ -48,28 +48,28 @@ namespace SSLapp.ViewModels
             get
             {
                 return _applyCommand ?? (_applyCommand = new CommandHandler(() 
-                    => Commands.Commands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteApply));
+                    => Commands.ToscaConfigCommands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteApply));
             }
         }
         public ICommand OpenServerPath
         {
             get
             {
-                return _openServerPathCommand ?? (_openServerPathCommand = new CommandHandler(() => Commands.Commands.OpenServerDirectory(_ToscaConfigFilesModel.ServerPath), () => true));
+                return _openServerPathCommand ?? (_openServerPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.ServerPath), () => true));
             }
         }
         public ICommand OpenBackupPath
         {
             get
             {
-                return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => Commands.Commands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
+                return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
             }
         }
         public ICommand BackupToPath
         {
             get
             {
-                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.Commands.BackupToscaServerSettings(_ToscaConfigFilesModel.BackupPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
+                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.BackupToscaServerSettings(_ToscaConfigFilesModel.BackupPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
             }
         }
 

@@ -33,6 +33,7 @@ namespace SSLapp.Models
                 NotifyPropertyChanged(nameof(DeclineButton));
             }
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
