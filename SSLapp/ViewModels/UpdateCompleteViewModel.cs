@@ -60,12 +60,17 @@ namespace SSLapp.ViewModels
             Trace.WriteLine("Restarting Tosca Server Services:");
             _updateCompleteModel.AcceptButtonVisible = false;
             _updateCompleteModel.DeclineButtonVisible = false;
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = false;
-            worker.DoWork += startAsyncserviceRestart;
-            worker.RunWorkerAsync();
+            BackgroundWorker worker_restartServices = new BackgroundWorker();
+            worker_restartServices.WorkerReportsProgress = false;
+            worker_restartServices.DoWork += startAsyncserviceRestart;
+            worker_restartServices.RunWorkerAsync();
 
-            
+            BackgroundWorker worker_restartIIS = new BackgroundWorker();
+            worker_restartIIS.WorkerReportsProgress = false;
+            worker_restartIIS.DoWork += UpdateCompleteCommands.DoAsyncIISReset;
+            worker_restartIIS.RunWorkerAsync();
+
+
             //CloseUpdateCompleteWindow();
         }
 
@@ -99,9 +104,11 @@ namespace SSLapp.ViewModels
                     Trace.WriteLine(sc.ServiceName + " already stopped.");
                 }
             }
+
             _updateCompleteModel.TextBlockMessage = string.Format("Stopping Services... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
             restartCount = 0;
             ServiceController service = null;
+
             try
             {
                 service = scList.FirstOrDefault(s => s.ServiceName == "Tricentis.ServiceDiscovery");
