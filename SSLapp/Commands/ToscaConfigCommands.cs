@@ -35,7 +35,7 @@ namespace SSLapp.Commands
             Trace.WriteLine("Update process complete.");
             if (fileUpdateHandler.UpdateSucceeded())
             {
-                ToscaConfigFilesViewModel.ToscaConfigFiles.AppliedState = "👍";
+                ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyButton = "👍";
             }
             RestartServicesWindow();
         }
@@ -67,16 +67,15 @@ namespace SSLapp.Commands
             var completed = BackupFiles.BackupToscaServerFiles(backuppath, serverpath);
             if (completed)
             {
-                ToscaConfigFilesViewModel.ToscaConfigFiles.BackupState = "Done!";
+                ToscaConfigFilesViewModel.ToscaConfigFiles.BackupButton = "Done!";
                 //TODO: dialog to show complete
             }
             
         }
-
         public static void RestartServicesWindow()
         {
             var vm = new UpdateCompleteViewModel();
-            var UpdateWindow = new UpdateCompleteView {DataContext = vm};
+            var UpdateWindow = new UpdateCompleteView { DataContext = vm };
             vm.OnRequestClose += (s, e) => UpdateWindow.Close();
             UpdateWindow.Owner = Application.Current.MainWindow;
             UpdateWindow.ShowDialog();

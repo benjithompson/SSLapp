@@ -12,6 +12,7 @@ namespace SSLapp.ViewModels
         private ICommand _openServerPathCommand;
         private ICommand _backupToPathCommand;
         private ICommand _openBackupPathCommand;
+        private ICommand _restartServicesCommand;
 
         //Constructor
         public ToscaConfigFilesViewModel()
@@ -72,7 +73,13 @@ namespace SSLapp.ViewModels
                 return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.BackupToscaServerSettings(_ToscaConfigFilesModel.BackupPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
             }
         }
-
+        public ICommand RestartCommand
+        {
+            get
+            {
+                return _restartServicesCommand ?? (_restartServicesCommand = new CommandHandler(() => ToscaConfigCommands.RestartServicesWindow(), () => true));
+            }
+        }
         #endregion
     }
 }

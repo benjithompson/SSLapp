@@ -17,8 +17,9 @@ namespace SSLapp.Models
         private string _hostname;
         private string _dexServerPort;
         private string certThumbprint;
-        private string _backupState;
-        private string _appliedState;
+        private string _backupButton;
+        private string _applyButton;
+        private string _restartButton;
         private HTTPSCertificate _httpCert = new HTTPSCertificate();
 
         #region Constructor
@@ -28,8 +29,9 @@ namespace SSLapp.Models
             ServerPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
             BackupPath = @"C:\Temp";
             DexServerPort = "";
-            BackupState = "Backup";
-            AppliedState = "Apply";
+            BackupButton = "Backup";
+            ApplyButton = "Apply";
+            RestartButton = "Restart";
         }
 
         #endregion
@@ -43,8 +45,8 @@ namespace SSLapp.Models
             {
                 _serverPath = value;
                 NotifyPropertyChanged(nameof(ServerPath));
-                BackupState = "Backup";
-                AppliedState = "Apply";
+                BackupButton = "Backup";
+                ApplyButton = "Apply";
             }
         }
         public string BackupPath
@@ -54,7 +56,7 @@ namespace SSLapp.Models
             {
                 _backupPath = value;
                 NotifyPropertyChanged(nameof(BackupPath));
-                BackupState = "Backup";
+                BackupButton = "Backup";
             }
         }
         public string Hostname
@@ -64,7 +66,7 @@ namespace SSLapp.Models
             {
                 _hostname = value;
                 NotifyPropertyChanged(nameof(Hostname));
-                AppliedState = "Apply";
+                ApplyButton = "Apply";
             }
         }
         public string DexServerPort
@@ -74,7 +76,7 @@ namespace SSLapp.Models
             {
                 _dexServerPort = value;
                 NotifyPropertyChanged(nameof(DexServerPort));
-                AppliedState = "Apply";
+                ApplyButton = "Apply";
             }
         }
         public string CertThumbprint
@@ -84,7 +86,7 @@ namespace SSLapp.Models
             {
                 certThumbprint = value;
                 NotifyPropertyChanged(nameof(CertThumbprint));
-                AppliedState = "Apply";
+                ApplyButton = "Apply";
             }
         }
         public HTTPSCertificate GetCertificate
@@ -99,21 +101,30 @@ namespace SSLapp.Models
         {
             get { return @"C:\temp\"; }
         }
-        public string BackupState {
-            get { return _backupState; }
+        public string BackupButton {
+            get { return _backupButton; }
             set
             {
-                _backupState = value;
-                NotifyPropertyChanged(nameof(BackupState));
+                _backupButton = value;
+                NotifyPropertyChanged(nameof(BackupButton));
             } 
         }
-        public string AppliedState
+        public string ApplyButton
         {
-            get { return _appliedState; }
+            get { return _applyButton; }
             set
             {
-                _appliedState = value;
-                NotifyPropertyChanged(nameof(AppliedState));
+                _applyButton = value;
+                NotifyPropertyChanged(nameof(ApplyButton));
+            }
+        }
+        public string RestartButton
+        {
+            get { return _restartButton; }
+            set
+            {
+                _restartButton = value;
+                NotifyPropertyChanged(nameof(RestartButton));
             }
         }
 

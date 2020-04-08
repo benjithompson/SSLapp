@@ -111,19 +111,28 @@
                          materialDesign:HintAssist.Hint="443"
                                  materialDesign:HintAssist.HintOpacity=".35"/>
                         </StackPanel>
-                        <DockPanel
-                        Height="172">
-                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.AppliedState}"
-                            Margin="15" 
-                            Width="80"
-                            HorizontalAlignment="Right"
-                                 VerticalAlignment="Bottom"
-                            Foreground="White"
-                            Command="{Binding ApplyCommand}"/>
-                        </DockPanel>
+
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            Height="175">
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.RestartButton}"
+                                Margin="15,15,265,15" 
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Width="80"
+                                Foreground="White"
+                                Command="{Binding RestartCommand}"/>
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.ApplyButton}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Margin="15" 
+                                Width="80"
+                                Foreground="White"
+                                Command="{Binding ApplyCommand}"/>
+                        </StackPanel>
                     </StackPanel>
                 </AdornerDecorator>
-               
             </TabItem>
             <TabItem Header="Backup"
                      Width="120"
@@ -169,7 +178,7 @@
                             BorderBrush="#5a94e0"/>
                         </DockPanel>
                         <DockPanel Height="235">
-                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.BackupState, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.BackupButton, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                             Margin="15,15,15,15" 
                             Width="80" 
                             Foreground="White"

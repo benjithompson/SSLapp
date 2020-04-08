@@ -16,12 +16,20 @@
         FontFamily="{materialDesign:MaterialDesignFont}">
     <Grid>
         <DockPanel>
+            <TextBlock Margin="20"
+                       Text="{Binding UpdateCompleteModel.TextBlockMessage, UpdateSourceTrigger=PropertyChanged}">
+                <LineBreak/>
+                
+            </TextBlock>
+        </DockPanel>
+        <DockPanel>
             <Button Name="button1" Content="{Binding UpdateCompleteModel.DeclineButton, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}" 
                  Margin="15,15,110,15" 
                  Width="80" 
                  Foreground="White"
                  HorizontalAlignment="Right"
                  VerticalAlignment="Bottom"
+                 Visibility="{Binding UpdateCompleteModel.DeclineButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                  Command="{Binding DeclineCommand}"
                  CommandParameter="{Binding ElementName=UpdateCompleteWindow}"/>
         </DockPanel>
@@ -32,7 +40,18 @@
                  Foreground="White"
                  HorizontalAlignment="Right"
                  VerticalAlignment="Bottom"
-                 Command="{Binding AcceptCommand}"/>
+                 Visibility="{Binding UpdateCompleteModel.AcceptButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                 Command="{Binding AcceptCommand, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+        <DockPanel>
+            <Button Name="button3" Content="{Binding UpdateCompleteModel.CloseButton, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}" 
+                 Margin="15,15,15,15" 
+                 Width="80" 
+                 Foreground="White"
+                 HorizontalAlignment="Right"
+                 VerticalAlignment="Bottom"
+                 Visibility="{Binding UpdateCompleteModel.CloseButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                 Command="{Binding CloseCommand, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
     </Grid>
 </Window>
