@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
+using SSLapp.Utils.Files.UpdateAgentHandlers;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -43,6 +44,8 @@ namespace SSLapp.Utils.Files.Update
                     return new UpdateTestDataObjectViewerSettings(appPath);
                 case "TestDataService":
                     return new UpdateTestDataServiceSettings(appPath);
+                case "DistributedExecution":
+                    return new UpdateDistributedExecution(appPath);
                 default:
                     Trace.WriteLine("Application directory:\n " + appPath + "\ndoes not match an Updater.");
                     return null;

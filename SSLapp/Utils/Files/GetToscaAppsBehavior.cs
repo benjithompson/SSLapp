@@ -6,13 +6,13 @@ using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
-    class GetDirectoriesBehavior : IGetToscaServerDirectories
+    class GetToscaAppsBehavior : IGetToscaApps
     {
-        public IEnumerable<string> GetDirectories(string serverPath)
+        public IEnumerable<string> GetToscaApps(string appPath)
         {
             try
             {
-                return Directory.GetDirectories(serverPath);
+                return Directory.GetDirectories(appPath);
             }
             catch (Exception)
             {

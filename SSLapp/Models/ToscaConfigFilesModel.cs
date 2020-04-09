@@ -13,13 +13,16 @@ namespace SSLapp.Models
     {
 
         private string _serverPath;
+        private string _agentPath;
         private string _backupPath;
         private string _hostname;
         private string _dexServerPort;
         private string certThumbprint;
         private string _backupButton;
-        private string _applyButton;
-        private string _restartButton;
+        private string _applyServerButton;
+        private string _applyAgentButton;
+        private string _restartServerButton;
+        private string _restartAgentButton;
         private HTTPSCertificate _httpCert = new HTTPSCertificate();
 
         #region Constructor
@@ -27,11 +30,14 @@ namespace SSLapp.Models
         public ToscaConfigFilesModel()
         {
             ServerPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
+            AgentPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Testsuite";
             BackupPath = @"C:\Temp";
             DexServerPort = "";
             BackupButton = "Backup";
-            ApplyButton = "Apply";
-            RestartButton = "Restart";
+            ApplyServerButton = "Apply";
+            ApplyAgentButton = "Apply";
+            RestartServerButton = "Restart";
+            RestartAgentButton = "Restart";
         }
 
         #endregion
@@ -46,7 +52,18 @@ namespace SSLapp.Models
                 _serverPath = value;
                 NotifyPropertyChanged(nameof(ServerPath));
                 BackupButton = "Backup";
-                ApplyButton = "Apply";
+                ApplyServerButton = "Apply";
+            }
+        }
+        public string AgentPath
+        {
+            get { return _agentPath; }
+            set
+            {
+                _agentPath = value;
+                NotifyPropertyChanged(nameof(AgentPath));
+                BackupButton = "Backup";
+                ApplyAgentButton = "Apply";
             }
         }
         public string BackupPath
@@ -66,7 +83,7 @@ namespace SSLapp.Models
             {
                 _hostname = value;
                 NotifyPropertyChanged(nameof(Hostname));
-                ApplyButton = "Apply";
+                ApplyServerButton = "Apply";
             }
         }
         public string DexServerPort
@@ -76,7 +93,7 @@ namespace SSLapp.Models
             {
                 _dexServerPort = value;
                 NotifyPropertyChanged(nameof(DexServerPort));
-                ApplyButton = "Apply";
+                ApplyServerButton = "Apply";
             }
         }
         public string CertThumbprint
@@ -86,7 +103,7 @@ namespace SSLapp.Models
             {
                 certThumbprint = value;
                 NotifyPropertyChanged(nameof(CertThumbprint));
-                ApplyButton = "Apply";
+                ApplyServerButton = "Apply";
             }
         }
         public HTTPSCertificate GetCertificate
@@ -109,25 +126,42 @@ namespace SSLapp.Models
                 NotifyPropertyChanged(nameof(BackupButton));
             } 
         }
-        public string ApplyButton
+        public string ApplyServerButton
         {
-            get { return _applyButton; }
+            get { return _applyServerButton; }
             set
             {
-                _applyButton = value;
-                NotifyPropertyChanged(nameof(ApplyButton));
+                _applyServerButton = value;
+                NotifyPropertyChanged(nameof(ApplyServerButton));
             }
         }
-        public string RestartButton
+        public string ApplyAgentButton
         {
-            get { return _restartButton; }
+            get { return _applyAgentButton; }
             set
             {
-                _restartButton = value;
-                NotifyPropertyChanged(nameof(RestartButton));
+                _applyAgentButton = value;
+                NotifyPropertyChanged(nameof(ApplyAgentButton));
             }
         }
-
+        public string RestartServerButton
+        {
+            get { return _restartServerButton; }
+            set
+            {
+                _restartServerButton = value;
+                NotifyPropertyChanged(nameof(RestartServerButton));
+            }
+        }
+        public string RestartAgentButton
+        {
+            get { return _restartAgentButton; }
+            set
+            {
+                _restartAgentButton = value;
+                NotifyPropertyChanged(nameof(RestartAgentButton));
+            }
+        }
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -155,6 +189,10 @@ namespace SSLapp.Models
                 if (propertyName == "ServerPath")
                 {
                     result = ServerPathValidation();
+                }
+                if (propertyName == "AgentPath")
+                {
+                    result = AgentPathValidation();
                 }
                 if (propertyName == "BackupPath")
                 {
@@ -220,6 +258,20 @@ namespace SSLapp.Models
                 result = "Server path must not be empty";
             }
             else if (!Directory.Exists(ServerPath))
+            {
+                result = "Directory does not exist";
+            }
+            return result;
+        }
+
+        public string AgentPathValidation()
+        {
+            var result = string.Empty;
+            if (string.IsNullOrEmpty(AgentPath))
+            {
+                result = "Agent path must not be empty";
+            }
+            else if (!Directory.Exists(AgentPath))
             {
                 result = "Directory does not exist";
             }

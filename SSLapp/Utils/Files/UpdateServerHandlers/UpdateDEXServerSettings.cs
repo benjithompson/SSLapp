@@ -28,7 +28,7 @@ namespace SSLapp.Utils.Files.Update
             {
                 var webconfig = AppPath + @"\web.config";
                 doc = new XmlDocument();
-                doc.Load(AppPath + @"\web.config");
+                doc.Load(webconfig);
                 //doc.Load(@"C:\Program Files (x86)\TRICENTIS\Tosca Server\DEXServer\Web.config");
             }
             catch (Exception)
@@ -74,11 +74,19 @@ namespace SSLapp.Utils.Files.Update
                 {
                     var split = baseAddress.Attributes["baseAddress"].Value.Split("/");
                     split[0] = "https:";
-                    split[2] = (config.DexServerPort != null) ? config.Hostname : config.Hostname + ":" + config.DexServerPort;
+                    split[2] = (string.IsNullOrEmpty(config.DexServerPort)) ? config.Hostname : config.Hostname + ":" + config.DexServerPort;
                     var newBaseAddress = string.Empty;
-                    foreach (var item in split)
+                    for (var i = 0; i < split.Length; i++)
                     {
-                        newBaseAddress += item + "/";
+                        if (i < split.Length - 1)
+                        {
+                            newBaseAddress += split[i] + "/";
+
+                        }
+                        else
+                        {
+                            newBaseAddress += split[i];
+                        }
                     }
                     baseAddress.Attributes["baseAddress"].Value = newBaseAddress;
                 }

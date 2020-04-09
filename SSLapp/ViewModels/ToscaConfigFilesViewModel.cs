@@ -8,8 +8,10 @@ namespace SSLapp.ViewModels
     public class ToscaConfigFilesViewModel
     {
         private static ToscaConfigFilesModel _ToscaConfigFilesModel;
-        private ICommand _applyCommand;
+        private ICommand _applyServerCommand;
+        private ICommand _applyAgentCommand;
         private ICommand _openServerPathCommand;
+        private ICommand _openAgentPathCommand;
         private ICommand _backupToPathCommand;
         private ICommand _openBackupPathCommand;
         private ICommand _restartServicesCommand;
@@ -21,13 +23,24 @@ namespace SSLapp.ViewModels
         }
 
         public static ToscaConfigFilesModel ToscaConfigFiles => _ToscaConfigFilesModel;
-        public static bool CanExecuteApply
+        public static bool CanExecuteServerApply
         {
-
             get
             {
                 // check if executing is allowed, i.e., validate, check if a process is running, etc. 
                 if (string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname) || string.IsNullOrEmpty(_ToscaConfigFilesModel.GetCertificate.GetCertificateThumbprint()) || !string.IsNullOrEmpty(_ToscaConfigFilesModel.ServerPathValidation()))
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+        public static bool CanExecuteAgentApply
+        {
+            get
+            {
+                // check if executing is allowed, i.e., validate, check if a process is running, etc. 
+                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.AgentPath))
                 {
                     return false;
                 }
@@ -44,12 +57,20 @@ namespace SSLapp.ViewModels
 
         #region Commands
 
-        public ICommand ApplyCommand
+        public ICommand ApplyServerCommand
         {
             get
             {
-                return _applyCommand ?? (_applyCommand = new CommandHandler(() 
-                    => Commands.ToscaConfigCommands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteApply));
+                return _applyServerCommand ?? (_applyServerCommand = new CommandHandler(() 
+                    => Commands.ToscaConfigCommands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteServerApply));
+            }
+        }
+        public ICommand ApplyAgentCommand
+        {
+            get
+            {
+                return _applyAgentCommand ?? (_applyAgentCommand = new CommandHandler(()
+                    => Commands.ToscaConfigCommands.UpdateAgentFiles(_ToscaConfigFilesModel.AgentPath), () => CanExecuteAgentApply));
             }
         }
         public ICommand OpenServerPath
@@ -57,6 +78,13 @@ namespace SSLapp.ViewModels
             get
             {
                 return _openServerPathCommand ?? (_openServerPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.ServerPath), () => true));
+            }
+        }
+        public ICommand OpenAgentPath
+        {
+            get
+            {
+                return _openAgentPathCommand ?? (_openAgentPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.AgentPath), () => true));
             }
         }
         public ICommand OpenBackupPath

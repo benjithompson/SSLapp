@@ -57,7 +57,7 @@
                     </Setter>
                 </Style>
             </TabControl.Resources>
-            <TabItem Header="HTTPS"
+            <TabItem Header="Server"
                      Width="120"
                      Height="30"
                      Margin="0"
@@ -116,20 +116,87 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Stretch"
                             Height="175">
-                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.RestartButton}"
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.RestartServerButton}"
                                 Margin="15,15,265,15" 
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 Width="80"
                                 Foreground="White"
-                                Command="{Binding RestartCommand}"/>
-                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.ApplyButton}"
+                                Command="{Binding RestartServerCommand}"/>
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.ApplyServerButton}"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Margin="15" 
                                 Width="80"
                                 Foreground="White"
-                                Command="{Binding ApplyCommand}"/>
+                                Command="{Binding ApplyServerCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </AdornerDecorator>
+            </TabItem>
+            <TabItem Header="Agent"
+                     Width="120"
+                     Height="30"
+                     Margin="0"
+                     Padding="0">
+                <AdornerDecorator>
+                    <StackPanel>
+                        <Label Content="Tosca Testsuite Root Path" VerticalAlignment="Top" 
+                        Margin="15,15,15,0" 
+                        Height="25"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.AgentPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Margin="20,5,5,5" 
+                         Width="390"  
+                         Height="25"/>
+                            <Button Name="buttonOpenAgentPath" 
+                                Command="{Binding OpenAgentPath}" 
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                BorderThickness="1"
+                                BorderBrush="#5a94e0"
+                        Width="30" 
+                        Height="25" 
+                        Margin="5,5,5,5" />
+                        </StackPanel>
+                        <DockPanel>
+                            <Label Content="Full Computer Name" 
+                       Width="360" 
+                       Margin="15,15,15,0"/>
+                            <Label Content="Port" Width="170" 
+                       Margin="10,15,15,0"/>
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.Hostname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Height="25" 
+                         Width="365" 
+                         Margin="20,5,5,5"
+                         materialDesign:HintAssist.Hint="hostname.domain.com"
+                                 materialDesign:HintAssist.HintOpacity=".35"/>
+                            <TextBox Text="{Binding ToscaConfigFiles.DexServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Height="25" 
+                         Width="45" 
+                         Margin="15,5,5,5"
+                         materialDesign:HintAssist.Hint="443"
+                                 materialDesign:HintAssist.HintOpacity=".35"/>
+                        </StackPanel>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            Height="250">
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.RestartAgentButton}"
+                                Margin="15,15,265,15" 
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Width="80"
+                                Foreground="White"
+                                Command="{Binding RestartAgentCommand}"/>
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.ApplyAgentButton}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Margin="15" 
+                                Width="80"
+                                Foreground="White"
+                                Command="{Binding ApplyAgentCommand}"/>
                         </StackPanel>
                     </StackPanel>
                 </AdornerDecorator>
@@ -177,7 +244,7 @@
                             BorderThickness="1"
                             BorderBrush="#5a94e0"/>
                         </DockPanel>
-                        <DockPanel Height="235">
+                        <DockPanel Height="238">
                             <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.BackupButton, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                             Margin="15,15,15,15" 
                             Width="80" 

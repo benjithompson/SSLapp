@@ -16,9 +16,8 @@ namespace SSLapp.Commands
         {
             Trace.WriteLine("Updating Tosca Server Files.");
             Trace.WriteLine("============================\n");
-            BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetDirectoriesBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
-            var installedApps = fileUpdateHandler.GetInstalledToscaServerApps(serverpath).ToList();
-            //create factory
+            BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetToscaAppsBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
+            var installedApps = fileUpdateHandler.GetInstalledToscaApps(serverpath).ToList();
             UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
             var count = 0;
             foreach (var appPath in installedApps)
@@ -35,9 +34,35 @@ namespace SSLapp.Commands
             Trace.WriteLine("Update process complete.");
             if (fileUpdateHandler.UpdateSucceeded())
             {
-                ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyButton = "👍";
+                ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyServerButton = "👍";
             }
             RestartServicesWindow();
+        }
+
+        public static void UpdateAgentFiles(string agentPath)
+        {
+            Trace.WriteLine("Updating Execution Agent Files.");
+            Trace.WriteLine("============================\n");
+            BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetToscaAppsBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
+            var installedApps = fileUpdateHandler.GetInstalledToscaApps(agentPath).ToList();
+            UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
+            var count = 0;
+            foreach (var appPath in installedApps)
+            {
+                //create update behavior based on App Folder name
+                var updater = updateFactory.TryCreate(appPath);
+                if (updater != null)
+                {
+                    fileUpdateHandler.AddUpdateBehavior(updater);
+                    count++;
+                }
+            }
+            fileUpdateHandler.UpdateAll();
+            Trace.WriteLine("Update process complete.");
+            if (fileUpdateHandler.UpdateSucceeded())
+            {
+                ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyAgentButton = "👍";
+            }
         }
 
         public static void OpenServerDirectory(string path)
@@ -79,6 +104,11 @@ namespace SSLapp.Commands
             vm.OnRequestClose += (s, e) => UpdateWindow.Close();
             UpdateWindow.Owner = Application.Current.MainWindow;
             UpdateWindow.ShowDialog();
+        }
+
+        public static void RestartAgent()
+        {
+
         }
     }
 }

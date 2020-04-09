@@ -10,7 +10,7 @@ namespace SSLapp.Utils.Files.Update
     class BaseFileUpdateHandler
     {
         List<IUpdateFilesBehavior> _updateFilesBehaviorList = new List<IUpdateFilesBehavior>();
-        IGetToscaServerDirectories _getDirectoriesBehavior;
+        IGetToscaApps _getDirectoriesBehavior;
         ToscaConfigFilesModel _config;
 
         public int GetUpdatedAppsCount()
@@ -45,7 +45,7 @@ namespace SSLapp.Utils.Files.Update
             _config = config;
         }
 
-        public BaseFileUpdateHandler(IGetToscaServerDirectories getToscaServerDirectories, ToscaConfigFilesModel config)
+        public BaseFileUpdateHandler(IGetToscaApps getToscaServerDirectories, ToscaConfigFilesModel config)
         {
             _getDirectoriesBehavior = getToscaServerDirectories;
             _config = config;
@@ -66,9 +66,9 @@ namespace SSLapp.Utils.Files.Update
             }
         }
 
-        public IEnumerable<string> GetInstalledToscaServerApps(string serverPath)
+        public IEnumerable<string> GetInstalledToscaApps(string appPath)
         {
-            return _getDirectoriesBehavior.GetDirectories(serverPath);
+            return _getDirectoriesBehavior.GetToscaApps(appPath);
         }
     }
 }
