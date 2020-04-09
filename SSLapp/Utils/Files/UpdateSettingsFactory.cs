@@ -19,7 +19,7 @@ namespace SSLapp.Utils.Files.Update
                 case "ServiceDiscovery":
                     return new UpdateServiceDiscoverySettings(appPath);
                 case "AuthenticationService":
-                    return new UpdateAuthServiceAppsettings(appPath);
+                    return new UpdateAuthServiceSettings(appPath);
                 case "ProjectService":
                     return new UpdateProjectServiceSettings(appPath);
                 case "MigrationService":

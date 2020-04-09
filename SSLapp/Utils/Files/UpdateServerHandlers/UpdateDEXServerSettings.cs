@@ -96,7 +96,7 @@ namespace SSLapp.Utils.Files.Update
                 Trace.WriteLine("Rdp Server endpoint node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
             }
 
-            using (FileStream fs = File.OpenWrite(AppPath + @"\Web.config"))
+            using (FileStream fs = File.Open(AppPath + @"\Web.config", FileMode.Create, FileAccess.Write))
             {
                 doc.Save(fs);
                 UpdatedFilesCount++;

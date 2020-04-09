@@ -6,12 +6,13 @@ using SSLapp.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Xml;
 
 namespace SSLapp.Utils.Files.Update
 {
-    class UpdateAuthServiceAppsettings : IUpdateFilesBehavior
+    class UpdateAuthServiceSettings : IUpdateFilesBehavior
     {
-        public UpdateAuthServiceAppsettings(string appPath)
+        public UpdateAuthServiceSettings(string appPath)
         {
             AppPath = appPath;
             UpdatedFilesCount = 0;
@@ -42,7 +43,8 @@ namespace SSLapp.Utils.Files.Update
                     UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
                     Trace.WriteLine("---Token Thumbprint.");
                     UpdateJSONFields.UpdateTokenCertificate(jsonObj, config);
-                    string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                    UpdateDataXml(AppPath, config);
+                    string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
                     File.WriteAllText(appsetting, output);
                     UpdatedFilesCount++;
                 }
@@ -54,6 +56,44 @@ namespace SSLapp.Utils.Files.Update
             }
             Updated = true;
 
+        }
+
+        private void UpdateDataXml(string appPath, ToscaConfigFilesModel config)
+        {
+            XmlDocument doc;
+            var dataxml = string.Empty;
+            //update web.config
+            try
+            {
+
+                appPath = appPath.Replace("AuthenticationService", "LandingPage");
+                dataxml = appPath + @"\resources\data\data.xml";
+                doc = new XmlDocument();
+                doc.Load(dataxml);
+                //doc.Load(@"C:\Program Files (x86)\TRICENTIS\Tosca Server\DEXServer\Web.config");
+            }
+            catch (Exception)
+            {
+
+                Trace.WriteLine("Web.config file not found at" + AppPath + @"\Web.config");
+                return;
+            }
+
+            try
+            {
+                var hostname = doc.SelectSingleNode("/features/feature/url");
+                var split = hostname.InnerText.Split(":");
+                hostname.InnerText = "https://" + config.Hostname + ":" + split[2];
+            }
+            catch (Exception)
+            {
+                Trace.WriteLine("Rdp Server endpoint node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+            }
+            using (FileStream fs = File.Open(dataxml, FileMode.Create, FileAccess.Write))
+            {
+                doc.Save(fs);
+                UpdatedFilesCount++;
+            }
         }
     }
 }
