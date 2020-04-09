@@ -28,8 +28,8 @@ namespace SSLapp.Utils.Files.Update
             {
                 var webconfig = AppPath + @"\web.config";
                 doc = new XmlDocument();
-                //doc.Load(AppPath + @"\web.config");
-                doc.Load(@"C:\Program Files (x86)\TRICENTIS\Tosca Server\DEXServer\Web.config");
+                doc.Load(AppPath + @"\web.config");
+                //doc.Load(@"C:\Program Files (x86)\TRICENTIS\Tosca Server\DEXServer\Web.config");
             }
             catch (Exception)
             {
@@ -52,7 +52,40 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-                Trace.WriteLine("Node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+                Trace.WriteLine("Rdp Server endpoint node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+            }
+
+            try
+            {
+                doc.SelectSingleNode("/configuration/system.serviceModel/bindings/basicHttpBinding/binding/security").Attributes["mode"].Value = "Transport";
+                doc.SelectSingleNode("/configuration/system.serviceModel/bindings/webHttpBinding/binding/security").Attributes["mode"].Value = "Transport";
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            try
+            {
+                var baseAddresses = doc.SelectNodes("/configuration/system.serviceModel/services/service/host/baseAddresses/add");
+
+                foreach (XmlNode baseAddress in baseAddresses)
+                {
+                    var split = baseAddress.Attributes["baseAddress"].Value.Split("/");
+                    split[0] = "https:";
+                    split[2] = (config.DexServerPort != null) ? config.Hostname : config.Hostname + ":" + config.DexServerPort;
+                    var newBaseAddress = string.Empty;
+                    foreach (var item in split)
+                    {
+                        newBaseAddress += item + "/";
+                    }
+                    baseAddress.Attributes["baseAddress"].Value = newBaseAddress;
+                }
+            }
+            catch (Exception)
+            {
+                Trace.WriteLine("Rdp Server endpoint node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
             }
 
             using (FileStream fs = File.OpenWrite(AppPath + @"\Web.config"))
