@@ -7,6 +7,8 @@ using Ookii.Dialogs.Wpf;
 using System;
 using System.Linq;
 using SSLapp.Views;
+using System.IO;
+using System.ComponentModel;
 
 namespace SSLapp.Commands
 {
@@ -36,7 +38,7 @@ namespace SSLapp.Commands
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyServerButton = "👍";
             }
-            RestartServicesWindow();
+            RestartServerWindow();
         }
 
         public static void UpdateAgentFiles(string agentPath)
@@ -97,7 +99,7 @@ namespace SSLapp.Commands
             }
             
         }
-        public static void RestartServicesWindow()
+        public static void RestartServerWindow()
         {
             var vm = new UpdateCompleteViewModel();
             var UpdateWindow = new UpdateCompleteView { DataContext = vm };
@@ -106,9 +108,42 @@ namespace SSLapp.Commands
             UpdateWindow.ShowDialog();
         }
 
-        public static void RestartAgent()
+        public static void RestartAgent(string toscaPath)
         {
+            var agentPath = toscaPath + @"\DistributedExecution\ToscaDistributionAgent.exe";
+            try
+            {
+                foreach (var proc in Process.GetProcessesByName("ToscaDistributionAgent")){
+                    Trace.WriteLine("Killing " + proc.ProcessName);
+                    proc.Kill();
+                }
+            }
+            catch (Exception)
+            {
+                Trace.WriteLine("Exception when trying to kill DistributionAgent process.");
+            }
 
+            if(File.Exists(agentPath))
+            {
+                try
+                {
+                    BackgroundWorker worker_restartAgent = new BackgroundWorker();
+                    worker_restartAgent.WorkerReportsProgress = false;
+                    worker_restartAgent.DoWork += StartAgentAsyc;
+                    worker_restartAgent.RunWorkerAsync(argument: agentPath);
+
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine("Exception while trying to start " + agentPath);
+                    throw;
+                }
+            }
+        }
+
+        public static void StartAgentAsyc(object e, DoWorkEventArgs args)
+        {
+            Process.Start((string)args.Argument);
         }
     }
 }

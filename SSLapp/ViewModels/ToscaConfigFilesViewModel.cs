@@ -14,7 +14,8 @@ namespace SSLapp.ViewModels
         private ICommand _openAgentPathCommand;
         private ICommand _backupToPathCommand;
         private ICommand _openBackupPathCommand;
-        private ICommand _restartServicesCommand;
+        private ICommand _restartServerCommand;
+        private ICommand _restartAgentCommand;
 
         //Constructor
         public ToscaConfigFilesViewModel()
@@ -101,11 +102,18 @@ namespace SSLapp.ViewModels
                 return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.BackupToscaServerSettings(_ToscaConfigFilesModel.BackupPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
             }
         }
-        public ICommand RestartCommand
+        public ICommand RestartServerCommand
         {
             get
             {
-                return _restartServicesCommand ?? (_restartServicesCommand = new CommandHandler(() => ToscaConfigCommands.RestartServicesWindow(), () => true));
+                return _restartServerCommand ?? (_restartServerCommand = new CommandHandler(() => ToscaConfigCommands.RestartServerWindow(), () => true));
+            }
+        }
+        public ICommand RestartAgentCommand
+        {
+            get
+            {
+                return _restartAgentCommand ?? (_restartAgentCommand = new CommandHandler(() => ToscaConfigCommands.RestartAgent(_ToscaConfigFilesModel.AgentPath), () => true));
             }
         }
         #endregion
