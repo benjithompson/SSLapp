@@ -14,13 +14,15 @@ namespace SSLapp.Commands
         public static void DoAsyncIISReset(object o, DoWorkEventArgs args)
         {
             Trace.WriteLine("Resetting IIS...");
-            Process iisReset = new Process();
-            iisReset.StartInfo.FileName = "iisreset.exe";
-            iisReset.StartInfo.RedirectStandardOutput = true;
-            iisReset.StartInfo.UseShellExecute = false;
-            iisReset.Start();
-            iisReset.WaitForExit();
-        }
+            using (Process iisReset = new Process())
+            {
 
+                iisReset.StartInfo.FileName = "iisreset.exe";
+                iisReset.StartInfo.RedirectStandardOutput = false;
+                iisReset.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                iisReset.Start();
+                iisReset.WaitForExit();
+            }
+        }
     }
 }
