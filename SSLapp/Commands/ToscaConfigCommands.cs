@@ -9,6 +9,7 @@ using System.Linq;
 using SSLapp.Views;
 using System.IO;
 using System.ComponentModel;
+using SSLapp.Utils.Files.Backups;
 
 namespace SSLapp.Commands
 {
@@ -89,9 +90,10 @@ namespace SSLapp.Commands
             ToscaConfigFilesViewModel.ToscaConfigFiles.BackupPath = selectedPath;
         }
 
-        public static void BackupToscaServerSettings(string backuppath, string serverpath)
+        public static void BackupToscaServerSettings(string sourcePath, string targetPath)
         {
-            var completed = BackupFiles.BackupToscaServerFiles(backuppath, serverpath);
+            IBackupToscaFiles backup = new BackupServerFiles();
+            var completed = backup.BackupFiles(sourcePath, targetPath);
             if (completed)
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.BackupButton = "Done!";

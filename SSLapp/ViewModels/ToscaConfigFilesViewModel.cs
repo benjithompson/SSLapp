@@ -78,28 +78,28 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _openServerPathCommand ?? (_openServerPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.ServerPath), () => true));
+                return _openServerPathCommand ?? (_openServerPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.ServerPath), () => true));
             }
         }
         public ICommand OpenAgentPath
         {
             get
             {
-                return _openAgentPathCommand ?? (_openAgentPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.AgentPath), () => true));
+                return _openAgentPathCommand ?? (_openAgentPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.AgentPath), () => true));
             }
         }
         public ICommand OpenBackupPath
         {
             get
             {
-                return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
+                return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
             }
         }
         public ICommand BackupToPath
         {
             get
             {
-                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => Commands.ToscaConfigCommands.BackupToscaServerSettings(_ToscaConfigFilesModel.BackupPath, _ToscaConfigFilesModel.ServerPath), () => CanExecuteBackup));
+                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => ToscaConfigCommands.BackupToscaServerSettings(_ToscaConfigFilesModel.ServerPath, _ToscaConfigFilesModel.BackupPath), () => CanExecuteBackup));
             }
         }
         public ICommand RestartServerCommand
