@@ -95,7 +95,7 @@ namespace SSLapp.ViewModels
                 return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
             }
         }
-        public ICommand BackupToPath
+        public ICommand BackupServerSettings
         {
             get
             {
