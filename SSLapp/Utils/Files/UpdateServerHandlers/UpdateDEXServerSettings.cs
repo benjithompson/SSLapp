@@ -42,12 +42,7 @@ namespace SSLapp.Utils.Files.Update
             {
                 var rdpEndpoint = doc.SelectSingleNode("/configuration/system.serviceModel/client/endpoint").Attributes["address"];
                 var split = rdpEndpoint.Value.Split(":");
-                split[1] = @"://" + config.Hostname + ":";
-                var newRdpEndpoint = string.Empty;
-                foreach (var item in split)
-                {
-                    newRdpEndpoint += item;
-                }
+                var newRdpEndpoint = split[1] = @"https://" + config.Hostname + ":" + split[2];
                 rdpEndpoint.Value = newRdpEndpoint;
             }
             catch (Exception)
