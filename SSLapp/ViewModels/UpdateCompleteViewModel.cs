@@ -9,6 +9,7 @@ using SSLapp.Views;
 using System.ServiceProcess;
 using System.Linq;
 using System.ComponentModel;
+using System.IO;
 
 namespace SSLapp.ViewModels
 {
@@ -70,8 +71,8 @@ namespace SSLapp.ViewModels
             worker_restartIIS.DoWork += UpdateCompleteCommands.DoAsyncIISReset;
             worker_restartIIS.RunWorkerAsync();
 
+            RestartRdpServer();
 
-            //CloseUpdateCompleteWindow();
         }
 
          void startAsyncserviceRestart(object sender, DoWorkEventArgs e)
@@ -174,6 +175,46 @@ namespace SSLapp.ViewModels
             _updateCompleteModel.TextBlockMessage = string.Format("Starting Services... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
             _updateCompleteModel.CloseButtonVisible = true;
             _updateCompleteModel.TextBlockMessage = "Tricentis Service restart complete!";
+        }
+
+        public static void RestartRdpServer()
+        {
+            var rdpPath = string.Empty;
+            try
+            {
+                foreach (var proc in Process.GetProcessesByName("ToscaRdpServer"))
+                {
+                    rdpPath = proc.MainModule.FileName;
+                    Trace.WriteLine("Killing " + proc.ProcessName);
+                    proc.Kill();
+                }
+            }
+            catch (Exception)
+            {
+                Trace.WriteLine("Exception when trying to kill DistributionAgent process.");
+            }
+
+            if (File.Exists(rdpPath))
+            {
+                try
+                {
+                    BackgroundWorker worker_restartAgent = new BackgroundWorker();
+                    worker_restartAgent.WorkerReportsProgress = false;
+                    worker_restartAgent.DoWork += StartRdpServerAsync;
+                    worker_restartAgent.RunWorkerAsync(argument: rdpPath);
+
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine("Exception while trying to start " + rdpPath);
+                    throw;
+                }
+            }
+        }
+
+        private static void StartRdpServerAsync(object sender, DoWorkEventArgs args)
+        {
+            Process.Start((string)args.Argument);
         }
     }
 }
