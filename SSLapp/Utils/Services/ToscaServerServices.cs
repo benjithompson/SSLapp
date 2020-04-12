@@ -72,15 +72,14 @@ namespace SSLapp.Utils.Services
 
         public static void RestartToscaServerServicesAsync(object sender, DoWorkEventArgs e)
         {
-
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Empty;
             List<ServiceController> scList = ServiceController.GetServices().Where(s => s.ServiceName.ToLower().StartsWith("tricentis")).ToList();
             TimeSpan timeout = TimeSpan.FromMilliseconds(15000);
             int restartCount = 0;
             int totalServices = scList.Count;
-
             foreach (ServiceController sc in scList)
             {
-                UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Stopping Services... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                
                 try
                 {
                     if (sc.Status == ServiceControllerStatus.Running)
@@ -90,16 +89,17 @@ namespace SSLapp.Utils.Services
                         sc.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
                         Trace.WriteLine("Done!");
                         restartCount++;
+                        
                     }
                 }
                 catch (Exception)
                 {
-
                     Trace.WriteLine(sc.ServiceName + " already stopped.");
                 }
             }
 
-            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Stopping Services... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog = string.Format("Tosca Server Services stopped.");
+
             restartCount = 0;
             ServiceController service = null;
 
@@ -113,7 +113,7 @@ namespace SSLapp.Utils.Services
                     service.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     Trace.WriteLine("Done!");
                     restartCount++;
-                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
                     scList.Remove(service);
                 }
                 service = scList.FirstOrDefault(s => s.ServiceName == "Tricentis.AuthenticationService");
@@ -124,7 +124,7 @@ namespace SSLapp.Utils.Services
                     service.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     Trace.WriteLine("Done!");
                     restartCount++;
-                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
                     scList.Remove(service);
                 }
                 service = scList.FirstOrDefault(s => s.ServiceName == "Tricentis.ProjectService");
@@ -135,7 +135,7 @@ namespace SSLapp.Utils.Services
                     service.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     Trace.WriteLine("Done!");
                     restartCount++;
-                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
                     scList.Remove(service);
                 }
 
@@ -146,15 +146,14 @@ namespace SSLapp.Utils.Services
             }
 
             foreach (var sc in scList)
-            {
-                UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + sc.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+            {   
                 try
                 {
                     Trace.Write(sc.ServiceName + " starting... ");
                     sc.Start();
                     service.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     Trace.WriteLine("Done!");
-                    restartCount++;
+
 
                 }
                 catch (Exception)
@@ -163,15 +162,17 @@ namespace SSLapp.Utils.Services
                     Trace.WriteLine(sc.ServiceName + " failed to start.");
                     MessageBox.Show(sc.ServiceName + " failed to start.", "Service Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                restartCount++;
+                UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + sc.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
 
             }
             UpdateCompleteViewModel.UpdateCompleteModel.CloseButtonVisible = true;
-            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = "Tricentis Service restart complete!";
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += "\nTricentis Service restart complete!";
         }
 
         public static void DoAsyncIISReset(object o, DoWorkEventArgs args)
         {
-            Trace.WriteLine("Resetting IIS...");
+            Trace.WriteLine("Restarting IIS...");
             using (Process iisReset = new Process())
             {
 
@@ -182,6 +183,7 @@ namespace SSLapp.Utils.Services
                 iisReset.WaitForExit();
             }
             Trace.WriteLine("Resetting IIS Complete!");
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nIIS Restarted");
         }
     }
 }

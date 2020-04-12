@@ -6,21 +6,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SSLapp.Views"
         mc:Ignorable="d"
-        Title="Setup Complete" Height="200" Width="340"
+        Title="SSL Settings" Height="260" Width="440"
         WindowStartupLocation="CenterOwner"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignLightBackground}"
         TextElement.FontWeight="Light"
         TextElement.FontSize="13"
-        FontFamily="{materialDesign:MaterialDesignFont}">
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        ResizeMode="NoResize">
     <Grid>
         <DockPanel>
-            <TextBlock Margin="20"
-                       Text="{Binding UpdateCompleteModel.TextBlockMessage, UpdateSourceTrigger=PropertyChanged}">
+            <TextBlock 
+                Margin="15,15,15,90"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="14"
+                    Text="{Binding UpdateCompleteModel.TextBlockMessage, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <LineBreak/>
-                
             </TextBlock>
+        </DockPanel>
+        <DockPanel>
+            <ScrollViewer Margin="15,15,0,55">
+                <TextBlock 
+                    Text="{Binding UpdateCompleteModel.TextBlockLog, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <LineBreak/>
+                </TextBlock>
+            </ScrollViewer>
+
         </DockPanel>
         <DockPanel>
             <Button Name="button1" Content="{Binding UpdateCompleteModel.DeclineButton, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}" 

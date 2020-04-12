@@ -7,6 +7,8 @@ using SSLapp.Commands;
 using SSLapp.Models;
 using SSLapp.Utils.Services;
 using System.ComponentModel;
+using SSLapp.Utils.Files;
+using SSLapp.Utils.Files.Update;
 
 namespace SSLapp.ViewModels
 {
@@ -15,10 +17,22 @@ namespace SSLapp.ViewModels
         private ICommand _accept_command;
         private ICommand _decline_command;
         public event EventHandler OnRequestClose;
+        private static BaseFileUpdateHandler _updateHandler;
 
         public UpdateCompleteViewModel()
         {
             UpdateCompleteModel = new UpdateCompleteModel();
+        }
+
+        public UpdateCompleteViewModel(BaseFileUpdateHandler updateHandler)
+        {
+            UpdateCompleteModel = new UpdateCompleteModel();
+            _updateHandler = updateHandler;
+        }
+
+        public static BaseFileUpdateHandler GetUpdateHandler()
+        {
+            return _updateHandler;
         }
 
         public static UpdateCompleteModel UpdateCompleteModel { get; set; }
@@ -49,6 +63,7 @@ namespace SSLapp.ViewModels
 
         public void CloseUpdateCompleteWindow()
         {
+            UpdateCompleteModel.TextBlockLog = "";
             OnRequestClose(this, new EventArgs());
         }
 

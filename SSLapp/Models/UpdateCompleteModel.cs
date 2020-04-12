@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
+using SSLapp.ViewModels;
 
 namespace SSLapp.Models
 {
@@ -11,6 +13,7 @@ namespace SSLapp.Models
         private string _declineButton;
         private string _closeButton;
         private string _textBlockMessage;
+        private string _textBlockLog;
         private bool _acceptButtonVisible;
         private bool _declineButtonVisible;
         private bool _closeButtonVisible;
@@ -20,7 +23,12 @@ namespace SSLapp.Models
             AcceptButton = "Yes";
             DeclineButton = "No";
             CloseButton = "Close";
-            TextBlockMessage = "Do you want to restart Tricentis Services?";
+
+            var appsUpdated = (UpdateCompleteViewModel.GetUpdateHandler() != null) ? UpdateCompleteViewModel.GetUpdateHandler().GetUpdatedAppsCount() : 0;
+            TextBlockMessage = (appsUpdated > 0) ? 
+                $"{appsUpdated} Server directories updated.\nRestart Services to apply changes?" : 
+                "Restart Tosca Server Services?";
+            TextBlockLog = string.Empty;
             AcceptButtonVisible = true;
             DeclineButtonVisible = true;
             CloseButtonVisible = false;
@@ -60,6 +68,15 @@ namespace SSLapp.Models
             {
                 _textBlockMessage = value;
                 NotifyPropertyChanged(nameof(TextBlockMessage));
+            }
+        }
+        public string TextBlockLog
+        {
+            get { return _textBlockLog; }
+            set
+            {
+                _textBlockLog = value;
+                NotifyPropertyChanged(nameof(TextBlockLog));
             }
         }
         public bool AcceptButtonVisible

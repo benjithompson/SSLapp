@@ -14,29 +14,30 @@ namespace SSLapp.Commands
     {
         public static void UpdateToscaServerFiles(string serverpath)
         {
+            IUpdateFilesBehavior updater = null;
+
             Trace.WriteLine("Updating Tosca Server Files.");
             Trace.WriteLine("============================\n");
             BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetToscaAppsBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
             var installedApps = fileUpdateHandler.GetInstalledToscaApps(serverpath).ToList();
             UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
-            var count = 0;
             foreach (var appPath in installedApps)
             {
                 //create update behavior based on App Folder name
-                var updater = updateFactory.TryCreate(appPath);
+                updater = updateFactory.TryCreate(appPath);
                 if (updater != null)
                 {
                     fileUpdateHandler.AddUpdateBehavior(updater);
-                    count++;
+
                 }
             }
             fileUpdateHandler.UpdateAll();
-            Trace.WriteLine("Update process complete.");
+            Trace.WriteLine($"Updated {fileUpdateHandler.GetUpdatedAppsCount()} directories.");
             if (fileUpdateHandler.UpdateSucceeded())
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyServerButton = "👍";
             }
-            RestartServerWindow();
+            RestartServerWindow(fileUpdateHandler);
         }
 
         public static void UpdateAgentFiles(string agentPath)
@@ -94,11 +95,11 @@ namespace SSLapp.Commands
             var agentCompleted = backup.BackupFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.AgentPath);
             if (serverCompleted)
             {
-                Trace.WriteLine("Tosca Server settings files backed up to " + backup.GetTarget());
+                Trace.WriteLine($"Tosca Server settings files backed up to {backup.GetTarget()}");
             }
             if (agentCompleted)
             {
-                Trace.WriteLine("Distribution Agent settings backed up to " + backup.GetTarget());
+                Trace.WriteLine($"Distribution Agent settings backed up to {backup.GetTarget()}");
             }
             
         }
@@ -106,6 +107,15 @@ namespace SSLapp.Commands
         public static void RestartServerWindow()
         {
             var vm = new UpdateCompleteViewModel();
+            var UpdateWindow = new UpdateCompleteView { DataContext = vm };
+            vm.OnRequestClose += (s, e) => UpdateWindow.Close();
+            UpdateWindow.Owner = Application.Current.MainWindow;
+            UpdateWindow.ShowDialog();
+        }
+
+        public static void RestartServerWindow(BaseFileUpdateHandler updatehandler)
+        {
+            var vm = new UpdateCompleteViewModel(updatehandler);
             var UpdateWindow = new UpdateCompleteView { DataContext = vm };
             vm.OnRequestClose += (s, e) => UpdateWindow.Close();
             UpdateWindow.Owner = Application.Current.MainWindow;

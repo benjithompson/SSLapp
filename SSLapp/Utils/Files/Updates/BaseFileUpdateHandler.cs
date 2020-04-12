@@ -18,6 +18,11 @@ namespace SSLapp.Utils.Files.Update
             return _updateFilesBehaviorList.Count;
         }
 
+        public void ResetUpdateApps()
+        {
+            _updateFilesBehaviorList.Clear();
+        }
+
         public int GetUpdatedFilesCount()
         {
             var count = 0;

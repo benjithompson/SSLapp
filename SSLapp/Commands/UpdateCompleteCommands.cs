@@ -19,6 +19,7 @@ namespace SSLapp.Commands
         public static void RestartToscaServerDependencies()
         {
             Trace.WriteLine("Restarting Tosca Server Dependencies:");
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Empty;
             UpdateCompleteViewModel.UpdateCompleteModel.AcceptButtonVisible = false;
             UpdateCompleteViewModel.UpdateCompleteModel.DeclineButtonVisible = false;
             UpdateCompleteViewModel.UpdateCompleteModel.CloseButtonVisible = true;
@@ -34,6 +35,8 @@ namespace SSLapp.Commands
             worker_restartServices.RunWorkerAsync();
 
             ExecutableHelpers.RestartExe("RdpServer");
+
+            UpdateCompleteViewModel.GetUpdateHandler().ResetUpdateApps();
         }
 
     }
