@@ -11,7 +11,7 @@ namespace SSLapp.Models
 {
     public class ToscaConfigFilesModel : IDataErrorInfo, INotifyPropertyChanged
     {
-
+        private string _tricentisPath;
         private string _serverPath;
         private string _agentPath;
         private string _backupPath;
@@ -29,8 +29,9 @@ namespace SSLapp.Models
 
         public ToscaConfigFilesModel()
         {
-            ServerPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Server";
-            AgentPath = @"C:\Program Files (x86)\TRICENTIS\Tosca Testsuite";
+            TricentisPath = @"C:\Program Files (x86)\TRICENTIS";
+            ServerPath = TricentisPath + @"\Tosca Server";
+            AgentPath = TricentisPath + @"\Tosca Testsuite";
             BackupPath = @"C:\Temp";
             DexServerPort = "";
             BackupButton = "Backup";
@@ -43,6 +44,18 @@ namespace SSLapp.Models
         #endregion
 
         #region Properties
+
+        public string TricentisPath
+        {
+            get { return _tricentisPath; }
+            set
+            {
+                _tricentisPath = value;
+                NotifyPropertyChanged(nameof(TricentisPath));
+                BackupButton = "Backup";
+                ApplyServerButton = "Apply";
+            }
+        }
 
         public string ServerPath
         {

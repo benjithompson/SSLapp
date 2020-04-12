@@ -4,11 +4,8 @@ using SSLapp.Utils.Files;
 using SSLapp.Utils.Files.Update;
 using SSLapp.ViewModels;
 using Ookii.Dialogs.Wpf;
-using System;
 using System.Linq;
 using SSLapp.Views;
-using System.IO;
-using System.ComponentModel;
 using SSLapp.Utils.Files.Backups;
 
 namespace SSLapp.Commands
@@ -90,17 +87,22 @@ namespace SSLapp.Commands
             ToscaConfigFilesViewModel.ToscaConfigFiles.BackupPath = selectedPath;
         }
 
-        public static void BackupToscaServerSettings(string sourcePath, string targetPath)
+        public static void BackupTricentisSettings()
         {
-            IBackupToscaFiles backup = new BackupServerFiles();
-            var completed = backup.BackupFiles(sourcePath, targetPath);
-            if (completed)
+            IBackupToscaFiles backup = new BackupToscaFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.BackupPath);
+            var serverCompleted = backup.BackupFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath);
+            var agentCompleted = backup.BackupFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.AgentPath);
+            if (serverCompleted)
             {
-                ToscaConfigFilesViewModel.ToscaConfigFiles.BackupButton = "Done!";
-                //TODO: dialog to show complete
+                Trace.WriteLine("Tosca Server settings files backed up to " + backup.GetTarget());
+            }
+            if (agentCompleted)
+            {
+                Trace.WriteLine("Distribution Agent settings backed up to " + backup.GetTarget());
             }
             
         }
+
         public static void RestartServerWindow()
         {
             var vm = new UpdateCompleteViewModel();
@@ -110,42 +112,5 @@ namespace SSLapp.Commands
             UpdateWindow.ShowDialog();
         }
 
-        public static void RestartAgent(string toscaPath)
-        {
-            var agentPath = toscaPath + @"\DistributedExecution\ToscaDistributionAgent.exe";
-            try
-            {
-                foreach (var proc in Process.GetProcessesByName("ToscaDistributionAgent")){
-                    Trace.WriteLine("Killing " + proc.ProcessName);
-                    proc.Kill();
-                }
-            }
-            catch (Exception)
-            {
-                Trace.WriteLine("Exception when trying to kill DistributionAgent process.");
-            }
-
-            if(File.Exists(agentPath))
-            {
-                try
-                {
-                    BackgroundWorker worker_restartAgent = new BackgroundWorker();
-                    worker_restartAgent.WorkerReportsProgress = false;
-                    worker_restartAgent.DoWork += StartAgentAsyc;
-                    worker_restartAgent.RunWorkerAsync(argument: agentPath);
-
-                }
-                catch (Exception)
-                {
-                    Trace.WriteLine("Exception while trying to start " + agentPath);
-                    throw;
-                }
-            }
-        }
-
-        public static void StartAgentAsyc(object e, DoWorkEventArgs args)
-        {
-            Process.Start((string)args.Argument);
-        }
     }
 }

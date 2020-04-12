@@ -34,7 +34,7 @@ namespace SSLapp.Utils
                 {
                     rootfcollection = X509Certificate2UI.SelectFromCollection(rootfcollection, "Certificate Select", "Verify Certificate inforamtion and click Ok.", X509SelectionFlag.SingleSelection);
                 }
-                Trace.WriteLine("Certificate selected: {0}{1}", rootfcollection[0].FriendlyName);
+                Trace.WriteLine(String.Format("Certificate selected: {0}", rootfcollection[0].FriendlyName));
 
                 if (rootfcollection.Count == 1)
                 {

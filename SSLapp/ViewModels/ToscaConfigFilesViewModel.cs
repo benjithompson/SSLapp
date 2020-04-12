@@ -1,7 +1,7 @@
 ﻿using SSLapp.Commands;
 using SSLapp.Models;
 using System.Windows.Input;
-using System.ComponentModel;
+using SSLapp.Utils.Executables;
 
 namespace SSLapp.ViewModels
 {
@@ -41,7 +41,7 @@ namespace SSLapp.ViewModels
             get
             {
                 // check if executing is allowed, i.e., validate, check if a process is running, etc. 
-                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.AgentPath))
+                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.AgentPath) || string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname))
                 {
                     return false;
                 }
@@ -99,7 +99,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => ToscaConfigCommands.BackupToscaServerSettings(_ToscaConfigFilesModel.ServerPath, _ToscaConfigFilesModel.BackupPath), () => CanExecuteBackup));
+                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => ToscaConfigCommands.BackupTricentisSettings(), () => CanExecuteBackup));
             }
         }
         public ICommand RestartServerCommand
@@ -113,7 +113,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _restartAgentCommand ?? (_restartAgentCommand = new CommandHandler(() => ToscaConfigCommands.RestartAgent(_ToscaConfigFilesModel.AgentPath), () => true));
+                return _restartAgentCommand ?? (_restartAgentCommand = new CommandHandler(() => ExecutableHelpers.RestartExe("ToscaDistributionAgent"), () => true));
             }
         }
         #endregion

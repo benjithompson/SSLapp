@@ -64,11 +64,11 @@
                      Padding="0">
                 <AdornerDecorator>
                     <StackPanel>
-                        <Label Content="Tosca Server Root Path" VerticalAlignment="Top" 
+                        <Label Content="TRICENTIS Root Path" VerticalAlignment="Top" 
                         Margin="15,15,15,0" 
                         Height="25"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding ToscaConfigFiles.ServerPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            <TextBox Text="{Binding ToscaConfigFiles.TricentisPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Margin="20,5,5,5" 
                          Width="390"  
                          Height="25"/>
@@ -141,11 +141,11 @@
                      Padding="0">
                 <AdornerDecorator>
                     <StackPanel>
-                        <Label Content="Tosca Testsuite Root Path" VerticalAlignment="Top" 
+                        <Label Content="TRICENTIS Root Path" VerticalAlignment="Top" 
                         Margin="15,15,15,0" 
                         Height="25"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding ToscaConfigFiles.AgentPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            <TextBox Text="{Binding ToscaConfigFiles.TricentisPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Margin="20,5,5,5" 
                          Width="390"  
                          Height="25"/>
@@ -157,6 +157,15 @@
                         Width="30" 
                         Height="25" 
                         Margin="5,5,5,5" />
+                        </StackPanel>
+                        <Label Content="Certificate Thumbprint" VerticalAlignment="Top" 
+                        Margin="15,15,15,0" 
+                        Height="25"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.CertThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}" 
+                         Height="25" 
+                         Width="430" 
+                         Margin="20,5,5,5"/>
                         </StackPanel>
                         <DockPanel>
                             <Label Content="Full Computer Name" 
@@ -182,7 +191,7 @@
                         <StackPanel
                             Orientation="Horizontal"
                             HorizontalAlignment="Stretch"
-                            Height="250">
+                            Height="175">
                             <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.RestartAgentButton}"
                                 Margin="15,15,265,15" 
                                 HorizontalAlignment="Left"
@@ -208,11 +217,11 @@
                      Padding="0">
                 <AdornerDecorator>
                     <StackPanel>
-                        <Label Content="Tosca Server Root Path" 
+                        <Label Content="Tricentis Root Path" 
                         Margin="15,15,15,0" 
                         Height="25"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding ToscaConfigFiles.ServerPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            <TextBox Text="{Binding ToscaConfigFiles.TricentisPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Margin="20,5,5,5" 
                          Width="390"  
                          Height="25"/>
@@ -251,7 +260,7 @@
                             Foreground="White"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
-                            Command="{Binding BackupToPath}"/>
+                            Command="{Binding BackupServerSettings}"/>
                         </DockPanel>
                     </StackPanel>
                 </AdornerDecorator>
