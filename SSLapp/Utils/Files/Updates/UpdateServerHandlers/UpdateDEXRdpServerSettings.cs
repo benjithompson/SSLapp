@@ -90,10 +90,13 @@ namespace SSLapp.Utils.Files.Update
                 //4.
                 doc.SelectSingleNode("/configuration/system.serviceModel/bindings/basicHttpBinding/binding/security").Attributes["mode"].Value = "Transport";
 
-                XmlElement security = doc.CreateElement("security");
-                security.SetAttribute("mode", "Transport");
-                var node = doc.SelectSingleNode("//binding[@name='BasicHttpBinding_IRdpMasterService']");
-                node.AppendChild(security);
+                if(doc.SelectSingleNode("//binding[@name='BasicHttpBinding_IRdpMasterService']/security") == null)
+                {
+                    XmlElement security = doc.CreateElement("security");
+                    security.SetAttribute("mode", "Transport");
+                    var node = doc.SelectSingleNode("//binding[@name='BasicHttpBinding_IRdpMasterService']");
+                    node.AppendChild(security);
+                }
 
                 //5. Bind cert to port
                 BackgroundWorker worker_SslCert = new BackgroundWorker();
