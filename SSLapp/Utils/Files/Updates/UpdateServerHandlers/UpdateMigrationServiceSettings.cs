@@ -36,6 +36,7 @@ namespace SSLapp.Utils.Files.Update
                     string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                     File.WriteAllText(appsetting, output);
                     UpdatedFilesCount++;
+                    Updated = true;
                 }
                 catch (Exception)
                 {
@@ -43,7 +44,7 @@ namespace SSLapp.Utils.Files.Update
                 }
 
             }
-            Updated = true;
+
         }
     }
 }

@@ -16,8 +16,8 @@ namespace SSLapp.Commands
         {
             IUpdateFilesBehavior updater = null;
 
-            Trace.WriteLine("Updating Tosca Server Files.");
-            Trace.WriteLine("============================\n");
+            Trace.WriteLine($"\nUpdating Tosca Server Files.");
+            Trace.WriteLine("============================");
             BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetToscaAppsBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
             var installedApps = fileUpdateHandler.GetInstalledToscaApps(serverpath).ToList();
             UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
@@ -32,7 +32,7 @@ namespace SSLapp.Commands
                 }
             }
             fileUpdateHandler.UpdateAll();
-            Trace.WriteLine($"Updated {fileUpdateHandler.GetUpdatedAppsCount()} directories.");
+            Trace.WriteLine($"Updated {fileUpdateHandler.GetUpdatedAppsCount()}/{fileUpdateHandler.GetAppCount()} directories.\n{fileUpdateHandler.GetUpdatedFilesCount()} files updated.");
             if (fileUpdateHandler.UpdateSucceeded())
             {
                 ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyServerButton = "👍";

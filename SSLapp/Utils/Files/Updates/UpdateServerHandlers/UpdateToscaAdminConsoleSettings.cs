@@ -51,6 +51,13 @@ namespace SSLapp.Utils.Files.Update
                 doc.Load(AppPath + @"\web.config");
                 Trace.WriteLine("---CORS.");
                 UpdateXMLFields.UpdateCORS(ref doc, config, webconfig);
+
+                using (FileStream fs = File.Open(AppPath + @"\Web.config", FileMode.Create, FileAccess.Write))
+                {
+                    doc.Save(fs);
+                    UpdatedFilesCount++;
+                    Updated = true;
+                }
             }
             catch (Exception)
             {

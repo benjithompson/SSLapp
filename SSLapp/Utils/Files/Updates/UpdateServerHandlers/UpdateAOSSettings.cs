@@ -39,13 +39,14 @@ namespace SSLapp.Utils.Files.Update
                     Trace.WriteLine("---DexBaseUrl");
                     UpdateDexBaseUrl(jsonObj, config, appsetting);
                     UpdatedFilesCount++;
+                    Updated = true;
                 }
                 catch (Exception)
                 {
                     Trace.WriteLine("Failed to updated file at " + AppPath);
                 }
             }
-            Updated = true;
+
         }
 
         public void UpdateDexBaseUrl(JObject jsonObj,ToscaConfigFilesModel config, string appsetting)

@@ -13,9 +13,22 @@ namespace SSLapp.Utils.Files.Update
         IGetToscaApps _getDirectoriesBehavior;
         ToscaConfigFilesModel _config;
 
-        public int GetUpdatedAppsCount()
+        public int GetAppCount()
         {
             return _updateFilesBehaviorList.Count;
+        }
+
+        public int GetUpdatedAppsCount()
+        {
+            var count = 0;
+            foreach (var appUpdated in _updateFilesBehaviorList)
+            {
+                if (appUpdated.Updated)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         public void ResetUpdateApps()

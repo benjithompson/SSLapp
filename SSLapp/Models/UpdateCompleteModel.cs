@@ -23,11 +23,12 @@ namespace SSLapp.Models
             AcceptButton = "Yes";
             DeclineButton = "No";
             CloseButton = "Close";
-
-            var appsUpdated = (UpdateCompleteViewModel.GetUpdateHandler() != null) ? UpdateCompleteViewModel.GetUpdateHandler().GetUpdatedAppsCount() : 0;
-            TextBlockMessage = (appsUpdated > 0) ? 
-                $"{appsUpdated} Server directories updated.\nRestart Services to apply changes?" : 
-                "Restart Tosca Server Services?";
+            var updateHandler = UpdateCompleteViewModel.GetUpdateHandler();
+            var appsUpdated = (updateHandler != null) ? updateHandler.GetUpdatedAppsCount() : 0;
+            var totalApps = (updateHandler != null) ? updateHandler.GetAppCount() : 0;
+            TextBlockMessage = (appsUpdated != totalApps && appsUpdated > 0) ? 
+                $"{updateHandler.GetUpdatedFilesCount()} files updated in only {updateHandler.GetUpdatedAppsCount()}/{updateHandler.GetAppCount()} directories.\nRestart Services to apply changes anyway?" : 
+                "Settings Update complete! Restart Tosca Server Services?";
             TextBlockLog = string.Empty;
             AcceptButtonVisible = true;
             DeclineButtonVisible = true;

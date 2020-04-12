@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 using SSLapp.Models;
 using System.Diagnostics;
+using Newtonsoft.Json.Linq;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -21,7 +22,36 @@ namespace SSLapp.Utils.Files.Update
         public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
-            Trace.WriteLine("File Service not implemented");
+            try
+            {
+                IEnumerable<string> appsettingsList = Directory.GetFiles(AppPath, "appsettings.json");
+
+                foreach (var appsetting in appsettingsList)
+                {
+
+                    Trace.WriteLine($"Updating files in {appsetting}");
+                    string json = File.ReadAllText(appsetting);
+                    JObject jsonObj = JObject.Parse(json);
+                    Trace.WriteLine("---ServiceDiscovery.");
+                    UpdateJSONFields.UpdateServiceDiscovery(jsonObj, config, appsetting);
+                    Trace.WriteLine("---Scheme.");
+                    UpdateJSONFields.UpdateScheme(jsonObj, appsetting);
+                    Trace.WriteLine("---Host.");
+                    UpdateJSONFields.UpdateHost(jsonObj, config, appsetting);
+                    Trace.WriteLine("---HTTPS Thumbprint.");
+                    UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
+                    string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                    File.WriteAllText(appsetting, output);
+                    UpdatedFilesCount++;
+                    Updated = true;
+                }
+            }
+            catch (Exception)
+            {
+
+                Trace.WriteLine("Failed to updated file at " + AppPath);
+            }
+
         }
     }
 }

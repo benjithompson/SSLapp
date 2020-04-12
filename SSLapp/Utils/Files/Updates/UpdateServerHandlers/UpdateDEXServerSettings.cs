@@ -48,6 +48,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
                 Trace.WriteLine("Rdp Server endpoint node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+                return;
             }
 
             try
@@ -57,8 +58,7 @@ namespace SSLapp.Utils.Files.Update
             }
             catch (Exception)
             {
-
-                throw;
+                return;
             }
 
             try
@@ -89,14 +89,25 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
                 Trace.WriteLine("Rdp Server endpoint node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+                return;
             }
 
-            using (FileStream fs = File.Open(AppPath + @"\Web.config", FileMode.Create, FileAccess.Write))
+            try
             {
-                doc.Save(fs);
-                UpdatedFilesCount++;
+                using (FileStream fs = File.Open(AppPath + @"\Web.config", FileMode.Create, FileAccess.Write))
+                {
+                    doc.Save(fs);
+                    UpdatedFilesCount++;
+                    Updated = true;
+                }
             }
-            Updated = true;
+            catch (Exception)
+            {
+                Trace.WriteLine($"Exception when writing file at {AppPath}\\web.config");
+                throw;
+            }
+
+
         }
     }
 }

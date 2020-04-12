@@ -47,14 +47,14 @@ namespace SSLapp.Utils.Files.Update
                     string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
                     File.WriteAllText(appsetting, output);
                     UpdatedFilesCount++;
+
                 }
             }
             catch (Exception)
             {
-
                 Trace.WriteLine("Failed to updated file at " + AppPath);
             }
-            Updated = true;
+
 
         }
 
@@ -88,11 +88,13 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
                 Trace.WriteLine("Rdp Server endpoint node '/configuration/system.serviceModel/client/endpoint/address'not found in DEX Server web.config");
+                return;
             }
             using (FileStream fs = File.Open(dataxml, FileMode.Create, FileAccess.Write))
             {
                 doc.Save(fs);
                 UpdatedFilesCount++;
+                Updated = true;
             }
         }
     }

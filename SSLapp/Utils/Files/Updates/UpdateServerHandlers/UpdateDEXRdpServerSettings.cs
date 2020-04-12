@@ -43,7 +43,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
 
-                Trace.WriteLine("Web.config file not found at" + exeConfig);
+                Trace.WriteLine("exe.config file not found at" + exeConfig);
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace SSLapp.Utils.Files.Update
             catch (Exception)
             {
                 Trace.WriteLine("Exception binding rdp certificate");
-                throw;
+                return;
             }
 
             using (FileStream fs = File.Open(exeConfig, FileMode.Create, FileAccess.Write))
@@ -117,15 +117,16 @@ namespace SSLapp.Utils.Files.Update
                 {
                     doc.Save(fs);
                     UpdatedFilesCount++;
+                    Updated = true;
                 }
                 catch (Exception)
                 {
                     Trace.WriteLine("Exception saving ToscaRdpServer.exe.config");
-                    throw;
+                    return;
                 }
 
             }
-            Updated = true;
+
 
         }
         public static void DoAsyncSslCertBinding(object o, DoWorkEventArgs args)
