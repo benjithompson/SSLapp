@@ -2,17 +2,22 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using SSLapp.ViewModels;
 
 namespace SSLapp.Utils.Executables
 {
     class ExecutableHelpers
     {
-        public static void RestartExe(string processName)
+        public static void RestartExe(string processName, string exePath)
         {
             if (IsExeRunning(processName))
             {
-                var exePath = GetProcessExePath(processName);
+                exePath = GetProcessExePath(processName);
                 StopProcessByName(processName);
+                StartExe(exePath);
+            }
+            else
+            {
                 StartExe(exePath);
             }
         }
@@ -23,10 +28,10 @@ namespace SSLapp.Utils.Executables
             {
                 try
                 {
-                    BackgroundWorker worker_restartAgent = new BackgroundWorker();
-                    worker_restartAgent.WorkerReportsProgress = false;
-                    worker_restartAgent.DoWork += StartExeAsyc;
-                    worker_restartAgent.RunWorkerAsync(argument: path);
+                    BackgroundWorker worker_StartProcess = new BackgroundWorker();
+                    worker_StartProcess.WorkerReportsProgress = false;
+                    worker_StartProcess.DoWork += StartExeAsyc;
+                    worker_StartProcess.RunWorkerAsync(argument: path);
                 }
                 catch (Exception)
                 {
@@ -54,12 +59,17 @@ namespace SSLapp.Utils.Executables
 
         public static bool IsExeRunning(string processName)
         {
-            return (Process.GetProcessesByName(processName) != null) ? true : false;
+            var process = Process.GetProcessesByName(processName);
+            return (process.Length > 0) ? true : false;
         }
 
         private static void StartExeAsyc(object e, DoWorkEventArgs args)
         {
-            Process.Start((string)args.Argument);
+            Process proc = new Process();
+            proc.StartInfo.FileName = args.Argument.ToString();
+            proc.Start();
+            proc.WaitForExit();
+            
         }
 
         public static string GetProcessExePath(string processName)

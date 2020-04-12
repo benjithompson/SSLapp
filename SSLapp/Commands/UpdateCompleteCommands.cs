@@ -34,7 +34,7 @@ namespace SSLapp.Commands
             worker_restartServices.DoWork += ToscaServerServices.RestartToscaServerServicesAsync;
             worker_restartServices.RunWorkerAsync();
 
-            ExecutableHelpers.RestartExe("RdpServer");
+            ExecutableHelpers.RestartExe("RdpServer", ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath + @"\DEXRdpServer\ToscaRdpServer.exe");
 
             UpdateCompleteViewModel.GetUpdateHandler().ResetUpdateApps();
         }

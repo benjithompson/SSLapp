@@ -22,8 +22,12 @@ namespace SSLapp.Utils.Files.UpdateAgentHandlers
         public int UpdatedFilesCount { get; set; }
         public void Update(ToscaConfigFilesModel config)
         {
+
+            
+
             XmlDocument doc;
             var exeConfig = AppPath + @"\ToscaDistributionAgent.exe.config";
+            Trace.WriteLine($"Updating config at {exeConfig}");
             try
             {
                 

@@ -92,7 +92,7 @@ namespace SSLapp.Commands
         {
             IBackupToscaFiles backup = new BackupToscaFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.BackupPath);
             var serverCompleted = backup.BackupFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath);
-            var agentCompleted = backup.BackupFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.AgentPath);
+            var agentCompleted = backup.BackupFiles(ToscaConfigFilesViewModel.ToscaConfigFiles.TestSuitePath);
             if (serverCompleted)
             {
                 Trace.WriteLine($"Tosca Server settings files backed up to {backup.GetTarget()}");

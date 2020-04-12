@@ -31,7 +31,7 @@ namespace SSLapp.Models
         {
             TricentisPath = @"C:\Program Files (x86)\TRICENTIS";
             ServerPath = TricentisPath + @"\Tosca Server";
-            AgentPath = TricentisPath + @"\Tosca Testsuite";
+            TestSuitePath = TricentisPath + @"\Tosca Testsuite";
             BackupPath = @"C:\Temp";
             DexServerPort = "";
             BackupButton = "Backup";
@@ -39,6 +39,8 @@ namespace SSLapp.Models
             ApplyAgentButton = "Apply";
             RestartServerButton = "Restart";
             RestartAgentButton = "Restart";
+
+            
         }
 
         #endregion
@@ -68,13 +70,13 @@ namespace SSLapp.Models
                 ApplyServerButton = "Apply";
             }
         }
-        public string AgentPath
+        public string TestSuitePath
         {
             get { return _agentPath; }
             set
             {
                 _agentPath = value;
-                NotifyPropertyChanged(nameof(AgentPath));
+                NotifyPropertyChanged(nameof(TestSuitePath));
                 BackupButton = "Backup";
                 ApplyAgentButton = "Apply";
             }
@@ -280,11 +282,11 @@ namespace SSLapp.Models
         public string AgentPathValidation()
         {
             var result = string.Empty;
-            if (string.IsNullOrEmpty(AgentPath))
+            if (string.IsNullOrEmpty(TestSuitePath))
             {
                 result = "Agent path must not be empty";
             }
-            else if (!Directory.Exists(AgentPath))
+            else if (!Directory.Exists(TestSuitePath))
             {
                 result = "Directory does not exist";
             }

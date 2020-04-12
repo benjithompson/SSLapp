@@ -43,10 +43,10 @@ namespace SSLapp.Utils.Files.Update
                     UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
                     Trace.WriteLine("---Token Thumbprint.");
                     UpdateJSONFields.UpdateTokenCertificate(jsonObj, config);
-                    UpdateDataXml(AppPath, config);
                     string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
                     File.WriteAllText(appsetting, output);
                     UpdatedFilesCount++;
+                    UpdateDataXml(AppPath, config);
 
                 }
             }

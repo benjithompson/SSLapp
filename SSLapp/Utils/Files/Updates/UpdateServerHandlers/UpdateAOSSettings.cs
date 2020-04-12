@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace SSLapp.Utils.Files.Update
 {
@@ -38,6 +39,8 @@ namespace SSLapp.Utils.Files.Update
                     UpdateJSONFields.UpdateCertificate(jsonObj, config, appsetting);
                     Trace.WriteLine("---DexBaseUrl");
                     UpdateDexBaseUrl(jsonObj, config, appsetting);
+                    string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                    File.WriteAllText(appsetting, output);
                     UpdatedFilesCount++;
                     Updated = true;
                 }

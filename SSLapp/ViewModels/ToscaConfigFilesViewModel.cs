@@ -41,7 +41,7 @@ namespace SSLapp.ViewModels
             get
             {
                 // check if executing is allowed, i.e., validate, check if a process is running, etc. 
-                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.AgentPath) || string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname))
+                if (string.IsNullOrEmpty(_ToscaConfigFilesModel.TestSuitePath) || string.IsNullOrEmpty(_ToscaConfigFilesModel.Hostname))
                 {
                     return false;
                 }
@@ -71,7 +71,7 @@ namespace SSLapp.ViewModels
             get
             {
                 return _applyAgentCommand ?? (_applyAgentCommand = new CommandHandler(()
-                    => Commands.ToscaConfigCommands.UpdateAgentFiles(_ToscaConfigFilesModel.AgentPath), () => CanExecuteAgentApply));
+                    => Commands.ToscaConfigCommands.UpdateAgentFiles(_ToscaConfigFilesModel.TestSuitePath), () => CanExecuteAgentApply));
             }
         }
         public ICommand OpenServerPath
@@ -85,7 +85,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _openAgentPathCommand ?? (_openAgentPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.AgentPath), () => true));
+                return _openAgentPathCommand ?? (_openAgentPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.TestSuitePath), () => true));
             }
         }
         public ICommand OpenBackupPath
@@ -113,7 +113,7 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _restartAgentCommand ?? (_restartAgentCommand = new CommandHandler(() => ExecutableHelpers.RestartExe("ToscaDistributionAgent"), () => true));
+                return _restartAgentCommand ?? (_restartAgentCommand = new CommandHandler(() => ExecutableHelpers.RestartExe("ToscaDistributionAgent", ToscaConfigFiles.TestSuitePath + @"\DistributedExecution\ToscaDistributionAgent.exe"), () => true));
             }
         }
         #endregion
