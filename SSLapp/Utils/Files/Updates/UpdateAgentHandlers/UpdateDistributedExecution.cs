@@ -77,7 +77,7 @@ namespace SSLapp.Utils.Files.UpdateAgentHandlers
                 Trace.WriteLine("Agent address node '/configuration/system.serviceModel/bindings/basicHttpBinding/binding/security' not found in Agent exe.config");
             }
 
-            using (FileStream fs = File.OpenWrite(exeConfig))
+            using (FileStream fs = File.Open(exeConfig, FileMode.Create, FileAccess.Write))
             {
                 doc.Save(fs);
                 UpdatedFilesCount++;
