@@ -7,16 +7,16 @@ using System.Diagnostics;
 
 namespace SSLapp.Utils
 {
-    public class HTTPSCertificate
+    public class IISCertificateHelpers
     {
         private string _thumbprint;
         private string _certIssuedTo;
         private string _certStoreName;
         private string _certStoreLocation;
 
-        public HTTPSCertificate(){}
+        public IISCertificateHelpers(){}
 
-        public HTTPSCertificate(string thumbprint)
+        public IISCertificateHelpers(string thumbprint)
         {
             SetCertificateWithThumbprint(thumbprint);
         }

@@ -26,9 +26,9 @@ namespace SSLapp.Models
             var updateHandler = UpdateCompleteViewModel.GetUpdateHandler();
             var appsUpdated = (updateHandler != null) ? updateHandler.GetUpdatedAppsCount() : 0;
             var totalApps = (updateHandler != null) ? updateHandler.GetAppCount() : 0;
-            TextBlockMessage = (appsUpdated != totalApps && appsUpdated > 0) ? 
-                $"{updateHandler.GetUpdatedFilesCount()} files updated in only {updateHandler.GetUpdatedAppsCount()}/{updateHandler.GetAppCount()} directories.\nRestart Services to apply changes anyway?" : 
-                "Settings Update complete! Restart Tosca Server Services?";
+            TextBlockMessage = (appsUpdated > 0) ? 
+                $"{updateHandler.GetUpdatedFilesCount()} files updated.\nRestart Services to apply changes?" : 
+                "Restart Tosca Server (IIS and Services)?";
             TextBlockLog = string.Empty;
             AcceptButtonVisible = true;
             DeclineButtonVisible = true;

@@ -36,7 +36,13 @@ namespace SSLapp.Commands
 
             ExecutableHelpers.RestartExe("RdpServer", ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath + @"\DEXRdpServer\ToscaRdpServer.exe");
 
-            UpdateCompleteViewModel.GetUpdateHandler().ResetUpdateApps();
+
+            //updatehandler is assigned when files are updated. If 'Restart' is used without updating first, updater will be null. This is shit code.
+            var updatehandler = UpdateCompleteViewModel.GetUpdateHandler();
+            if(updatehandler != null)
+            {
+                updatehandler.ResetUpdateApps();
+            }
         }
 
     }

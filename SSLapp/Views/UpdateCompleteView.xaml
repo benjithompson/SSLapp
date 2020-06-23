@@ -29,17 +29,6 @@
             </TextBlock>
         </DockPanel>
         <DockPanel>
-            <ScrollViewer Margin="15,15,0,55">
-                <TextBlock 
-                    Text="{Binding UpdateCompleteModel.TextBlockLog, UpdateSourceTrigger=PropertyChanged}"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <LineBreak/>
-                </TextBlock>
-            </ScrollViewer>
-
-        </DockPanel>
-        <DockPanel>
             <Button Name="button1" Content="{Binding UpdateCompleteModel.DeclineButton, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}" 
                  Margin="15,15,110,15" 
                  Width="80" 

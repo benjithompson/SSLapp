@@ -210,6 +210,82 @@
                     </StackPanel>
                 </AdornerDecorator>
             </TabItem>
+            <!--<TabItem Header="License"
+                     Width="120"
+                     Height="30"
+                     Margin="0"
+                     Padding="0">
+                <AdornerDecorator>
+                    <StackPanel>
+                        <Label Content="TRICENTIS Root Path" VerticalAlignment="Top" 
+                        Margin="15,15,15,0" 
+                        Height="25"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.TricentisPath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Margin="20,5,5,5" 
+                         Width="390"  
+                         Height="25"/>
+                            <Button Name="buttonOpenLicSrvPath" 
+                                Command="{Binding OpenServerPath}" 
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                BorderThickness="1"
+                                BorderBrush="#5a94e0"
+                        Width="30" 
+                        Height="25" 
+                        Margin="5,5,5,5" />
+                        </StackPanel>
+                        <Label Content="Certificate Thumbprint" VerticalAlignment="Top" 
+                        Margin="15,15,15,0" 
+                        Height="25"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.CertThumbprint, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}" 
+                         Height="25" 
+                         Width="430" 
+                         Margin="20,5,5,5"/>
+                        </StackPanel>
+                        <DockPanel>
+                            <Label Content="Full Computer Name" 
+                       Width="360" 
+                       Margin="15,15,15,0"/>
+                            <Label Content="Port" Width="170" 
+                       Margin="10,15,15,0"/>
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding ToscaConfigFiles.Hostname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Height="25" 
+                         Width="365" 
+                         Margin="20,5,5,5"
+                         materialDesign:HintAssist.Hint="hostname.domain.com"
+                                 materialDesign:HintAssist.HintOpacity=".35"/>
+                            <TextBox Text="{Binding ToscaConfigFiles.LicenseServerPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Height="25" 
+                         Width="45" 
+                         Margin="15,5,5,5"
+                         materialDesign:HintAssist.Hint="7070"
+                                 materialDesign:HintAssist.HintOpacity=".35"/>
+                        </StackPanel>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Stretch"
+                            Height="175">
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.RestartLicSrv}"
+                                Margin="15,15,265,15" 
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Width="80"
+                                Foreground="White"
+                                Command="{Binding RestartLicSrvCommand}"/>
+                            <Button  IsDefault="True" Content="{Binding ToscaConfigFiles.ApplyLicSrv}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Margin="15" 
+                                Width="80"
+                                Foreground="White"
+                                Command="{Binding ApplyLicSrvCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </AdornerDecorator>
+            </TabItem>-->
             <TabItem Header="Backup"
                      Width="120"
                      Height="30"

@@ -77,14 +77,15 @@ namespace SSLapp.Utils.Services
             TimeSpan timeout = TimeSpan.FromMilliseconds(15000);
             int restartCount = 0;
             int totalServices = scList.Count;
+
             foreach (ServiceController sc in scList)
             {
-                
                 try
                 {
                     if (sc.Status == ServiceControllerStatus.Running)
                     {
                         Trace.Write(sc.ServiceName + " stopping... ");
+                        UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Stopping " + sc.ServiceName + "...");
                         sc.Stop();
                         sc.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
                         Trace.WriteLine("Done!");
@@ -98,7 +99,7 @@ namespace SSLapp.Utils.Services
                 }
             }
 
-            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog = string.Format("Tosca Server Services stopped.");
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Tosca Server Services stopped.");
 
             restartCount = 0;
             ServiceController service = null;
@@ -113,7 +114,7 @@ namespace SSLapp.Utils.Services
                     service.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     Trace.WriteLine("Done!");
                     restartCount++;
-                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
                     scList.Remove(service);
                 }
                 service = scList.FirstOrDefault(s => s.ServiceName == "Tricentis.AuthenticationService");
@@ -124,7 +125,7 @@ namespace SSLapp.Utils.Services
                     service.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     Trace.WriteLine("Done!");
                     restartCount++;
-                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
                     scList.Remove(service);
                 }
                 service = scList.FirstOrDefault(s => s.ServiceName == "Tricentis.ProjectService");
@@ -135,7 +136,7 @@ namespace SSLapp.Utils.Services
                     service.WaitForStatus(ServiceControllerStatus.Running, timeout);
                     Trace.WriteLine("Done!");
                     restartCount++;
-                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                    UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + service.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
                     scList.Remove(service);
                 }
 
@@ -163,11 +164,12 @@ namespace SSLapp.Utils.Services
                     MessageBox.Show(sc.ServiceName + " failed to start.", "Service Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 restartCount++;
-                UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nStarting " + sc.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
+                UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("Starting " + sc.ServiceName + "... ({0}/{1})", restartCount.ToString(), totalServices.ToString());
 
             }
             UpdateCompleteViewModel.UpdateCompleteModel.CloseButtonVisible = true;
-            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += "\nTricentis Service restart complete!";
+            UpdateCompleteViewModel.UpdateCompleteModel.CloseButton = "OK";
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = "Tricentis Service restart complete!";
         }
 
         public static void DoAsyncIISReset(object o, DoWorkEventArgs args)
@@ -183,7 +185,7 @@ namespace SSLapp.Utils.Services
                 iisReset.WaitForExit();
             }
             Trace.WriteLine("Resetting IIS Complete!");
-            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockLog += string.Format("\nIIS Restarted");
+            UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Format("IIS Restarted");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SSLapp.Models
         private string _applyAgentButton;
         private string _restartServerButton;
         private string _restartAgentButton;
-        private HTTPSCertificate _httpCert = new HTTPSCertificate();
+        private IISCertificateHelpers _httpCert = new IISCertificateHelpers();
 
         #region Constructor
 
@@ -121,7 +121,7 @@ namespace SSLapp.Models
                 ApplyServerButton = "Apply";
             }
         }
-        public HTTPSCertificate GetCertificate
+        public IISCertificateHelpers GetCertificate
         {
             get { return _httpCert; } 
         }
