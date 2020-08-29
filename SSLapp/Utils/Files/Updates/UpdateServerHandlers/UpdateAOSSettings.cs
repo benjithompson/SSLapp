@@ -56,7 +56,15 @@ namespace SSLapp.Utils.Files.Update
         {
             try
             {
-                jsonObj["AutomationObjectServiceConfig"]["DexBaseUrl"] = @"https://" + config.Hostname + ":" + config.DexServerPort;
+                if (string.IsNullOrEmpty(config.DexServerPort))
+                {
+                    jsonObj["AutomationObjectServiceConfig"]["DexBaseUrl"] = @"https://" + config.Hostname;
+                }
+                else
+                {
+                    jsonObj["AutomationObjectServiceConfig"]["DexBaseUrl"] = @"https://" + config.Hostname + ":" + config.DexServerPort;
+                }
+                
             }
             catch (Exception)
             {
