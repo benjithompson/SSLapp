@@ -4,14 +4,24 @@ using System.Text;
 using SSLapp.Models;
 using System.IO;
 using System.Diagnostics;
+using System.Linq;
+using SSLapp.ViewModels;
+using SSLapp.Utils.Files.Updates;
 
 namespace SSLapp.Utils.Files.Update
 {
     class BaseFileUpdateHandler
     {
-        List<IUpdateFilesBehavior> _updateFilesBehaviorList = new List<IUpdateFilesBehavior>();
-        IGetToscaApps _getDirectoriesBehavior;
-        ToscaConfigFilesModel _config;
+        private readonly List<IUpdateFilesBehavior> _updateFilesBehaviorList;
+        private readonly IGetInstallationDirectories _getDirectoriesBehavior;
+        private readonly ToscaConfigFilesModel _config;
+
+        public BaseFileUpdateHandler(IGetInstallationDirectories getToscaServerDirectories, ToscaConfigFilesModel config)
+        {
+            _updateFilesBehaviorList = new List<IUpdateFilesBehavior>();
+            _getDirectoriesBehavior = getToscaServerDirectories;
+            _config = config;
+        }
 
         public int GetAppCount()
         {
@@ -20,7 +30,7 @@ namespace SSLapp.Utils.Files.Update
 
         public int GetUpdatedAppsCount()
         {
-            var count = 0;
+            int count = 0;
             foreach (var appUpdated in _updateFilesBehaviorList)
             {
                 if (appUpdated.Updated)
@@ -31,7 +41,7 @@ namespace SSLapp.Utils.Files.Update
             return count;
         }
 
-        public void ResetUpdateApps()
+        public void ClearUpdateBehaviorList()
         {
             _updateFilesBehaviorList.Clear();
         }
@@ -58,17 +68,6 @@ namespace SSLapp.Utils.Files.Update
             return true;
         }
 
-        public BaseFileUpdateHandler(ToscaConfigFilesModel config)
-        {
-            _config = config;
-        }
-
-        public BaseFileUpdateHandler(IGetToscaApps getToscaServerDirectories, ToscaConfigFilesModel config)
-        {
-            _getDirectoriesBehavior = getToscaServerDirectories;
-            _config = config;
-        }
-
         public void AddUpdateBehavior(IUpdateFilesBehavior updateBehavior)
         {
             if (updateBehavior != null){
@@ -84,9 +83,25 @@ namespace SSLapp.Utils.Files.Update
             }
         }
 
-        public IEnumerable<string> GetInstalledToscaApps(string appPath)
+        public IEnumerable<string> GetInstalledAppPaths(string appPath)
         {
-            return _getDirectoriesBehavior.GetToscaApps(appPath);
+            return _getDirectoriesBehavior.GetAppPathList(appPath);
+        }
+
+        public void LoadAppUpdaterBehaviorList(string componentPath, IUpdateSettingsFactory usf)
+        {
+            Trace.WriteLine($"\nLoading files from {componentPath}.");
+            Trace.WriteLine("============================");
+            var installedApps = GetInstalledAppPaths(componentPath).ToList();
+            foreach (var appPath in installedApps)
+            {
+                //create update behavior based on App Folder name
+                var updater = usf.TryCreate(appPath);
+                if (updater != null)
+                {
+                    AddUpdateBehavior(updater);
+                }
+            }
         }
     }
 }

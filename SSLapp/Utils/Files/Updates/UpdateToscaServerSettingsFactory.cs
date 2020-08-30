@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
-using SSLapp.Utils.Files.UpdateAgentHandlers;
+using SSLapp.Utils.Files.Updates;
 
 namespace SSLapp.Utils.Files.Update
 {
-    class UpdateSettingsFactory
+    class UpdateToscaServerSettingsFactory : IUpdateSettingsFactory
     {
-        public UpdateSettingsFactory(){}
+        public UpdateToscaServerSettingsFactory(){}
 
         public IUpdateFilesBehavior TryCreate(string appPath)
         {
@@ -44,8 +44,6 @@ namespace SSLapp.Utils.Files.Update
                     return new UpdateTestDataObjectViewerSettings(appPath);
                 case "TestDataService":
                     return new UpdateTestDataServiceSettings(appPath);
-                case "DistributedExecution":
-                    return new UpdateDistributedExecution(appPath);
                 default:
                     Trace.WriteLine("Application directory:\n " + appPath + "\ndoes not match an Updater.");
                     return null;

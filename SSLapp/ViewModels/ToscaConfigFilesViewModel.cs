@@ -62,58 +62,66 @@ namespace SSLapp.ViewModels
         {
             get
             {
-                return _applyServerCommand ?? (_applyServerCommand = new CommandHandler(() 
-                    => Commands.ToscaConfigCommands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteServerApply));
+                ICommand command = _applyServerCommand ??= new CommandHandler(()
+                    => Commands.ToscaConfigCommands.UpdateToscaServerFiles(_ToscaConfigFilesModel.ServerPath), () => CanExecuteServerApply);
+                return command;
             }
         }
         public ICommand ApplyAgentCommand
         {
             get
             {
-                return _applyAgentCommand ?? (_applyAgentCommand = new CommandHandler(()
-                    => Commands.ToscaConfigCommands.UpdateAgentFiles(_ToscaConfigFilesModel.TestSuitePath), () => CanExecuteAgentApply));
+                ICommand command  = _applyAgentCommand ??= new CommandHandler(()
+                    => Commands.ToscaConfigCommands.UpdateAgentFiles(_ToscaConfigFilesModel.TestSuitePath), () => CanExecuteAgentApply);
+                return command;
             }
         }
         public ICommand OpenServerPath
         {
             get
             {
-                return _openServerPathCommand ?? (_openServerPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.ServerPath), () => true));
+                ICommand command = _openServerPathCommand ??= new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.ServerPath), () => true);
+                return command;
             }
         }
         public ICommand OpenAgentPath
         {
             get
             {
-                return _openAgentPathCommand ?? (_openAgentPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.TestSuitePath), () => true));
+                ICommand command = _openAgentPathCommand ??= new CommandHandler(() => ToscaConfigCommands.OpenServerDirectory(_ToscaConfigFilesModel.TestSuitePath), () => true);
+                return command;
             }
         }
         public ICommand OpenBackupPath
         {
             get
             {
-                return _openBackupPathCommand ?? (_openBackupPathCommand = new CommandHandler(() => ToscaConfigCommands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true));
+                ICommand command = _openBackupPathCommand ??= new CommandHandler(() => ToscaConfigCommands.OpenBackupDirectory(_ToscaConfigFilesModel.BackupPath), () => true);
+                return command;
             }
         }
         public ICommand BackupServerSettings
         {
             get
             {
-                return _backupToPathCommand ?? (_backupToPathCommand = new CommandHandler(() => ToscaConfigCommands.BackupTricentisSettings(), () => CanExecuteBackup));
+                ICommand command = _backupToPathCommand ??= new CommandHandler(() => ToscaConfigCommands.BackupTricentisSettings(), () => CanExecuteBackup);
+                return command;
             }
         }
         public ICommand RestartServerCommand
         {
             get
             {
-                return _restartServerCommand ?? (_restartServerCommand = new CommandHandler(() => ToscaConfigCommands.RestartServerWindow(), () => true));
+                ICommand command = _restartServerCommand ??= new CommandHandler(() => ToscaConfigCommands.RestartServerWindow(), () => true);
+                return command;
             }
         }
         public ICommand RestartAgentCommand
         {
             get
             {
-                return _restartAgentCommand ?? (_restartAgentCommand = new CommandHandler(() => ExecutableHelpers.RestartExe("ToscaDistributionAgent", ToscaConfigFiles.TestSuitePath + @"\DistributedExecution\ToscaDistributionAgent.exe"), () => true));
+                ICommand command = _restartAgentCommand ??= new CommandHandler(() => ExecutableHelpers.RestartExe("ToscaDistributionAgent", ToscaConfigFiles.TestSuitePath + @"\DistributedExecution\ToscaDistributionAgent.exe"), () => true);
+                return command;
             }
         }
         #endregion

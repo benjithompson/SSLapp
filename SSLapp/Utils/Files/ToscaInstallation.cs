@@ -6,9 +6,9 @@ using System.Diagnostics;
 
 namespace SSLapp.Utils.Files.Update
 {
-    class GetToscaAppsBehavior : IGetToscaApps
+    class ToscaInstallation : IGetInstallationDirectories
     {
-        public IEnumerable<string> GetToscaApps(string appPath)
+        public IEnumerable<string> GetAppPathList(string appPath)
         {
             try
             {

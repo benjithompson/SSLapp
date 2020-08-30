@@ -4,19 +4,20 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Diagnostics;
+using SSLapp.Utils.Certs;
 
 namespace SSLapp.Utils
 {
-    public class IISCertificateHelpers
+    public class IISCertificateProvider : ICertificateProvider
     {
         private string _thumbprint;
         private string _certIssuedTo;
         private string _certStoreName;
         private string _certStoreLocation;
 
-        public IISCertificateHelpers(){}
+        public IISCertificateProvider(){}
 
-        public IISCertificateHelpers(string thumbprint)
+        public IISCertificateProvider(string thumbprint)
         {
             SetCertificateWithThumbprint(thumbprint);
         }

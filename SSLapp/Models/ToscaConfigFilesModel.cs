@@ -23,7 +23,7 @@ namespace SSLapp.Models
         private string _applyAgentButton;
         private string _restartServerButton;
         private string _restartAgentButton;
-        private IISCertificateHelpers _httpCert = new IISCertificateHelpers();
+
 
         #region Constructor
 
@@ -39,9 +39,9 @@ namespace SSLapp.Models
             ApplyAgentButton = "Apply";
             RestartServerButton = "Restart";
             RestartAgentButton = "Restart";
+            GetCertificate = new IISCertificateProvider();
 
-            
-        }
+    }
 
         #endregion
 
@@ -121,10 +121,7 @@ namespace SSLapp.Models
                 ApplyServerButton = "Apply";
             }
         }
-        public IISCertificateHelpers GetCertificate
-        {
-            get { return _httpCert; } 
-        }
+        public IISCertificateProvider GetCertificate { get; }
         public string DefaultServerPath
         {
             get { return @"C:\Program Files (x86)\TRICENTIS\Tosca Server\";}
@@ -219,7 +216,7 @@ namespace SSLapp.Models
                     {
                         return "Enter valid hostname";
                     }
-                    if(_hostname != _httpCert.GetCertIssuedTo())
+                    if(_hostname != GetCertificate.GetCertIssuedTo())
                     {
                         return "Hostname doesn't match certificate";
                     }
@@ -305,12 +302,12 @@ namespace SSLapp.Models
                 return "Enter valid thumbprint";
             }
 
-            else if (!_httpCert.CertificateFound(certThumbprint))
+            else if (!GetCertificate.CertificateFound(certThumbprint))
             {
                 result = "Cert not found in Trusted Root";
             }
-            _httpCert.SetCertificateWithThumbprint(certThumbprint);
-            Hostname = _httpCert.GetCertIssuedTo();
+            GetCertificate.SetCertificateWithThumbprint(certThumbprint);
+            Hostname = GetCertificate.GetCertIssuedTo();
 
             return result;
         }

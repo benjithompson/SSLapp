@@ -4,8 +4,8 @@ using System.Text;
 
 namespace SSLapp.Utils.Files.Update
 {
-    interface IGetToscaApps
+    interface IGetInstallationDirectories
     {
-        public IEnumerable<string> GetToscaApps(string appPath);
+        public IEnumerable<string> GetAppPathList(string appPath);
     }
 }

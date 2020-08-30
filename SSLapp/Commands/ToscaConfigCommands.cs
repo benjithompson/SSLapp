@@ -7,61 +7,40 @@ using Ookii.Dialogs.Wpf;
 using System.Linq;
 using SSLapp.Views;
 using SSLapp.Utils.Files.Backups;
+using SSLapp.Utils.Files.Updates;
 
 namespace SSLapp.Commands
 {
     class ToscaConfigCommands
     {
+
         public static void UpdateToscaServerFiles(string serverpath)
         {
-            IUpdateFilesBehavior updater = null;
-
-            Trace.WriteLine($"\nUpdating Tosca Server Files.");
-            Trace.WriteLine("============================");
-            BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetToscaAppsBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
-            var installedApps = fileUpdateHandler.GetInstalledToscaApps(serverpath).ToList();
-            UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
-            foreach (var appPath in installedApps)
+            BaseFileUpdateHandler updater = new BaseFileUpdateHandler(new ToscaInstallation(), ToscaConfigFilesViewModel.ToscaConfigFiles);
+            updater.LoadAppUpdaterBehaviorList(serverpath, new UpdateToscaServerSettingsFactory());
+            updater.UpdateAll();
+            if (updater.UpdateSucceeded())
             {
-                //create update behavior based on App Folder name
-                updater = updateFactory.TryCreate(appPath);
-                if (updater != null)
-                {
-                    fileUpdateHandler.AddUpdateBehavior(updater);
-
-                }
-            }
-            fileUpdateHandler.UpdateAll();
-            Trace.WriteLine($"Updated {fileUpdateHandler.GetUpdatedAppsCount()}/{fileUpdateHandler.GetAppCount()} directories.\n{fileUpdateHandler.GetUpdatedFilesCount()} files updated.");
-            if (fileUpdateHandler.UpdateSucceeded())
-            {
+                Trace.WriteLine("Update process complete.");
                 ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyServerButton = "👍";
+                
             }
-            RestartServerWindow(fileUpdateHandler);
+            else
+            {
+                //TODO:handle failed update
+            }
+            RestartServerWindow(updater);
         }
 
         public static void UpdateAgentFiles(string agentPath)
         {
-            Trace.WriteLine("Updating Execution Agent Files.");
-            Trace.WriteLine("============================\n");
-            BaseFileUpdateHandler fileUpdateHandler = new BaseFileUpdateHandler(new GetToscaAppsBehavior(), ToscaConfigFilesViewModel.ToscaConfigFiles);
-            var installedApps = fileUpdateHandler.GetInstalledToscaApps(agentPath).ToList();
-            UpdateSettingsFactory updateFactory = new UpdateSettingsFactory();
-            var count = 0;
-            foreach (var appPath in installedApps)
-            {
-                //create update behavior based on App Folder name
-                var updater = updateFactory.TryCreate(appPath);
-                if (updater != null)
-                {
-                    fileUpdateHandler.AddUpdateBehavior(updater);
-                    count++;
-                }
-            }
-            fileUpdateHandler.UpdateAll();
+            BaseFileUpdateHandler updater = new BaseFileUpdateHandler(new ToscaInstallation(), ToscaConfigFilesViewModel.ToscaConfigFiles);
+            updater.LoadAppUpdaterBehaviorList(agentPath, new UpdateDexAgentSettingsFactory());
+            updater.UpdateAll();
             Trace.WriteLine("Update process complete.");
-            if (fileUpdateHandler.UpdateSucceeded())
+            if (updater.UpdateSucceeded())
             {
+                Trace.WriteLine("Update process complete.");
                 ToscaConfigFilesViewModel.ToscaConfigFiles.ApplyAgentButton = "👍";
             }
         }
@@ -69,8 +48,10 @@ namespace SSLapp.Commands
         public static void OpenServerDirectory(string path)
         {
             Trace.WriteLine("Open Directory " + path);
-            VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog();
-            fd.SelectedPath = path;
+            VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog
+            {
+                SelectedPath = path
+            };
             fd.ShowDialog();
             var selectedPath = fd.SelectedPath;
             Trace.WriteLine("Selected Path: " + selectedPath);
@@ -80,8 +61,10 @@ namespace SSLapp.Commands
         public static void OpenBackupDirectory(string path)
         {
             Trace.WriteLine("Open Directory " + path);
-            VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog();
-            fd.SelectedPath = path;
+            VistaFolderBrowserDialog fd = new VistaFolderBrowserDialog
+            {
+                SelectedPath = path
+            };
             fd.ShowDialog();
             var selectedPath = fd.SelectedPath;
             Trace.WriteLine("Selected Path: " + selectedPath);

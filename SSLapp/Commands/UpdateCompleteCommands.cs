@@ -1,49 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using SSLapp.ViewModels;
-using System.ComponentModel;
-
-using System.Linq;
-using SSLapp.Models;
-using SSLapp.Utils.Executables;
 using SSLapp.Utils.Services;
+using SSLapp.Utils.Executables;
 
 namespace SSLapp.Commands
 {
     class UpdateCompleteCommands
     {
-
-
         public static void RestartToscaServerDependencies()
         {
+            List<ToscaServerService> toscaServerList = new List<ToscaServerService>()
+            {
+                new ToscaServerService("Tricentis.ServiceDiscovery"),
+                new ToscaServerService("Tricentis.AuthenticationService"),
+                new ToscaServerService("Tricentis.ProjectService"),
+                new ToscaServerService("Tricentis.FileService"),
+                new ToscaServerService("Tricentis.ToscaAutomationObjectService")
+            };
+
             Trace.WriteLine("Restarting Tosca Server Dependencies:");
             UpdateCompleteViewModel.UpdateCompleteModel.TextBlockMessage = string.Empty;
             UpdateCompleteViewModel.UpdateCompleteModel.AcceptButtonVisible = false;
             UpdateCompleteViewModel.UpdateCompleteModel.DeclineButtonVisible = false;
-            UpdateCompleteViewModel.UpdateCompleteModel.CloseButtonVisible = true;
+            UpdateCompleteViewModel.UpdateCompleteModel.CloseButtonVisible = false;
 
-            BackgroundWorker worker_restartIIS = new BackgroundWorker();
-            worker_restartIIS.WorkerReportsProgress = false;
-            worker_restartIIS.DoWork += ToscaServerServices.DoAsyncIISReset;
-            worker_restartIIS.RunWorkerAsync();
-
-            BackgroundWorker worker_restartServices = new BackgroundWorker();
-            worker_restartServices.WorkerReportsProgress = false;
-            worker_restartServices.DoWork += ToscaServerServices.RestartToscaServerServicesAsync;
-            worker_restartServices.RunWorkerAsync();
+            ToscaServerServiceRestarter serviceRestarter = new ToscaServerServiceRestarter(toscaServerList);
+            serviceRestarter.RestartComponentServices();
 
             ExecutableHelpers.RestartExe("RdpServer", ToscaConfigFilesViewModel.ToscaConfigFiles.ServerPath + @"\DEXRdpServer\ToscaRdpServer.exe");
 
-
             //updatehandler is assigned when files are updated. If 'Restart' is used without updating first, updater will be null. This is shit code.
-            var updatehandler = UpdateCompleteViewModel.GetUpdateHandler();
-            if(updatehandler != null)
+            if (UpdateCompleteViewModel.GetUpdateHandler() != null)
             {
-                updatehandler.ResetUpdateApps();
+                UpdateCompleteViewModel.GetUpdateHandler().ClearUpdateBehaviorList();
             }
         }
-
     }
 }
